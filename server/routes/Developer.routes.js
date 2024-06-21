@@ -20,4 +20,9 @@ router.get('/tokens',
     DeveloperController.GetAllTokens
 )
 
+router.post('/deletetoken',
+    DeveloperMiddleware.CheckDeveloperTokenValid,
+    DeveloperController.DeleteToken
+)
+
 module.exports = router
