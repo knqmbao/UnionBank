@@ -1,6 +1,13 @@
 const AccountModel = require('../models/Account.model')
 
 const AccountMidlleware = {
+    CheckDeveloperTokenValid: async (req, res) => {
+        try {
+
+        } catch (error) {
+            res.status(400).json({ error: `CheckDeveloperTokenValid in account middleware error ${error}` });
+        }
+    },
     CreateAccountCheckEmptyFields: async (req, res, next) => {
         try {
 
@@ -13,6 +20,13 @@ const AccountMidlleware = {
 
         } catch (error) {
             res.status(400).json({ error: `CheckAccountIfExists in account middleware error ${error}` });
+        }
+    },
+    UpdateAccountCheckEmptyFields: async (req, res, next) => {
+        try {
+
+        } catch (error) {
+            res.status(400).json({ error: `UpdateAccountCheckEmptyFields in account middleware error ${error}` });
         }
     },
 }
