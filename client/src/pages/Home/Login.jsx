@@ -1,6 +1,12 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function Login() {
+    const navigate = useNavigate()
+
+    const handleSignUp = () => {
+        navigate('/signup')
+    }
     return (
         <>
             <div className="w-full h-screen flex justify-center items-center">
@@ -19,7 +25,7 @@ export default function Login() {
                     </button>
                     <div className="w-full flex flex-col justify-start items-start">
                         <p>
-                            Don't have an account? <span className='cursor-pointer text-[#fff]'>Sign Up.</span>
+                            Don't have an account? <span className='cursor-pointer text-[#fff]' onClick={handleSignUp}>Sign Up.</span>
                         </p>
                         <p className='cursor-pointer'>
                             Forgot password?
