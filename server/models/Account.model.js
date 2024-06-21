@@ -16,6 +16,11 @@ const accountSchema = new mongoose.Schema({
         required: true,
         default: 0,
     },
+    isactive: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
     createdAt: {
         type: Date,
         default: Date.now,
