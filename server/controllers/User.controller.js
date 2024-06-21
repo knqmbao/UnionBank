@@ -29,18 +29,20 @@ const UserController = {
     },
     UpdateUser: async (req, res) => {
         try {
+            const { userId } = req.params
             const values = req.body
-            console.log('Update User Controller: ', values)
-            res.json({ success: true, message: 'User updated successfully!', values })
+            console.log('Update User Controller: ', values, userId)
+            res.json({ success: true, message: 'User updated successfully!', values, userId })
         } catch (error) {
             res.status(400).json({ error: `UpdateUser in user controller error ${error}` });
         }
     },
     UpdateActiveUser: async (req, res) => {
         try {
+            const { userId } = req.params
             const values = req.body
-            console.log('Update Active User Controller: ', values)
-            res.json({ success: true, message: 'User active updated successfully!', values })
+            console.log('Update Active User Controller: ', values, userId)
+            res.json({ success: true, message: 'User active updated successfully!', values, userId })
         } catch (error) {
             res.status(400).json({ error: `UpdateActiveUser in user controller error ${error}` });
         }
