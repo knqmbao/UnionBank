@@ -29,7 +29,8 @@ const DeveloperController = {
     },
     DeleteToken: async (req, res) => {
         try {
-            res.json({ success: true, message: 'Token deleted successfully!', data })
+            const { tokenId } = req.params
+            res.json({ success: true, message: 'Token deleted successfully!', tokenId })
         } catch (error) {
             res.status(400).json({ error: `DeleteToken in developer controller error ${error}` });
         }
