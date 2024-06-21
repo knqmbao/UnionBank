@@ -11,7 +11,7 @@ router.post('/createuser',
 )
 
 router.get('/users',
-    UserMiddleware.CheckDeveloperTokenValid,
+    UserMiddleware.CheckUserTokenValid,
     UserController.GetAllUsers
 )
 
@@ -21,7 +21,7 @@ router.get('/users/:userId',
 )
 
 router.post('/updateuser/:userId',
-    UserMiddleware.CheckDeveloperTokenValid, //It should be user not developer
+    UserMiddleware.CheckUserTokenValid,
     UserMiddleware.UpdateUserCheckEmptyFields,
     UserController.UpdateUser
 )
