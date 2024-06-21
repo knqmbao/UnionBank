@@ -15,18 +15,18 @@ router.get('/users',
     UserController.GetAllUsers
 )
 
-router.get('/users/:userid',
+router.get('/users/:userId',
     UserMiddleware.CheckDeveloperTokenValid,
     UserController.SearchUser
 )
 
-router.post('/updateuser',
-    UserMiddleware.CheckDeveloperTokenValid,
+router.post('/updateuser/:userId',
+    UserMiddleware.CheckDeveloperTokenValid, //It should be user not developer
     UserMiddleware.UpdateUserCheckEmptyFields,
     UserController.UpdateUser
 )
 
-router.post('/updateactiveuser',
+router.post('/updateactiveuser/:userId',
     UserMiddleware.CheckDeveloperTokenValid,
     UserController.UpdateActiveUser
 )
