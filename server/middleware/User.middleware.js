@@ -1,6 +1,13 @@
 const UserModel = require('../models/Account.model')
 
 const UserMidlleware = {
+    CheckUserTokenValid: async (req, res) => {
+        try {
+
+        } catch (error) {
+            res.status(400).json({ error: `CheckUserTokenValid in user middleware error ${error}` });
+        }
+    },
     CheckDeveloperTokenValid: async (req, res) => {
         try {
 
