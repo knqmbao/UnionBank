@@ -15,18 +15,18 @@ router.get('/accounts',
     AccountController.GetAllAccount
 )
 
-router.get('/accounts/:accountid',
+router.get('/accounts/:accountId',
     AccountMiddleware.CheckDeveloperTokenValid,
     AccountController.SearchAccount
 )
 
-router.post('/updateaccount',
+router.post('/updateaccount/:accountId',
     AccountMiddleware.CheckDeveloperTokenValid,
     AccountMiddleware.UpdateAccountCheckEmptyFields,
     AccountController.UpdateAccount
 )
 
-router.post('/updateactiveaccount',
+router.post('/updateactiveaccount/:accountId',
     AccountMiddleware.CheckDeveloperTokenValid,
     AccountController.UpdateActiveAccount
 )
