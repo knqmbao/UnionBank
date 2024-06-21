@@ -29,18 +29,20 @@ const AccountController = {
     },
     UpdateAccount: async (req, res) => {
         try {
+            const { accountId } = req.params
             const values = req.body
-            console.log('Update Account Controller: ', values)
-            res.json({ success: true, message: 'Account updated successfully!', values })
+            console.log('Update Account Controller: ', values, accountId)
+            res.json({ success: true, message: 'Account updated successfully!', values, accountId })
         } catch (error) {
             res.status(400).json({ error: `UpdateAccount in account controller error ${error}` });
         }
     },
     UpdateActiveAccount: async (req, res) => {
         try {
+            const { accountId } = req.params
             const values = req.body
-            console.log('Update Active Account Controller: ', values)
-            res.json({ success: true, message: 'Account active updated successfully!', values })
+            console.log('Update Active Account Controller: ', values, accountId)
+            res.json({ success: true, message: 'Account active updated successfully!', values, accountId })
         } catch (error) {
             res.status(400).json({ error: `UpdateActiveAccount in account controller error ${error}` });
         }
