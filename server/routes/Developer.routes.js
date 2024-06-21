@@ -20,7 +20,7 @@ router.get('/tokens',
     DeveloperController.GetAllTokens
 )
 
-router.post('/deletetoken',
+router.post('/deletetoken/:tokenId',
     DeveloperMiddleware.CheckDeveloperTokenValid,
     DeveloperController.DeleteToken
 )
