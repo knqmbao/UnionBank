@@ -5,18 +5,14 @@ const bcrypt = require('bcrypt')
 const TransactionMidlleware = {
     CheckDeveloperTokenValid: async (req, res, next) => {
         try {
-            const { developerId } = req.body
-            const user = await DeveloperModel.findById(developerId)
-            if (user) {
-                const testToken = bcrypt.compare(developerId, user.token)
-                if (testToken) {
-                    next()
-                } else {
-                    res.json({ success: false, message: 'Token do not exist nor match' })
-                }
-            } else {
-                res.json({ success: false, message: 'A token is required!' })
-            }
+            const authHeader = req.headers['authorization']
+            const token = authHeader && authHeader.split(' ')[1]
+            if (token === null) return res.json({ authorization: `You are not authorized: null` })
+            if (token === undefined) return res.json({ authorization: `You are not authorized: undefined` })
+
+            const testToken = await DeveloperModel.findOne(token)
+            if (token !== testToken) return res.json({ success: false, message: 'A token is required!' })
+            next()
         } catch (error) {
             res.status(400).json({ error: `CheckDeveloperTokenValid in transaction middleware error ${error}` });
         }
