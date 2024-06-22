@@ -28,11 +28,7 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
         default: false
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-});
+    }
+}, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);
