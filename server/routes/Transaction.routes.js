@@ -5,6 +5,7 @@ const TransactionController = require('../controllers/Transaction.controller')
 const TransactionMiddleware = require('../middleware/Transaction.middleware')
 
 router.post('/createtransaction',
+    TransactionMiddleware.CheckUserTokenValid,
     TransactionMiddleware.CreateTransactionCheckEmptyFields,
     TransactionController.CreateTransaction
 )
