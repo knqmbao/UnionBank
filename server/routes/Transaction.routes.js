@@ -4,10 +4,22 @@ const router = express.Router()
 const TransactionController = require('../controllers/Transaction.controller')
 const TransactionMiddleware = require('../middleware/Transaction.middleware')
 
-router.post('/createtransaction',
+router.post('/deposittransaction',
     TransactionMiddleware.CheckUserTokenValid,
     TransactionMiddleware.CreateTransactionCheckEmptyFields,
-    TransactionController.CreateTransaction
+    TransactionController.DepositTransaction
+)
+
+router.post('/withdrawtransaction',
+    TransactionMiddleware.CheckUserTokenValid,
+    TransactionMiddleware.CreateTransactionCheckEmptyFields,
+    TransactionController.WithdrawTransaction
+)
+
+router.post('/transfertransaction',
+    TransactionMiddleware.CheckUserTokenValid,
+    TransactionMiddleware.CreateTransactionCheckEmptyFields,
+    TransactionController.TransferTransaction
 )
 
 router.get('/transactions',
