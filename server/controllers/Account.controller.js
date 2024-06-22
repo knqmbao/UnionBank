@@ -5,6 +5,7 @@ const AccountController = {
         try {
             const values = req.body
             console.log('Create Account Controller: ', values)
+            await AccountModel.create(values)
             res.json({ success: true, message: 'Account created successfully!', values })
         } catch (error) {
             res.status(400).json({ error: `CreateAccount in account controller error ${error}` });
