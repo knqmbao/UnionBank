@@ -12,9 +12,12 @@ const DeveloperController = {
     },
     CreateDeveloperToken: async (req, res) => {
         try {
-            const values = req.body
-            console.log('Create Tokens Controller: ', values)
-            res.json({ success: true, message: 'Tokens created successfully!', values })
+            const { user } = req.body
+            const token = await req.hashedToken
+            const newToken = await DeveloperModel.create({ user, token })
+
+            console.log('Create Tokens Controller: ', newToken)
+            res.json({ success: true, message: 'Tokens created successfully!', newToken })
         } catch (error) {
             res.status(400).json({ error: `CreateDeveloperToken in developer controller error ${error}` });
         }
