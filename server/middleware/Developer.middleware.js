@@ -4,20 +4,6 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 const DeveloperMiddleware = {
-    // CreateDeveloperAccountCheckSccountIfExists: async (req, res, next) => {
-    //     try {
-    //         next()
-    //     } catch (error) {
-    //         res.status(400).json({ error: `CreateDeveloperAccountCheckSccountIfExists in developer middleware error ${error}` });
-    //     }
-    // },
-        // CreateDeveloperAccountCheckEmptyFields: async (req, res, next) => {
-    //     try {
-    //         next()
-    //     } catch (error) {
-    //         res.status(400).json({ error: `CreateDeveloperAccountCheckEmptyFields in developer middleware error ${error}` });
-    //     }
-    // },
     CreateDeveloperTokenCheckTokenIfExist: async (req, res, next) => {
         try {
             next()
