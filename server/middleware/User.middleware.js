@@ -29,8 +29,9 @@ const UserMidlleware = {
             if (token === null) return res.json({ authorization: `You are not authorized: null` })
             if (token === undefined) return res.json({ authorization: `You are not authorized: undefined` })
 
-            const testToken = await DeveloperModel.findOne(token)
-            if (token !== testToken) return res.json({ success: false, message: 'A token is required!' })
+            const testToken = await DeveloperModel.findOne({ token: token })
+            // console.log(process.env.SECRET_TOKEN, token, testToken)
+            if (testToken !== null || token !== process.env.SECRET_TOKEN) return res.json({ success: false, message: 'A token is required, nor token is incorrect!' })
             next()
         } catch (error) {
             res.status(400).json({ error: `CheckDeveloperTokenValid in user middleware error ${error}` });
