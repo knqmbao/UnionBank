@@ -6,7 +6,7 @@ const AccountMiddleware = require('../middleware/Account.middleware')
 
 router.post('/createaccount',
     AccountMiddleware.CreateAccountCheckEmptyFields,
-    AccountMiddleware.CreateAccountCheckEmptyFields,
+    AccountMiddleware.CreateAccountCheckAccountIfExists,
     AccountController.CreateAccount
 )
 
