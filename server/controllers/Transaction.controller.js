@@ -6,11 +6,12 @@ const TransactionController = {
         try {
             const { account, amount, transactionType } = req.body
             console.log('Deposit Transaction Controller: ', { account, amount, transactionType })
-
+            
             await TransactionModel.create({ account, amount, transactionType })
 
+            const depositAmount = parseFloat(amount)
             const { balance } = await AccountModel.findById(account)
-            const currentBalance = balance + amount
+            let currentBalance = balance + depositAmount
 
             const data = await AccountModel.findByIdAndUpdate(
                 account,
@@ -32,8 +33,9 @@ const TransactionController = {
 
             await TransactionModel.create({ account, amount, transactionType })
 
+            const withdrawAmount = parseFloat(amount)
             const { balance } = await AccountModel.findById(account)
-            const currentBalance = balance - amount
+            const currentBalance = balance - withdrawAmount
 
             const data = await AccountModel.findByIdAndUpdate(
                 account,
@@ -55,10 +57,11 @@ const TransactionController = {
 
             await TransactionModel.create({ account: debitAccount, amount, transactionType })
 
+            const transferAmount = parseFloat(amount)
             const { balance: debitBalance } = await AccountModel.findById(debitAccount)
             const { balance: creditBalance } = await AccountModel.findById(creditAccount)
-            const debitFutureBalance = debitBalance - amount
-            const creditFutureBalance = creditBalance + amount
+            const debitFutureBalance = debitBalance - transferAmount
+            const creditFutureBalance = creditBalance + transferAmount
 
 
             const debitData = await AccountModel.findByIdAndUpdate(
