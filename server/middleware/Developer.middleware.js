@@ -2,14 +2,21 @@ const DeveloperModel = require('../models/Developer.model')
 const bcrypt = require('bcrypt')
 
 const DeveloperMiddleware = {
-    CreateDeveloperAccountCheckSccountIfExists: async (req, res, next) => {
-        try {
-            next()
-        } catch (error) {
-            res.status(400).json({ error: `CreateDeveloperAccountCheckSccountIfExists in developer middleware error ${error}` });
-        }
-    },
-    CheckDeveloperTokenCheckIfExist: async (req, res, next) => {
+    // CreateDeveloperAccountCheckSccountIfExists: async (req, res, next) => {
+    //     try {
+    //         next()
+    //     } catch (error) {
+    //         res.status(400).json({ error: `CreateDeveloperAccountCheckSccountIfExists in developer middleware error ${error}` });
+    //     }
+    // },
+        // CreateDeveloperAccountCheckEmptyFields: async (req, res, next) => {
+    //     try {
+    //         next()
+    //     } catch (error) {
+    //         res.status(400).json({ error: `CreateDeveloperAccountCheckEmptyFields in developer middleware error ${error}` });
+    //     }
+    // },
+    CreateDeveloperTokenCheckTokenIfExist: async (req, res, next) => {
         try {
             next()
         } catch (error) {
@@ -21,13 +28,6 @@ const DeveloperMiddleware = {
             next()
         } catch (error) {
             res.status(400).json({ error: `CheckDeveloperTokenValid in developer middleware error ${error}` });
-        }
-    },
-    CreateDeveloperAccountCheckEmptyFields: async (req, res, next) => {
-        try {
-            next()
-        } catch (error) {
-            res.status(400).json({ error: `CreateDeveloperAccountCheckEmptyFields in developer middleware error ${error}` });
         }
     },
     CreateDeveloperTokenHashed: async (req, res, next) => {
