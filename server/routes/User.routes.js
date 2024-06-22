@@ -7,6 +7,7 @@ const UserMiddleware = require('../middleware/User.middleware')
 router.post('/createuser',
     UserMiddleware.CreateUserCheckEmptyFields,
     UserMiddleware.CreateUserCheckUserIfExists,
+    UserMiddleware.CreateUserHashedPassword,
     UserController.CreateUser
 )
 
