@@ -5,23 +5,24 @@ const DeveloperController = require('../controllers/Developer.controller')
 const DeveloperMiddleware = require('../middleware/Developer.middleware')
 
 router.post('/createdeveloperaccount',
-    DeveloperMiddleware.CreateDeveloperCheckEmptyFields,
+    DeveloperMiddleware.CreateDeveloperAccountCheckEmptyFields,
+    DeveloperMiddleware.CreateDeveloperAccountCheckSccountIfExists,
     DeveloperController.CreateDeveloperAccount
 )
 
-router.post('/createdevelopertoken',
-    DeveloperMiddleware.CheckDeveloperTokenValid,
-    DeveloperMiddleware.CreateDeveloperTokenCheckEmptyFields,
+router.post('/createdevelopertoken/:accountId',
+    DeveloperMiddleware.CheckDeveloperTokenCheckIfExist,
+    DeveloperMiddleware.CreateDeveloperTokenHashed,
     DeveloperController.CreateDeveloperToken
 )
 
 router.get('/tokens',
-    DeveloperMiddleware.CheckDeveloperTokenValid,
+    DeveloperMiddleware.CheckDeveloperTokenCheckIfExist,
     DeveloperController.GetAllTokens
 )
 
 router.post('/deletetoken/:tokenId',
-    DeveloperMiddleware.CheckDeveloperTokenValid,
+    DeveloperMiddleware.CheckDeveloperTokenCheckIfExist,
     DeveloperController.DeleteToken
 )
 
