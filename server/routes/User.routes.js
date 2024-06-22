@@ -5,12 +5,14 @@ const UserController = require('../controllers/User.controller')
 const UserMiddleware = require('../middleware/User.middleware')
 
 router.post('/loginuser',
+    UserMiddleware.CheckDeveloperTokenValid,
     UserMiddleware.LoginUserCheckEmptyFields,
     UserMiddleware.LoginUserCheckMobileNo,
     UserMiddleware.LoginUserCheckPassword
 )
 
 router.post('/createuser',
+    UserMiddleware.CheckDeveloperTokenValid,
     UserMiddleware.CreateUserCheckEmptyFields,
     UserMiddleware.CreateUserCheckUserIfExists,
     UserMiddleware.CreateUserHashedPassword,
