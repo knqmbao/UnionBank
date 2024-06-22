@@ -19,7 +19,7 @@ const AccountMidlleware = {
         try {
             next()
         } catch (error) {
-            res.status(400).json({ error: `CheckAccountIfExists in account middleware error ${error}` });
+            res.status(400).json({ error: `CreateAccountCheckAccountIfExists in account middleware error ${error}` });
         }
     },
     UpdateAccountCheckEmptyFields: async (req, res, next) => {
