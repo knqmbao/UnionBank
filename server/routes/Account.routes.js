@@ -5,6 +5,7 @@ const AccountController = require('../controllers/Account.controller')
 const AccountMiddleware = require('../middleware/Account.middleware')
 
 router.post('/createaccount',
+    AccountMiddleware.CheckDeveloperTokenValid,
     AccountMiddleware.CreateAccountCheckEmptyFields,
     AccountMiddleware.CreateAccountCheckAccountIfExists,
     AccountController.CreateAccount
