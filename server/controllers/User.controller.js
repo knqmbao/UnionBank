@@ -5,6 +5,7 @@ const UserController = {
         try {
             const values = req.body
             console.log('Create User Controller: ', values)
+            await UserModel.create(values)
             res.json({ success: true, message: 'User created successfully!', values })
         } catch (error) {
             res.status(400).json({ error: `CreateUser in user controller error ${error}` });
