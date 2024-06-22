@@ -1,11 +1,84 @@
 const TransactionModel = require('../models/Transactions.model')
+const AccountModel = require('../models/Account.model')
 
 const TransactionController = {
-    CreateTransaction: async (req, res) => {
+    DepositTransaction: async (req, res) => {
         try {
-            const values = req.body
-            console.log('Create Transaction Controller: ', values)
-            res.json({ success: true, message: 'Transaction created successfully!', values })
+            const { account, amount, transactionType } = req.body
+            console.log('Deposit Transaction Controller: ', { account, amount, transactionType })
+
+            await TransactionModel.create({ account, amount, transactionType })
+
+            const { balance } = await AccountModel.findById(account)
+            const currentBalance = balance + amount
+
+            const data = await AccountModel.findByIdAndUpdate(
+                account,
+                {
+                    balance: currentBalance
+                },
+                { new: true }
+            )
+
+            res.json({ success: true, message: 'Deposit transaction successfully!', data })
+        } catch (error) {
+            res.status(400).json({ error: `CreateTransaction in transaction controller error ${error}` });
+        }
+    },
+    WithdrawTransaction: async (req, res) => {
+        try {
+            const { account, amount, transactionType } = req.body
+            console.log('Withdrawal Transaction Controller: ', { account, amount, transactionType })
+
+            await TransactionModel.create({ account, amount, transactionType })
+
+            const { balance } = await AccountModel.findById(account)
+            const currentBalance = balance - amount
+
+            const data = await AccountModel.findByIdAndUpdate(
+                account,
+                {
+                    balance: currentBalance
+                },
+                { new: true }
+            )
+
+            res.json({ success: true, message: 'Withdrawal transaction successfully!', data })
+        } catch (error) {
+            res.status(400).json({ error: `CreateTransaction in transaction controller error ${error}` });
+        }
+    },
+    TransferTransaction: async (req, res) => {
+        try {
+            const { debitAccount } = req.params
+            const { account: creditAccount, amount, transactionType } = req.body
+            console.log('Transfer Transaction Controller: ', { debitAccount, creditAccount, amount, transactionType })
+
+            await TransactionModel.create({ account: debitAccount, amount, transactionType })
+
+            const { balance: debitBalance } = await AccountModel.findById(debitAccount)
+            const { balance: creditBalance } = await AccountModel.findById(creditAccount)
+            const debitFutureBalance = debitBalance - amount
+            const creditFutureBalance = creditBalance + amount
+
+
+            const debitData = await AccountModel.findByIdAndUpdate(
+                debitAccount,
+                {
+                    balance: debitFutureBalance
+                },
+                { new: true }
+            )
+
+            const creditData = await AccountModel.findByIdAndUpdate(
+                creditAccount,
+                {
+                    balance: creditFutureBalance
+                },
+                { new: true }
+            )
+
+            res.json({ success: true, message: 'Withdrawal transaction successfully!', debitData, creditData })
         } catch (error) {
             res.status(400).json({ error: `CreateTransaction in transaction controller error ${error}` });
         }
