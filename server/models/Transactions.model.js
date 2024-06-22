@@ -14,11 +14,7 @@ const transactionSchema = new mongoose.Schema({
         type: String,
         enum: ['deposit', 'withdrawal', 'transfer'],
         required: true,
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-});
+    }
+}, { timestamps: true });
 
 module.exports = mongoose.model('Transaction', transactionSchema);
