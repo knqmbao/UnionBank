@@ -50,8 +50,7 @@ const TransactionController = {
     },
     TransferTransaction: async (req, res) => {
         try {
-            const { debitAccount } = req.params
-            const { account: creditAccount, amount, transactionType } = req.body
+            const { debitAccount, creditAccount, amount, transactionType } = req.body
             console.log('Transfer Transaction Controller: ', { debitAccount, creditAccount, amount, transactionType })
 
             await TransactionModel.create({ account: debitAccount, amount, transactionType })
