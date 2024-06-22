@@ -6,7 +6,7 @@ const developerSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
-    tokens: {
+    token: {
         type: String,
         required: true,
         unique: true
