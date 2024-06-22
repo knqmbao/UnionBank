@@ -1,6 +1,7 @@
 const TransactionModel = require('../models/Transactions.model')
 const DeveloperModel = require('../models/Developer.model')
 const bcrypt = require('bcrypt')
+require('dotenv').config()
 
 const TransactionMidlleware = {
     CheckUserTokenValid: async (req, res, next) => {
