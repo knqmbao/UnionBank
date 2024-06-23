@@ -21,9 +21,11 @@ const AccountController = {
     },
     SearchAccount: async (req, res) => {
         try {
-            const { accountId } = req.params
-            console.log('Search Account Controller: ', accountId)
-            res.json({ success: true, message: 'Fethced certain account successfully!', accountId })
+            const { userId } = req.params
+            console.log('Search Account Controller: ', userId)
+
+            const data = await AccountModel.find({ user: userId })
+            res.json({ success: true, message: 'Fethced certain account successfully!', data })
         } catch (error) {
             res.status(400).json({ error: `SearchAccount in account controller error ${error}` });
         }
@@ -33,6 +35,8 @@ const AccountController = {
             const { accountId } = req.params
             const values = req.body
             console.log('Update Account Controller: ', values, accountId)
+
+
             res.json({ success: true, message: 'Account updated successfully!', values, accountId })
         } catch (error) {
             res.status(400).json({ error: `UpdateAccount in account controller error ${error}` });
@@ -41,9 +45,15 @@ const AccountController = {
     UpdateActiveAccount: async (req, res) => {
         try {
             const { accountId } = req.params
-            const values = req.body
-            console.log('Update Active Account Controller: ', values, accountId)
-            res.json({ success: true, message: 'Account active updated successfully!', values, accountId })
+            const { isactive } = req.body
+            console.log('Update Active Account Controller: ', isactive, accountId)
+
+            const data = await AccountModel.findOneAndUpdate(
+                { user: accountId },
+                { isactive: isactive },
+                { new: true }
+            )
+            res.json({ success: true, message: 'Account active updated successfully!', data })
         } catch (error) {
             res.status(400).json({ error: `UpdateActiveAccount in account controller error ${error}` });
         }
