@@ -1,5 +1,6 @@
 const UserModel = require('../models/Users.model')
 const DeveloperModel = require('../models/Developer.model')
+const AccountModel = require('../models/Account.model')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
@@ -28,11 +29,10 @@ const UserMidlleware = {
             const token = authHeader && authHeader.split(' ')[1]
             if (token === null) return res.json({ authorization: `You are not authorized: null` })
             if (token === undefined) return res.json({ authorization: `You are not authorized: undefined` })
-
             const testToken = await DeveloperModel.findOne({ token: token })
-            // console.log(process.env.SECRET_TOKEN, token, testToken)
-            if (testToken !== null || token !== process.env.SECRET_TOKEN) return res.json({ success: false, message: 'A token is required, nor token is incorrect!' })
-            next()
+
+            if (testToken || token === process.env.ADMIN_TOKEN) return next()
+            res.json({ success: false, message: 'A token is required, nor token is incorrect!' })
         } catch (error) {
             res.status(400).json({ error: `CheckDeveloperTokenValid in user middleware error ${error}` });
         }
@@ -65,7 +65,7 @@ const UserMidlleware = {
                 const testPassword = bcrypt.compare(password, user.password)
                 if (testPassword) {
                     const token = jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, { expiresIn: '1d' })
-                    res.json({ success: true, message: 'Login Successful.', token })
+                    res.json({ success: true, message: 'Login Successful.', token, name: user.name, accountId: user.mobileno, userId: user._id })
                 } else {
                     res.json({ success: false, message: 'Username nor Password Incorrect!' })
                 }
