@@ -21,9 +21,15 @@ const UserController = {
     },
     SearchUser: async (req, res) => {
         try {
-            const { accountId } = req.params
-            console.log('Search User Controller: ', accountId)
-            res.json({ success: true, message: 'Fethced certain user successfully!', accountId })
+            const { name } = req.params
+            console.log('Search User Controller: ', name)
+
+            const data = await UserModel.find(
+                {
+                    name: { $regex: new RegExp(name, 'i') }
+                }
+            )
+            res.json({ success: true, message: 'Fetched certain user successfully!', data })
         } catch (error) {
             res.status(400).json({ error: `SearchUser in user controller error ${error}` });
         }
@@ -31,9 +37,17 @@ const UserController = {
     UpdateUser: async (req, res) => {
         try {
             const { userId } = req.params
-            const values = req.body
-            console.log('Update User Controller: ', values, userId)
-            res.json({ success: true, message: 'User updated successfully!', values, userId })
+            const { name, password } = req.body
+            console.log('Update User Controller: ', { name, password, userId })
+
+            const data = await UserModel.findByIdAndUpdate(
+                userId,
+                {
+                    name: name
+                },
+                { new: true }
+            )
+            res.json({ success: true, message: 'User updated successfully!', data })
         } catch (error) {
             res.status(400).json({ error: `UpdateUser in user controller error ${error}` });
         }
@@ -41,9 +55,17 @@ const UserController = {
     UpdateActiveUser: async (req, res) => {
         try {
             const { userId } = req.params
-            const values = req.body
-            console.log('Update Active User Controller: ', values, userId)
-            res.json({ success: true, message: 'User active updated successfully!', values, userId })
+            const { isactive } = req.body
+            console.log('Update Active User Controller: ', isactive, userId)
+
+            const data = await UserModel.findByIdAndUpdate(
+                userId,
+                {
+                    isactive: isactive
+                },
+                { new: true }
+            )
+            res.json({ success: true, message: 'User active updated successfully!', data })
         } catch (error) {
             res.status(400).json({ error: `UpdateActiveUser in user controller error ${error}` });
         }
