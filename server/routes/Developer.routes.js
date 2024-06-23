@@ -4,7 +4,7 @@ const router = express.Router()
 const DeveloperController = require('../controllers/Developer.controller')
 const DeveloperMiddleware = require('../middleware/Developer.middleware')
 
-router.post('/createdevelopertoken/:accountId',
+router.post('/createdevelopertoken/:userId',
     DeveloperMiddleware.CheckDeveloperTokenValid,
     DeveloperMiddleware.CreateDeveloperTokenCheckTokenIfExist,
     DeveloperMiddleware.CreateDeveloperTokenHashed,
@@ -16,7 +16,7 @@ router.get('/tokens',
     DeveloperController.GetAllTokens
 )
 
-router.post('/deletetoken/:tokenId',
+router.post('/deletetoken/:developerId',
     DeveloperMiddleware.CheckDeveloperTokenValid,
     DeveloperController.DeleteToken
 )
