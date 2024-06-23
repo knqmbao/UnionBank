@@ -16,7 +16,7 @@ router.get('/accounts',
     AccountController.GetAllAccount
 )
 
-router.get('/accounts/:accountId',
+router.get('/accounts/:userId',
     AccountMiddleware.CheckDeveloperTokenValid,
     AccountController.SearchAccount
 )
