@@ -1,20 +1,11 @@
 const DeveloperModel = require('../models/Developer.model')
 
 const DeveloperController = {
-    CreateDeveloperAccount: async (req, res) => {
-        try {
-            const values = req.body
-            console.log('Create Tokens Controller: ', values)
-            res.json({ success: true, message: 'Tokens created successfully!', values })
-        } catch (error) {
-            res.status(400).json({ error: `CreateDeveloperAccount in developer controller error ${error}` });
-        }
-    },
     CreateDeveloperToken: async (req, res) => {
         try {
-            const { user } = req.body
+            const { userId } = req.params
             const token = await req.hashedToken
-            const newToken = await DeveloperModel.create({ user, token })
+            const newToken = await DeveloperModel.create({ user: userId, token })
 
             console.log('Create Tokens Controller: ', newToken)
             res.json({ success: true, message: 'Tokens created successfully!', newToken })
