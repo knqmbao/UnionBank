@@ -20,11 +20,11 @@ router.post('/createuser',
 )
 
 router.get('/users',
-    UserMiddleware.CheckUserTokenValid,
+    UserMiddleware.CheckDeveloperTokenValid,
     UserController.GetAllUsers
 )
 
-router.get('/users/:userId',
+router.get('/users/:name',
     UserMiddleware.CheckDeveloperTokenValid,
     UserController.SearchUser
 )
