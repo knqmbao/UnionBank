@@ -23,11 +23,11 @@ router.post('/transfertransaction',
 )
 
 router.get('/transactions',
-    TransactionMiddleware.CheckDeveloperTokenValid,
+    TransactionMiddleware.CheckUserTokenValid,
     TransactionController.GetAllTransaction
 )
 
-router.get('/transactions/:transactionid',
+router.get('/transactions/:accountId',
     TransactionMiddleware.CheckDeveloperTokenValid,
     TransactionController.SearchTransaction
 )
