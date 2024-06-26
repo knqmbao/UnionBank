@@ -61,7 +61,7 @@ export default function Header_OnlineBank() {
                             </div>
                         </div>
                     </div>
-                    <div className="w-full flex justify-start items-center gap-[1rem] px-[1rem]">
+                    <div className="w-full flex justify-start items-center gap-[1rem] px-[2rem] py-[1rem]">
                         <GridViewIcon />
                         <button className='text-[#3D4751]'>
                             Logout
