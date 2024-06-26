@@ -7,6 +7,10 @@ export default function Login() {
     const handleSignUp = () => {
         navigate('/signup')
     }
+
+    const handleLogin = () => {
+        navigate('/')
+    }
     return (
         <>
             <div className="w-full h-screen flex justify-center items-center">
@@ -20,7 +24,7 @@ export default function Login() {
                         <h1>Password</h1>
                         <input type="password" className='px-[1rem]' placeholder='Enter your password...' />
                     </div>
-                    <button>
+                    <button onClick={handleLogin}>
                         Login
                     </button>
                     <div className="w-full flex flex-col justify-start items-start">
