@@ -4,6 +4,20 @@
     font-family: 'Poppins', 'sans-serif';
 }
 
+a.active, a.active h1 {
+    background: #111111;
+    color: white
+}
+
+a h1 {
+    background: white;
+}
+
+a:hover, a:hover h1 {
+    background: #d4d4d4;
+    transition: .3s ease;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
