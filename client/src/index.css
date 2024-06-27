@@ -14,7 +14,7 @@ a h1 {
 }
 
 a:hover, a:hover h1 {
-    background: #d4d4d4;
+    background: #ebebeb;
     transition: .3s ease;
 }
 
