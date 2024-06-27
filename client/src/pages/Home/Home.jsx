@@ -1,9 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Header__Home from '../../components/Header__Home'
 
 export default function Home() {
     return (
-        <div className='w-full h-screen flex justify-center items-center flex-col'>
+        <div className='w-full h-screen flex justify-start items-center flex-col'>
+            <Header__Home />
             <h1 className='font-[600] text-[2rem]'>
                 Welcome to UnionBank
             </h1>
