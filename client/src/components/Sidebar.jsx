@@ -23,7 +23,7 @@ export default function Sidebar() {
                 </div>
                 <div className="w-full h-[92%] flex flex-col justify-between items-start">
                     <div className="w-full flex flex-col">
-                        <div className="w-full py-[1rem] flex flex-col gap-[.2rem] justify-start items-start">
+                        <div className="hnavs w-full py-[1rem] flex flex-col gap-[.2rem] justify-start items-start">
                             <NavLink to='/' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md">
                                 <GridViewIcon />
                                 <h1 className='text-[#3D4751] text-[.9rem]'>
