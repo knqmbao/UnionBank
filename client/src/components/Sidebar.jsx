@@ -81,7 +81,7 @@ export default function Sidebar() {
                                     Security
                                 </h1>
                             </NavLink>
-                            <NavLink to='/security' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md">
+                            <NavLink to='/apikeys' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md">
                                 <HttpOutlinedIcon />
                                 <h1 className='text-[#3D4751] text-[.9rem]'>
                                     API Keys
