@@ -8,18 +8,18 @@ function handleClick(event) {
     console.info('You clicked a breadcrumb.');
 }
 
-export default function Header__Dashboard() {
+export default function Header__Dashboard({ title }) {
     const breadcrumbs = [
         // <Link underline="hover" key="1" color="inherit" href="/" onClick={handleClick}>
         //     MUI
         // </Link>,
         <h1 key="3" className='font-[500] text-[.9rem] text-[#111111]'>
-            Transactions
+            {title}
         </h1>,
     ];
     return (
         <>
-            <div className="w-full h-[3rem] flex justify-start items-center">
+            <div className="w-full h-[5%] flex justify-start items-center">
                 <Breadcrumbs
                     separator={<NavigateNextIcon fontSize="small" />}
                 >
