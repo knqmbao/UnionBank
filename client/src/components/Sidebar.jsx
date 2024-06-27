@@ -56,7 +56,7 @@ export default function Sidebar() {
                             </NavLink>
                         </div>
                         <h1 className='text-[#9CA3AF] text-[.9rem]'>Settings</h1>
-                        <div className="w-full py-[1rem] flex flex-col justify-start items-start gap-[.2rem]">
+                        <div className="hnavs w-full py-[1rem] flex flex-col justify-start items-start gap-[.2rem]">
                             <NavLink to='/account' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md">
                                 <Person2OutlinedIcon />
                                 <h1 className='text-[#3D4751] text-[.9rem]'>
