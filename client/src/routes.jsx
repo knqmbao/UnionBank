@@ -12,6 +12,7 @@ import Security from './pages/OnlineBank/Security'
 import Transactions from './pages/OnlineBank/Transactions'
 import Transfer from './pages/OnlineBank/Transfer'
 import Developer from './pages/Home/Developer'
+import Developers from './pages/OnlineBank/Developers'
 
 const Routes = createBrowserRouter([
   { path: '/', element: <Dashboard /> },
@@ -25,7 +26,8 @@ const Routes = createBrowserRouter([
   { path: '/employees', element: <Employees /> },
   { path: '/security', element: <Security /> },
   { path: 'transactions', element: <Transactions /> },
-  { path: '/transfer', element: <Transfer /> }
+  { path: '/transfer', element: <Transfer /> },
+  { path: '/developers', element: <Developers /> }
 ])
 
 export default Routes
