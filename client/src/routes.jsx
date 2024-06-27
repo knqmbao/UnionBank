@@ -13,6 +13,7 @@ import Transactions from './pages/OnlineBank/Transactions'
 import Transfer from './pages/OnlineBank/Transfer'
 import Developer from './pages/Home/Developer'
 import Developers from './pages/OnlineBank/Developers'
+import APIKeys from './pages/OnlineBank/APIKeys'
 
 const Routes = createBrowserRouter([
   { path: '/', element: <Dashboard /> },
@@ -27,7 +28,8 @@ const Routes = createBrowserRouter([
   { path: '/security', element: <Security /> },
   { path: 'transactions', element: <Transactions /> },
   { path: '/transfer', element: <Transfer /> },
-  { path: '/developers', element: <Developers /> }
+  { path: '/developers', element: <Developers /> },
+  { path: '/apikeys', element: <APIKeys /> }
 ])
 
 export default Routes
