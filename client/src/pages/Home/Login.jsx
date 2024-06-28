@@ -16,13 +16,10 @@ export default function Login() {
     return (
         <>
             <div className="w-full h-screen flex flex-col justify-start items-center">
-                <Header__Home />
+                {/* <Header__Home /> */}
                 <div className="w-full h-full flex justify-start items-center">
-                    <div className="w-[70%] h-full flex justify-start items-center px-[10rem]">
-                        <div className="w-[30rem] h-[30rem] rounded-xl overflow-hidden shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1)]">
-                            <img src={LoginBG} alt="BG" className='w-full h-full object-cover' />
-                        </div>
-
+                    <div className="w-[70%] h-full flex justify-start items-center">
+                        <img src={LoginBG} alt="BG" className='w-full h-full object-cover' />
                     </div>
                     <div className="w-[30%] h-full flex justify-center items-center">
                         <form className='w-[25rem] h-[30rem] bg-[#F48A3D] flex flex-col justify-center items-center gap-[1rem] px-[5rem]'>
