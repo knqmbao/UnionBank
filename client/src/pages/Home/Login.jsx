@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import Header__Home from '../../components/Header__Home'
+import LogoUB from '../../assets/LogoUB.png'
 import LoginBG from '../../assets/LoginBG.png'
 
 export default function Login() {
@@ -22,8 +23,10 @@ export default function Login() {
                         <img src={LoginBG} alt="BG" className='w-full h-full object-cover' />
                     </div>
                     <div className="w-[30%] h-full flex justify-center items-center">
-                        <form className='w-[25rem] h-[30rem] bg-[#F48A3D] flex flex-col justify-center items-center gap-[1rem] px-[5rem]'>
-                            <h1>UnionBank</h1>
+                        <form className='w-full h-full flex flex-col justify-center items-center gap-[1rem] px-[5rem]'>
+                            <div className="w-full h-[5rem] flex justify-start items-center">
+                                <img src={LogoUB} alt="BG" className='w-full h-full object-cover' />
+                            </div>
                             <div className="w-full flex flex-col">
                                 <h1>Mobile No.</h1>
                                 <input type="text" inputMode='numeric' className='px-[1rem]' placeholder='Enter your mobile number...' />
