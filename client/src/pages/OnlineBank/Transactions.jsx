@@ -197,9 +197,9 @@ export default function Transactions() {
                     <TabContext value={value}>
                         <div className="w-full h-[4rem]">
                             <TabList onChange={handleChange}>
-                                <Tab label="Deposit" value="1" style={{ fontWeight: 'bold' }} />
-                                <Tab label="Withdrawal" value="2" style={{ fontWeight: 'bold' }} />
-                                <Tab label="Transfer" value="3" style={{ fontWeight: 'bold' }} />
+                                <Tab label="Deposit" value="1" style={{ fontWeight: '500' }} />
+                                <Tab label="Withdrawal" value="2" style={{ fontWeight: '500' }} />
+                                <Tab label="Transfer" value="3" style={{ fontWeight: '500' }} />
                             </TabList>
                         </div>
                         <TabPanel value="1" className='w-full h-[90%]'>
