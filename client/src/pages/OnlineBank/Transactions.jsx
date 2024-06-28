@@ -5,7 +5,7 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import { DataGrid } from '@mui/x-data-grid';
+import DataGrids from '../../components/DataGrids';
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 90 },
@@ -69,8 +69,121 @@ const rows = [
     { id: 28, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
 ];
 
+const depositandwithdrawalCol = [
+    {
+        field: 'id',
+        headerName: 'ID',
+        width: 90
+    },
+    {
+        field: 'account',
+        headerName: 'Account',
+        width: 300,
+        headerAlign: 'center',
+        align: 'center'
+    },
+    {
+        field: 'amount',
+        headerName: 'Amount',
+        type: 'number',
+        width: 300,
+        headerAlign: 'center',
+        align: 'center'
+    },
+    {
+        field: 'date',
+        headerName: 'Date',
+        width: 300,
+        headerAlign: 'center',
+        align: 'center'
+    }
+]
+
+const transferCol = [
+    {
+        field: 'id',
+        headerName: 'ID',
+        width: 90
+    },
+    {
+        field: 'debit',
+        headerName: 'Debit',
+        width: 250,
+        headerAlign: 'center',
+        align: 'center'
+    },
+    {
+        field: 'credit',
+        headerName: 'Credit',
+        width: 250,
+        headerAlign: 'center',
+        align: 'center'
+    },
+    {
+        field: 'amount',
+        headerName: 'Amount',
+        type: 'number',
+        width: 250,
+        headerAlign: 'center',
+        align: 'center'
+    },
+    {
+        field: 'date',
+        headerName: 'Date',
+        width: 250,
+        headerAlign: 'center',
+        align: 'center'
+    }
+]
+
+const depositRowTest = [
+    {
+        id: 1,
+        account: '37475510',
+        amount: '200',
+        date: Date.now()
+    },
+    {
+        id: 2,
+        account: '37475510',
+        amount: '400',
+        date: Date.now()
+    },
+    {
+        id: 3,
+        account: '37475510',
+        amount: '500',
+        date: Date.now()
+    },
+]
+
+const transferRowTest = [
+    {
+        id: 1,
+        debit: '37475510',
+        credit: '47356780',
+        amount: '200',
+        date: Date.now()
+    },
+    {
+        id: 2,
+        debit: '37475510',
+        credit: '47356780',
+        amount: '400',
+        date: Date.now()
+    },
+    {
+        id: 3,
+        debit: '37475510',
+        credit: '47356780',
+        amount: '500',
+        date: Date.now()
+    },
+]
+
 export default function Transactions() {
     const [value, setValue] = useState('1');
+    const [row, setRow] = useState([])
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -84,58 +197,19 @@ export default function Transactions() {
                     <TabContext value={value}>
                         <div className="w-full h-[4rem]">
                             <TabList onChange={handleChange}>
-                                <Tab label="Deposit Transaction" value="1" style={{ fontWeight: 'bold' }} />
-                                <Tab label="Withdrawal Transaction" value="2" style={{ fontWeight: 'bold' }} />
-                                <Tab label="Transfer Transaction" value="3" style={{ fontWeight: 'bold' }} />
+                                <Tab label="Deposit" value="1" style={{ fontWeight: 'bold' }} />
+                                <Tab label="Withdrawal" value="2" style={{ fontWeight: 'bold' }} />
+                                <Tab label="Transfer" value="3" style={{ fontWeight: 'bold' }} />
                             </TabList>
                         </div>
                         <TabPanel value="1" className='w-full h-[90%]'>
-                            <DataGrid
-                                rows={rows}
-                                columns={columns}
-                                initialState={{
-                                    pagination: {
-                                        paginationModel: {
-                                            pageSize: 5,
-                                        },
-                                    },
-                                }}
-                                pageSizeOptions={[5, 10, 25]}
-                                checkboxSelection
-                                disableRowSelectionOnClick
-                            />
+                            <DataGrids columnsTest={depositandwithdrawalCol} rowsTest={depositRowTest} />
                         </TabPanel>
                         <TabPanel value="2" className='w-full h-[90%]'>
-                            <DataGrid
-                                rows={rows}
-                                columns={columns}
-                                initialState={{
-                                    pagination: {
-                                        paginationModel: {
-                                            pageSize: 5,
-                                        },
-                                    },
-                                }}
-                                pageSizeOptions={[5, 10, 25]}
-                                checkboxSelection
-                                disableRowSelectionOnClick
-                            />
+                            <DataGrids columnsTest={depositandwithdrawalCol} rowsTest={depositRowTest} />
                         </TabPanel>
                         <TabPanel value="3" className='w-full h-[90%]'>
-                            <DataGrid
-                                rows={rows}
-                                columns={columns}
-                                initialState={{
-                                    pagination: {
-                                        paginationModel: {
-                                            pageSize: 5,
-                                        },
-                                    },
-                                }}
-                                pageSizeOptions={[5, 10, 25]}
-                                checkboxSelection
-                                disableRowSelectionOnClick
-                            />
+                            <DataGrids columnsTest={transferCol} rowsTest={transferRowTest} />
                         </TabPanel>
                     </TabContext>
                 </div>
