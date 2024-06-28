@@ -39,10 +39,10 @@ export default function Login() {
                                 Login
                             </button>
                             <div className="w-full flex flex-col justify-start items-start">
-                                <p>
+                                <p className='text-[.8rem]'>
                                     Don't have an account? <span className='cursor-pointer text-yellow-500' onClick={handleSignUp}>Sign Up.</span>
                                 </p>
-                                <p className='cursor-pointer'>
+                                <p className='cursor-pointer text-[.8rem]'>
                                     Forgot password?
                                 </p>
                             </div>
