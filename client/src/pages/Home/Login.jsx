@@ -26,8 +26,8 @@ export default function Login() {
                                 <img src={LogoUB} alt="BG" className='w-full h-full object-contain' />
                             </div>
                             <div className="w-full flex flex-col">
-                                <h1>Account No.</h1>
-                                <input type="text" inputMode='numeric' className='px-[1rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your mobile number...' />
+                                <h1>Email</h1>
+                                <input type="text" inputMode='numeric' className='px-[1rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your email...' />
                             </div>
                             <div className="w-full flex flex-col">
                                 <h1>Password</h1>
