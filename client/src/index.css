@@ -22,7 +22,7 @@
 
 ::-webkit-scrollbar {
     width: .3rem;
-
+    height: .4rem;
 }
 
 ::-webkit-scrollbar-thumb {
