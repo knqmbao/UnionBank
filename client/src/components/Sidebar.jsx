@@ -25,9 +25,9 @@ export default function Sidebar() {
             <div className="sm:w-[none] md:w-[none] lg:w-[20%] h-screen px-[.1rem] sm:px-[.3rem] md:px-[.5rem] lg:px-[1rem] py-[1rem] bg-[#ffffff] border-r border-gray-900/10 overflow-auto">
                 <div className="w-full h-[8%] flex justify-center sm:justify-center md:justify-center lg:justify-between items-center scale-[.7] sm:scale-[.7] md:scale-[.9] lg:scale-[1] py-[1rem]">
                     <h1 className='hidden sm:hidden md:hidden lg:block text-[.8rem] sm:text-[1rem] md:text-[1.2rem] lg:text-[1.5rem]'>Solana</h1>
-                    <MenuIcon style={{ cursor: 'pointer', fontSize: '2rem'}} />
+                    <MenuIcon style={{ cursor: 'pointer', fontSize: '2rem' }} />
                 </div>
-                <div className="w-full h-[92%] flex flex-col justify-between items-start">
+                <div className="w-full flex flex-col justify-between items-start pb-[6rem]">
                     <div className="w-full flex flex-col">
                         <div className="hnavs w-full py-[1rem] flex flex-col gap-[.2rem] justify-start items-start">
                             <NavLink to='/' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md scale-[.7] sm:scale-[.8] md:scale-[.9] lg:scale-[1]">
@@ -48,16 +48,46 @@ export default function Sidebar() {
                                     Make a Transfer
                                 </h1>
                             </NavLink>
+                            <NavLink to='/developers' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md scale-[.7] sm:scale-[.8] md:scale-[.9] lg:scale-[1]">
+                                <CodeOutlinedIcon />
+                                <h1 className='hidden sm:hidden md:hidden lg:block text-[#3D4751] text-[.7rem] sm:text-[.8rem] md:text-[.7rem] lg:text-[.9rem]'>
+                                    Developers
+                                </h1>
+                            </NavLink>
+                        </div>
+                        <h1 className='hidden sm:hidden md:hidden lg:block text-[#9CA3AF] text-[.3rem] sm:text-[.5rem] md:text-[.7rem] lg:text-[.9rem]'>Human Resource</h1>
+                        <div className="hnavs w-full py-[1rem] flex flex-col gap-[.2rem] justify-start items-start">
                             <NavLink to='/employees' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md scale-[.7] sm:scale-[.8] md:scale-[.9] lg:scale-[1]">
                                 <SupervisorAccountOutlinedIcon />
                                 <h1 className='hidden sm:hidden md:hidden lg:block text-[#3D4751] text-[.7rem] sm:text-[.8rem] md:text-[.7rem] lg:text-[.9rem]'>
                                     Employees
                                 </h1>
                             </NavLink>
-                            <NavLink to='/developers' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md scale-[.7] sm:scale-[.8] md:scale-[.9] lg:scale-[1]">
-                                <CodeOutlinedIcon />
+                            <NavLink to='/addemployee' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md scale-[.7] sm:scale-[.8] md:scale-[.9] lg:scale-[1]">
+                                <SupervisorAccountOutlinedIcon />
                                 <h1 className='hidden sm:hidden md:hidden lg:block text-[#3D4751] text-[.7rem] sm:text-[.8rem] md:text-[.7rem] lg:text-[.9rem]'>
-                                    Developers
+                                    Add Employee
+                                </h1>
+                            </NavLink>
+                        </div>
+                        <h1 className='hidden sm:hidden md:hidden lg:block text-[#9CA3AF] text-[.3rem] sm:text-[.5rem] md:text-[.7rem] lg:text-[.9rem]'>Retail Banking</h1>
+                        <div className="hnavs w-full py-[1rem] flex flex-col gap-[.2rem] justify-start items-start">
+                            <NavLink to='/customers' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md scale-[.7] sm:scale-[.8] md:scale-[.9] lg:scale-[1]">
+                                <SupervisorAccountOutlinedIcon />
+                                <h1 className='hidden sm:hidden md:hidden lg:block text-[#3D4751] text-[.7rem] sm:text-[.8rem] md:text-[.7rem] lg:text-[.9rem]'>
+                                    Customers
+                                </h1>
+                            </NavLink>
+                            <NavLink to='/addcustomer' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md scale-[.7] sm:scale-[.8] md:scale-[.9] lg:scale-[1]">
+                                <SupervisorAccountOutlinedIcon />
+                                <h1 className='hidden sm:hidden md:hidden lg:block text-[#3D4751] text-[.7rem] sm:text-[.8rem] md:text-[.7rem] lg:text-[.9rem]'>
+                                    Add Customer
+                                </h1>
+                            </NavLink>
+                            <NavLink to='/openaccount' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md scale-[.7] sm:scale-[.8] md:scale-[.9] lg:scale-[1]">
+                                <SupervisorAccountOutlinedIcon />
+                                <h1 className='hidden sm:hidden md:hidden lg:block text-[#3D4751] text-[.7rem] sm:text-[.8rem] md:text-[.7rem] lg:text-[.9rem]'>
+                                    Open Account
                                 </h1>
                             </NavLink>
                         </div>
@@ -73,12 +103,6 @@ export default function Sidebar() {
                                 <BookOutlinedIcon />
                                 <h1 className='hidden sm:hidden md:hidden lg:block text-[#3D4751] text-[.7rem] sm:text-[.8rem] md:text-[.7rem] lg:text-[.9rem]'>
                                     Audit Log
-                                </h1>
-                            </NavLink>
-                            <NavLink to='/backuprestore' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md scale-[.7] sm:scale-[.8] md:scale-[.9] lg:scale-[1]">
-                                <CloudDoneOutlinedIcon />
-                                <h1 className='hidden sm:hidden md:hidden lg:block text-[#3D4751] text-[.7rem] sm:text-[.8rem] md:text-[.7rem] lg:text-[.9rem]'>
-                                    Backup Restore
                                 </h1>
                             </NavLink>
                             <NavLink to='/security' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md scale-[.7] sm:scale-[.8] md:scale-[.9] lg:scale-[1]">
