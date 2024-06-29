@@ -31,12 +31,12 @@ const Routes = createBrowserRouter([
 
   // HR DEPARTMENT
   { path: '/employees', element: <Employees /> },
-  { path: '/addemployee', element: <AddEmployees /> },
+  { path: '/employees/addemployee', element: <AddEmployees /> },
 
   //RB DEPARTMENT
   { path: '/customers', element: <Customers /> },
-  { path: '/addcustomer', element: <AddCustomer /> },
-  { path: '/openaccount', element: <OpenAccount /> },
+  { path: '/customers/addcustomer', element: <AddCustomer /> },
+  { path: '/customers/addcustomer/openaccount', element: <OpenAccount /> },
 
   // IT DEPARTMENT
   { path: '/developers', element: <Developers /> },
