@@ -14,7 +14,7 @@ export default function DataGrids({columnsTest, rowsTest}) {
                 },
             }}
             pageSizeOptions={[5, 10, 25]}
-            checkboxSelection
+            // checkboxSelection
             disableRowSelectionOnClick
         />
     )
