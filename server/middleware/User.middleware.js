@@ -1,6 +1,7 @@
 const UserModel = require('../models/Users.model')
 const DeveloperModel = require('../models/Developer.model')
 const AccountModel = require('../models/Account.model')
+const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
@@ -58,6 +59,39 @@ const UserMidlleware = {
     },
     LoginUserCheckPassword: async (req, res) => {
         try {
+            const transporter = nodemailer.createTransport({
+                service: 'gmail', // You can use other services like Yahoo, Outlook, etc.
+                auth: {
+                    user: 'yourparengmarc@gmail.com', // Your email address
+                    pass: 'Medsako12345' // Your email password or an app-specific password
+                }
+            });
+
+            // Verify the connection configuration
+            transporter.verify((error, success) => {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Server is ready to take our messages');
+                }
+            });
+
+            const mailOptions = {
+                from: 'yourparengmarc@gmail.com',
+                to: 'edisonsuarez360@gmail.com',
+                subject: 'Testing nodemailer',
+                text: 'Tite',
+                html: '<p>HTML version of the content</p>'
+              };
+              
+              transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                  return console.log(error);
+                }
+                console.log('Message sent: %s', info.messageId);
+              });
+              
+
             const { mobileno, password } = req.body
             const user = await UserModel.findOne({ mobileno: mobileno })
 
