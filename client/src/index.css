@@ -4,7 +4,8 @@
     font-family: 'Poppins', 'sans-serif';
 }
 
-.hnavs a.active, .hnavs a.active h1 {
+.hnavs a.active,
+.hnavs a.active h1 {
     background: #111111;
     color: white
 }
@@ -13,9 +14,20 @@
     background: white;
 }
 
-.hnavs a:hover, .hnavs a:hover h1 {
+.hnavs a:hover,
+.hnavs a:hover h1 {
     background: #ebebeb;
     transition: .3s ease;
+}
+
+::-webkit-scrollbar {
+    width: .3rem;
+
+}
+
+::-webkit-scrollbar-thumb {
+    background: #474747;
+    border-radius: 1rem
 }
 
 @tailwind base;
