@@ -1,6 +1,5 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import Header__Home from '../../components/Header__Home'
 import LogoUB from '../../assets/LogoUB.png'
 import LoginBG from '../../assets/LoginBG.png'
 
@@ -17,7 +16,6 @@ export default function Login() {
     return (
         <>
             <div className="w-full h-screen flex flex-col justify-start items-center">
-                {/* <Header__Home /> */}
                 <div className="w-full h-full flex justify-start items-center">
                     <div className="w-[70%] h-full flex justify-start items-center">
                         <img src={LoginBG} alt="BG" className='w-full h-full object-cover' />
@@ -28,7 +26,7 @@ export default function Login() {
                                 <img src={LogoUB} alt="BG" className='w-full h-full object-contain' />
                             </div>
                             <div className="w-full flex flex-col">
-                                <h1>Mobile No.</h1>
+                                <h1>Account No.</h1>
                                 <input type="text" inputMode='numeric' className='px-[1rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your mobile number...' />
                             </div>
                             <div className="w-full flex flex-col">
@@ -40,9 +38,9 @@ export default function Login() {
                             </button>
                             <div className="w-full flex flex-col justify-start items-start">
                                 <p className='text-[.8rem]'>
-                                    Don't have an account? <span className='cursor-pointer text-yellow-500' onClick={handleSignUp}>Sign Up.</span>
+                                    Don't have an account? <span className='cursor-pointer text-black text-decoration-line: underline' onClick={handleSignUp}>Sign Up.</span>
                                 </p>
-                                <p className='cursor-pointer text-[.8rem]'>
+                                <p className='cursor-pointer text-[.8rem] text-black text-decoration-line: underline'>
                                     Forgot password?
                                 </p>
                             </div>
