@@ -10,8 +10,10 @@ import DataGrids from '../../components/DataGrids';
 const depositandwithdrawalCol = [
     {
         field: 'id',
-        headerName: 'ID',
-        width: 90
+        headerName: 'No.',
+        width: 90,
+        headerAlign: 'center',
+        align: 'center'
     },
     {
         field: 'account',
@@ -40,8 +42,10 @@ const depositandwithdrawalCol = [
 const transferCol = [
     {
         field: 'id',
-        headerName: 'ID',
-        width: 90
+        headerName: 'No.',
+        width: 90,
+        headerAlign: 'center',
+        align: 'center'
     },
     {
         field: 'debit',
@@ -140,13 +144,56 @@ export default function Transactions() {
                             </TabList>
                         </div>
                         <TabPanel value="1" className='w-full h-[90%]'>
-                            <DataGrids columnsTest={depositandwithdrawalCol} rowsTest={depositRowTest} />
+                            <div className="w-full flex justify-between items-center pt-[.5rem] pb-[2rem]">
+                                <div className="flex justify-start items-center gap-[1rem]">
+                                    <h1>
+                                        Search
+                                    </h1>
+                                    <input
+                                        type="text"
+                                        className="block w-[20rem] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        placeholder='Search here...'
+                                    />
+                                </div>
+                            </div>
+                            <div className="w-full h-[88%]">
+                                <DataGrids columnsTest={depositandwithdrawalCol} rowsTest={depositRowTest} />
+                            </div>
                         </TabPanel>
                         <TabPanel value="2" className='w-full h-[90%]'>
-                            <DataGrids columnsTest={depositandwithdrawalCol} rowsTest={depositRowTest} />
+                            <div className="w-full flex justify-between items-center pt-[.5rem] pb-[2rem]">
+                                <div className="flex justify-start items-center gap-[1rem]">
+                                    <h1>
+                                        Search
+                                    </h1>
+                                    <input
+                                        type="text"
+                                        className="block w-[20rem] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        placeholder='Search here...'
+                                    />
+                                </div>
+                            </div>
+                            <div className="w-full h-[88%]">
+                                <DataGrids columnsTest={depositandwithdrawalCol} rowsTest={depositRowTest} />
+                            </div>
                         </TabPanel>
                         <TabPanel value="3" className='w-full h-[90%]'>
-                            <DataGrids columnsTest={transferCol} rowsTest={transferRowTest} />
+                            <div className="w-full h-[88%]">
+                                <div className="w-full flex justify-between items-center pt-[.5rem] pb-[2rem]">
+                                    <div className="flex justify-start items-center gap-[1rem]">
+                                        <h1>
+                                            Search
+                                        </h1>
+                                        <input
+                                            type="text"
+                                            className="block w-[20rem] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            placeholder='Search here...'
+                                        />
+                                    </div>
+                                </div>
+                                <DataGrids columnsTest={transferCol} rowsTest={transferRowTest} />
+                            </div>
+
                         </TabPanel>
                     </TabContext>
                 </div>
