@@ -1,9 +1,14 @@
 import React from 'react'
 import Sidebar from '../../components/Sidebar'
-import { PaperClipIcon } from '@heroicons/react/20/solid'
 import Header from '../../components/Header__dashboard'
+import { useNavigate } from 'react-router-dom'
 
 export default function AccountSettings() {
+    const navigate = useNavigate()
+
+    const handleEdit = () => {
+        navigate('/account/updateaccount')
+    }
     return (
         <>
             <div className="flex">
@@ -27,11 +32,15 @@ export default function AccountSettings() {
                                 </div>
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                     <dt className="text-sm font-medium leading-6 text-gray-900">Account status</dt>
-                                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">Activated</dd>
+                                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">Active</dd>
+                                </div>
+                                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                    <dt className="text-sm font-medium leading-6 text-gray-900">Developer</dt>
+                                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">Active</dd>
                                 </div>
                                 <div className="w-full flex items-center justify-end gap-x-6 pt-[2rem]">
                                     <button
-                                        type="submit"
+                                    onClick={handleEdit}
                                         className="rounded-md bg-[#111111] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#333333] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                     >
                                         Edit Account
