@@ -8,6 +8,7 @@ router.post('/createaccount',
     AccountMiddleware.CheckDeveloperTokenValid,
     AccountMiddleware.CreateAccountCheckEmptyFields,
     AccountMiddleware.CreateAccountCheckAccountIfExists,
+    AccountMiddleware.CreateAccountCheckAccountNo,
     AccountController.CreateAccount
 )
 
@@ -16,18 +17,18 @@ router.get('/accounts',
     AccountController.GetAllAccount
 )
 
-router.get('/accounts/:userId',
+router.get('/accounts/:userId', //temp
     AccountMiddleware.CheckDeveloperTokenValid,
     AccountController.SearchAccount
 )
 
-router.post('/updateaccount/:accountId',
+router.post('/updateaccount/:accountId', //temp
     AccountMiddleware.CheckDeveloperTokenValid,
     AccountMiddleware.UpdateAccountCheckEmptyFields,
     AccountController.UpdateAccount
 )
 
-router.post('/updateactiveaccount/:accountId',
+router.post('/updateactiveaccount/:accountId', //temp
     AccountMiddleware.CheckDeveloperTokenValid,
     AccountController.UpdateActiveAccount
 )
