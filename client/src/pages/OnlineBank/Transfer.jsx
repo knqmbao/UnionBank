@@ -1,6 +1,5 @@
 import React from 'react'
 import Sidebar from '../../components/Sidebar'
-import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 import Header from '../../components/Header__dashboard'
 
 export default function Transfer() {
