@@ -74,7 +74,7 @@ export default function UpdateAccount() {
                                             />
                                         </div>
                                     </div>
-                                    <div className="sm:col-span-2">
+                                    <div className="sm:col-span-5">
                                         <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                                             Mobile No.
                                         </label>
@@ -88,7 +88,21 @@ export default function UpdateAccount() {
                                             />
                                         </div>
                                     </div>
-                                    <div className="sm:col-span-2 flex justify-between items-center">
+                                    <div className="sm:col-span-5">
+                                        <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                                            Password
+                                        </label>
+                                        <div className="mt-2">
+                                            <input
+                                                type="password"
+                                                name="password"
+                                                id="password"
+                                                autoComplete="password"
+                                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="sm:col-span-5 flex justify-between items-center">
                                         <label htmlFor="developer" className="block text-sm font-medium leading-6 text-gray-900">
                                             Developer
                                         </label>
