@@ -3,10 +3,11 @@ const AccountModel = require('../models/Account.model')
 const AccountController = {
     CreateAccount: async (req, res) => {
         try {
-            const values = req.body
-            console.log('Create Account Controller: ', values)
-            await AccountModel.create(values)
-            res.json({ success: true, message: 'Account created successfully!', values })
+            const { accno } = req
+            const { userId, accountType } = req.body
+
+            const data = await AccountModel.create({ userId, accountno: accno, accountType })
+            res.json({ success: true, message: 'Account created successfully!', data })
         } catch (error) {
             res.status(400).json({ error: `CreateAccount in account controller error ${error}` });
         }
