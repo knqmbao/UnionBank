@@ -1,10 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import LogoUB from '../../assets/LogoUB.png'
 import LoginBG from '../../assets/LoginBG.png'
 
 export default function SignUp() {
     const navigate = useNavigate()
+
+    useEffect(() => {
+        fetchCredentials()
+    }, [])
+
+    const fetchCredentials = () => {
+        try {
+            const credentials = localStorage.getItem('credentials')
+            if (credentials) return navigate('/')
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     const handleSignUp = () => {
         navigate('/signup')
