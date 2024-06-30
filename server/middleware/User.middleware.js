@@ -49,12 +49,8 @@ const UserMidlleware = {
     LoginUserCheckEmail: async (req, res, next) => {
         try {
             const { email } = req.body
-            const testEmail = await UserModel.findOne(
-                {
-                    email: { $regex: new RegExp(email, 'i') }
-                }
-            )
-            if (email !== testEmail.email) return res.json({ success: false, message: 'User not found.', testEmail })
+            const testEmail = await UserModel.findOne({ email: email })
+            if (testEmail.length > 0) return res.json({ success: false, message: 'User not found.', testEmail })
             next()
         } catch (error) {
             res.status(400).json({ error: `LoginUserCheckUsername in user middleware error ${error}` });
@@ -63,22 +59,19 @@ const UserMidlleware = {
     LoginUserCheckPassword: async (req, res) => {
         try {
             const { email, password } = req.body
-            const user = await UserModel.findOne(
-                {
-                    email: { $regex: new RegExp(email, 'i') }
-                }
-            )
+            const user = await UserModel.findOne({ email: email })
 
             if (user) {
-                const testPassword = bcrypt.compare(password, user.password)
+                const testPassword = await bcrypt.compare(password, user.password)
+
                 if (testPassword) {
                     const token = jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, { expiresIn: '1d' })
-                    res.json({ success: true, message: 'Login Successful.', token, name: user.name, userId: user._id })
+                    res.json({ success: true, message: 'Login Successful.', token, name: user.name, userId: user._id, role: user.role })
                 } else {
-                    res.json({ success: false, message: 'Email or Password is Incorrect!' })
+                    res.json({ success: false, message: 'Email or password is Incorrect!' })
                 }
             } else {
-                res.json({ success: false, message: 'Username or Password is Incorrect!' })
+                res.json({ success: false, message: 'Email or password is Incorrect!' })
             }
         } catch (error) {
             res.status(400).json({ error: `LoginUserCheckPassword in user middleware error ${error}` });
