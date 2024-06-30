@@ -16,11 +16,10 @@ import AddCardOutlinedIcon from '@mui/icons-material/AddCardOutlined';
 import HourglassEmptyOutlinedIcon from '@mui/icons-material/HourglassEmptyOutlined';
 
 export default function Sidebar() {
-    const navigate = useNavigate()
 
     const handleLogout = () => {
-        navigate('/unionbank')
-        console.log('asdasd')
+        localStorage.clear()
+        window.location.reload()
     }
     return (
         <>
