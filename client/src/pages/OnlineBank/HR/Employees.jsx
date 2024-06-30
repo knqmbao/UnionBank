@@ -1,9 +1,29 @@
 import React, { useState } from 'react'
-import { DataGrid } from '@mui/x-data-grid';
+import { Button } from '@mui/material'
 import Header__Dashboard from '../../../components/Header__dashboard'
 import Sidebar from '../../../components/Sidebar'
 import DataGrids from '../../../components/DataGrids';
 import { Link } from 'react-router-dom';
+import Toggle from '../../../components/Toggle';
+
+const renderIsActiveToggle = (params) => {
+    return (
+        <div className="w-full h-full flex justify-center items-center">
+            <Toggle isCheck />
+        </div>
+
+    );
+};
+
+const renderActionButtons = (params) => {
+    return (
+        <div className="w-full h-full flex justify-center items-center">
+            <Button variant="text">
+                <h1>Edit</h1>
+            </Button>
+        </div>
+    );
+};
 
 const columns = [
     {
@@ -37,26 +57,28 @@ const columns = [
     {
         field: 'isactive',
         headerName: 'Active',
-        width: 250,
+        width: 200,
         headerAlign: 'center',
-        align: 'center'
+        align: 'center',
+        renderCell: renderIsActiveToggle
     },
     {
         field: 'actions',
         headerName: 'Actions',
-        width: 250,
+        width: 200,
         headerAlign: 'center',
-        align: 'center'
+        align: 'center',
+        renderCell: renderActionButtons
     }
 ];
 
 const rows = [
-    { id: 1, userid: '000000012', name: 'Jon', email: 'yourpareng@gmail.com', isactive: 'Not Active' },
-    { id: 2, userid: '000000012', name: 'Jon', email: 'yourpareng@gmail.com', isactive: 'Active' },
-    { id: 3, userid: '000000012', name: 'Jon', email: 'yourpareng@gmail.com', isactive: 'Active' },
-    { id: 4, userid: '000000012', name: 'Jon', email: 'yourpareng@gmail.com', isactive: 'Not Active' },
-    { id: 5, userid: '000000012', name: 'Jon', email: 'yourpareng@gmail.com', isactive: 'Active' },
-    { id: 6, userid: '000000012', name: 'Jon', email: 'yourpareng@gmail.com', isactive: 'Not Active' },
+    { id: 1, userid: '000000012', name: 'Jon', email: 'yourpareng@gmail.coms' },
+    { id: 2, userid: '000000012', name: 'Jon', email: 'yourpareng@gmail.com' },
+    { id: 3, userid: '000000012', name: 'Jon', email: 'yourpareng@gmail.com' },
+    { id: 4, userid: '000000012', name: 'Jon', email: 'yourpareng@gmail.com' },
+    { id: 5, userid: '000000012', name: 'Jon', email: 'yourpareng@gmail.com' },
+    { id: 6, userid: '000000012', name: 'Jon', email: 'yourpareng@gmail.com' },
 ];
 
 
