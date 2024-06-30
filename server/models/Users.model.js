@@ -10,14 +10,20 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    mobileno: {
-        type: String,
-        required: true,
-        unique: true
-    },
     password: {
         type: String,
         required: true,
+    },
+    mobileno: {
+        type: String,
+        unique: true,
+        required: true
+    },
+    role: {
+        type: String,
+        enum: ['developer', 'hr', 'it', 'rb', 'user'],
+        required: true,
+        default: 'user'
     },
     isactive: {
         type: Boolean,
