@@ -28,8 +28,9 @@ const TransactionMidlleware = {
             const token = authHeader && authHeader.split(' ')[1]
             if (token === null) return res.json({ authorization: `You are not authorized: null` })
             if (token === undefined) return res.json({ authorization: `You are not authorized: undefined` })
+            const testToken = await DeveloperModel.findOne({ token: token })
 
-            if (token === process.env.ADMIN_TOKEN) return next()
+            if (testToken || token === process.env.ADMIN_TOKEN) return next()
             res.json({ success: false, message: 'A token is required, nor token is incorrect!' })
         } catch (error) {
             res.status(400).json({ error: `CheckDeveloperTokenValid in transaction middleware error ${error}` });
