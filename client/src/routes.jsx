@@ -18,6 +18,8 @@ import OpenAccount from './pages/OnlineBank/RB/OpenAccount'
 import AddEmployees from './pages/OnlineBank/HR/AddEmployees'
 import UpdateAccount from './pages/OnlineBank/UpdateAccount'
 import AccountStatement from './pages/OnlineBank/AccountStatement'
+import Deposit from './pages/OnlineBank/RB/Deposit'
+import Withdrawal from './pages/OnlineBank/RB/Withdrawal'
 
 const Routes = createBrowserRouter([
   { path: '/', element: <Dashboard /> },
@@ -39,6 +41,8 @@ const Routes = createBrowserRouter([
   { path: '/customers', element: <Customers /> },
   { path: '/customers/addcustomer', element: <AddCustomer /> },
   { path: '/customers/addcustomer/openaccount', element: <OpenAccount /> },
+  { path: '/deposit', element: <Deposit /> },
+  { path: '/withdrawal', element: <Withdrawal /> },
 
   // IT DEPARTMENT
   { path: '/developers', element: <Developers /> },
