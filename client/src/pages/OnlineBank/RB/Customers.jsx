@@ -3,6 +3,27 @@ import Sidebar from '../../../components/Sidebar'
 import Header__Dashboard from '../../../components/Header__dashboard';
 import DataGrids from '../../../components/DataGrids';
 import { Link } from 'react-router-dom';
+import Toggle from '../../../components/Toggle';
+import { Button } from '@mui/material'
+
+const renderIsActiveToggle = (params) => {
+    return (
+        <div className="w-full h-full flex justify-center items-center">
+            <Toggle isCheck />
+        </div>
+
+    );
+};
+
+const renderActionButtons = (params) => {
+    return (
+        <div className="w-full h-full flex justify-center items-center">
+            <Button variant="text">
+                <h1>Edit</h1>
+            </Button>
+        </div>
+    );
+};
 
 const columns = [
     {
@@ -36,16 +57,18 @@ const columns = [
     {
         field: 'isactive',
         headerName: 'Active',
-        width: 100,
+        width: 200,
         headerAlign: 'center',
-        align: 'center'
+        align: 'center',
+        renderCell: renderIsActiveToggle
     },
     {
         field: 'actions',
         headerName: 'Actions',
         width: 250,
         headerAlign: 'center',
-        align: 'center'
+        align: 'center',
+        renderCell: renderActionButtons
     },
 
 ];
