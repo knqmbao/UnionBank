@@ -2,6 +2,16 @@ import React, { useState } from 'react'
 import Sidebar from '../../../components/Sidebar';
 import Header__Dashboard from '../../../components/Header__dashboard';
 import DataGrids from '../../../components/DataGrids';
+import Toggle from '../../../components/Toggle';
+
+const renderActionButtons = (params) => {
+    return (
+        <div className="w-full h-full flex justify-center items-center">
+            <Toggle isCheck />
+        </div>
+
+    );
+};
 
 const developerCol = [
     {
@@ -13,7 +23,7 @@ const developerCol = [
     },
     {
         field: 'userid',
-        headerName: 'Account No.',
+        headerName: 'ID',
         width: 200,
         headerAlign: 'center',
         align: 'center'
@@ -34,10 +44,11 @@ const developerCol = [
     },
     {
         field: 'actions',
-        headerName: 'Actions',
-        width: 250,
+        headerName: 'Active',
+        width: 200,
         headerAlign: 'center',
-        align: 'center'
+        align: 'center',
+        renderCell: renderActionButtons
     }
 ];
 
