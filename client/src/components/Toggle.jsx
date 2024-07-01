@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 
-export default function Toggle({ isCheck }) {
+export default function Toggle({ isCheck, returnCheck }) {
     const [isChecked, setIsChecked] = useState(isCheck)
+
+    useEffect(()=> {
+        returnCheck(isChecked)
+    },[isChecked])
 
     const handleToggleState = () => {
         setIsChecked(prev => !prev)
-        console.log(isChecked)
     };
     return (
         <>
