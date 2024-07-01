@@ -5,12 +5,12 @@ const UserModel = require('../models/Users.model')
 const TransactionController = {
     DepositTransaction: async (req, res) => {
         try {
-            const { account, amount, transactionType } = req.body
-            console.log('Deposit Transaction Controller: ', { account, amount, transactionType })
+            const { account, amount } = req.body
+            console.log('Deposit Transaction Controller: ', { account, amount })
 
-            const { _id: accountId } = await AccountModel.findOne({ user: account })
+            const { _id: accountId } = await AccountModel.findOne({ accountno: account })
 
-            await TransactionModel.create({ account: accountId, amount, transactionType })
+            await TransactionModel.create({ account: accountId, amount, transactionType: 'deposit' })
 
             const depositAmount = parseFloat(amount)
             const { balance } = await AccountModel.findById(accountId)
@@ -31,12 +31,12 @@ const TransactionController = {
     },
     WithdrawTransaction: async (req, res) => {
         try {
-            const { account, amount, transactionType } = req.body
-            console.log('Withdrawal Transaction Controller: ', { account, amount, transactionType })
+            const { account, amount } = req.body
+            console.log('Withdrawal Transaction Controller: ', { account, amount })
 
-            const { _id: accountId } = await AccountModel.findOne({ user: account })
+            const { _id: accountId } = await AccountModel.findOne({ accountno: account })
 
-            await TransactionModel.create({ account: accountId, amount, transactionType })
+            await TransactionModel.create({ account: accountId, amount, transactionType: 'withdrawal' })
 
             const withdrawAmount = parseFloat(amount)
             const { balance } = await AccountModel.findById(accountId)
@@ -57,13 +57,13 @@ const TransactionController = {
     },
     TransferTransaction: async (req, res) => {
         try {
-            const { debitAccount, creditAccount, amount, transactionType } = req.body
-            console.log('Transfer Transaction Controller: ', { debitAccount, creditAccount, amount, transactionType })
+            const { debitAccount, creditAccount, amount } = req.body
+            console.log('Transfer Transaction Controller: ', { debitAccount, creditAccount, amount })
 
             const { _id: debitAccountId } = await AccountModel.findOne({ user: debitAccount })
             const { _id: creditAccountId } = await AccountModel.findOne({ user: creditAccount })
 
-            await TransactionModel.create({ account: debitAccountId, amount, transactionType })
+            await TransactionModel.create({ account: debitAccountId, amount, transactionType: 'transfer' })
 
             const transferAmount = parseFloat(amount)
             const { balance: debitBalance } = await AccountModel.findById(debitAccountId)
