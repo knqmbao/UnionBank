@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header__Dashboard from '../../../components/Header__dashboard'
 import Sidebar from '../../../components/Sidebar'
 import { useNavigate } from 'react-router-dom'
@@ -11,6 +11,19 @@ function classNames(...classes) {
 
 export default function AddEmployees() {
     const navigate = useNavigate()
+
+    useEffect(() => {
+        fetchCredentials()
+    }, [])
+
+    const fetchCredentials = () => {
+        try {
+            const credentials = localStorage.getItem('credentials')
+            if (!credentials) return navigate('/unionbank')
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
