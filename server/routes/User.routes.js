@@ -24,6 +24,16 @@ router.get('/users',
     UserController.GetAllUsers
 )
 
+router.get('/rbusers',
+    UserMiddleware.CheckDeveloperTokenValid,
+    UserController.GetAllRBUsers
+)
+
+router.get('/rbaccounts',
+    UserMiddleware.CheckDeveloperTokenValid,
+    UserController.GetAllRBAccounts
+)
+
 router.get('/users/:name', //temp
     UserMiddleware.CheckDeveloperTokenValid,
     UserController.SearchUser
