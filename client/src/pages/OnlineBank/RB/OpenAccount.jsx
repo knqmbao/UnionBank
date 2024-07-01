@@ -4,6 +4,8 @@ import Header__Dashboard from '../../../components/Header__dashboard'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -44,6 +46,35 @@ export default function OpenAccount() {
             console.error(error)
         }
     }
+
+    const handleCreateAccount = async (e) => {
+        try {
+            e.preventDefault()
+            const { name, email, mobileno, accountType } = values
+            if (!accountType || accountType === 'none') return alert('Please choose the account type!')
+                
+            const res = await axios.post(`${VITE_HOST}/api/createuser`, { name, email, mobileno, password: '!SecuredPassword123' }, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+            const userId = res?.data?.data
+
+            const createaccount = await axios.post(`${VITE_HOST}/api/createaccount`, { userId, accountType }, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+            console.log(createaccount?.data)
+            if (createaccount?.data?.success) {
+                alert(createaccount?.data?.message)
+                navigate('/customers')
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     const handleBack = () => {
         navigate('/customers/addcustomer')
     }
@@ -63,7 +94,7 @@ export default function OpenAccount() {
             ...prev,
             accountType: type
         }));
-        console.log(type)
+        console.log(values)
     };
 
     return (
@@ -72,7 +103,9 @@ export default function OpenAccount() {
                 <Sidebar />
                 <div className="w-[80%] h-screen flex flex-col justify-start items-center p-[1rem] overflow-auto ">
                     <Header__Dashboard linkName={`Customers`} linkName1={`Add Customer`} link={`/customers`} link1={`/customers/addcustomer`} title={`Open Account`} />
-                    <form className='w-full h-[95%] flex flex-col justify-start items-center px-[5rem]'>
+                    <form
+                        onSubmit={handleCreateAccount}
+                        className='w-full h-[95%] flex flex-col justify-start items-center px-[5rem]'>
                         <div className="space-y-12 pt-[5rem] pb-[20rem]">
                             <div className="border-b border-gray-900/10 pb-12">
                                 <h2 className="text-base font-semibold leading-7 text-gray-900">Account Type</h2>
@@ -100,7 +133,7 @@ export default function OpenAccount() {
                                                             None
                                                         </h1>
                                                     </MenuItem>
-                                                    <MenuItem onClick={() => handleAccountTypeSelect('Savings')} className='hover:bg-gray-100 py-[.7rem]'>
+                                                    <MenuItem onClick={() => handleAccountTypeSelect('savings')} className='hover:bg-gray-100 py-[.7rem]'>
                                                         <h1 className={`text-gray-700 block px-4 py-2 text-sm text-center`} >
                                                             Savings
                                                         </h1>
