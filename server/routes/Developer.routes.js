@@ -12,17 +12,17 @@ router.post('/createdevelopertoken/:userId',
     DeveloperController.CreateDeveloperToken
 )
 
-router.post('/developer/deposittransaction',
-    DeveloperMiddleware.CheckDeveloperTokenValid,
-    TransactionMiddleware.CreateTransactionCheckEmptyFields,
-    DeveloperController.DepositTransaction
-)
+// router.post('/developer/deposittransaction',
+//     DeveloperMiddleware.CheckDeveloperTokenValid,
+//     TransactionMiddleware.CreateTransactionCheckEmptyFields,
+//     DeveloperController.DepositTransaction
+// )
 
-router.post('/developer/withdrawtransaction',
-    DeveloperMiddleware.CheckDeveloperTokenValid,
-    TransactionMiddleware.CreateTransactionCheckEmptyFields,
-    DeveloperController.WithdrawTransaction
-)
+// router.post('/developer/withdrawtransaction',
+//     DeveloperMiddleware.CheckDeveloperTokenValid,
+//     TransactionMiddleware.CreateTransactionCheckEmptyFields,
+//     DeveloperController.WithdrawTransaction
+// )
 
 router.post('/developer/transfertransaction',
     DeveloperMiddleware.CheckDeveloperTokenValid,
