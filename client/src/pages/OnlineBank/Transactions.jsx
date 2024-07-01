@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -6,6 +6,7 @@ import TabPanel from '@mui/lab/TabPanel';
 import Sidebar from '../../components/Sidebar';
 import Header__Dashboard from '../../components/Header__dashboard';
 import DataGrids from '../../components/DataGrids';
+import { useNavigate } from 'react-router-dom';
 
 const depositandwithdrawalCol = [
     {
@@ -125,6 +126,20 @@ const transferRowTest = [
 
 export default function Transactions() {
     const [value, setValue] = useState('1');
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        fetchCredentials()
+    }, [])
+
+    const fetchCredentials = () => {
+        try {
+            const credentials = localStorage.getItem('credentials')
+            if (!credentials) return navigate('/unionbank')
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
