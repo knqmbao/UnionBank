@@ -1,10 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Sidebar from '../../../components/Sidebar'
 import Header__Dashboard from '../../../components/Header__dashboard'
 import { useNavigate } from 'react-router-dom'
 
 export default function AddCustomer() {
     const navigate = useNavigate()
+
+    useEffect(() => {
+        fetchCredentials()
+    }, [])
+
+    const fetchCredentials = () => {
+        try {
+            const credentials = localStorage.getItem('credentials')
+            if (!credentials) return navigate('/unionbank')
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     const handleNext = () => {
         navigate('/customers/addcustomer/openaccount')
