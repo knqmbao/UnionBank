@@ -87,16 +87,8 @@ const UserMidlleware = {
     CreateUserCheckUserIfExists: async (req, res, next) => {
         try {
             const { email, mobileno } = req.body
-            const testEmail = await UserModel.find(
-                {
-                    email: { $regex: new RegExp(email, 'i') }
-                }
-            )
-            const testMobileNo = await UserModel.find(
-                {
-                    mobileno: { $regex: new RegExp(mobileno, 'i') }
-                }
-            )
+            const testEmail = await UserModel.find({ email: email })
+            const testMobileNo = await UserModel.find({ mobileno: mobileno })
             if (testEmail.length > 0) return res.json({ success: false, message: 'Email already exists!' })
             if (testMobileNo.length > 0) return res.json({ success: false, message: 'Mobile number already exists!' })
             next()
