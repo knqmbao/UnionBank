@@ -104,11 +104,23 @@ export default function Customers() {
         }
     }
 
+    const handleUpdateActiveCustomer = async (e, id) => {
+        try {
+            const res = await axios.post(`${VITE_HOST}/api/updateactiveuser/${id}`, { isactive: e }, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+            // console.log('From handle Update toggle: ', e)
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     const renderIsActiveToggle = (params) => {
         return (
             <div className="w-full h-full flex justify-center items-center">
-                <Toggle isCheck={params.row.isactive} />
+                <Toggle isCheck={params.row.isactive} returnCheck={(checkState) => handleUpdateActiveCustomer(checkState, params.row.uid)} />
             </div>
 
         );
