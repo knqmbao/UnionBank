@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Sidebar from '../../../components/Sidebar'
 import Header__Dashboard from '../../../components/Header__dashboard';
 import DataGrids from '../../../components/DataGrids';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Toggle from '../../../components/Toggle';
 import { Button } from '@mui/material'
 
@@ -85,6 +85,20 @@ const rows = [
 
 export default function Customers() {
     const [value, setValue] = useState('1');
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        fetchCredentials()
+    }, [])
+
+    const fetchCredentials = () => {
+        try {
+            const credentials = localStorage.getItem('credentials')
+            if (!credentials) return navigate('/unionbank')
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
