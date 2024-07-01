@@ -9,7 +9,7 @@ const AccountController = {
             const data = await AccountModel.create({ userId, accountno: accno, accountType })
             res.json({ success: true, message: 'Account created successfully!', data })
         } catch (error) {
-            res.status(400).json({ error: `CreateAccount in account controller error ${error}` });
+            res.json({ error: `CreateAccount in account controller error ${error}` });
         }
     },
     GetAllAccount: async (req, res) => {
@@ -17,7 +17,7 @@ const AccountController = {
             const data = await AccountModel.find()
             res.json({ success: true, message: 'Fetch accounts successfully!', data })
         } catch (error) {
-            res.status(400).json({ error: `GetAllAccount in account controller error ${error}` });
+            res.json({ error: `GetAllAccount in account controller error ${error}` });
         }
     },
     SearchAccount: async (req, res) => {
@@ -28,7 +28,7 @@ const AccountController = {
             const data = await AccountModel.find({ user: userId })
             res.json({ success: true, message: 'Fethced certain account successfully!', data })
         } catch (error) {
-            res.status(400).json({ error: `SearchAccount in account controller error ${error}` });
+            res.json({ error: `SearchAccount in account controller error ${error}` });
         }
     },
     UpdateAccount: async (req, res) => {
@@ -40,7 +40,7 @@ const AccountController = {
 
             res.json({ success: true, message: 'Account updated successfully!', values, accountId })
         } catch (error) {
-            res.status(400).json({ error: `UpdateAccount in account controller error ${error}` });
+            res.json({ error: `UpdateAccount in account controller error ${error}` });
         }
     },
     UpdateActiveAccount: async (req, res) => {
@@ -56,7 +56,7 @@ const AccountController = {
             )
             res.json({ success: true, message: 'Account active updated successfully!', data })
         } catch (error) {
-            res.status(400).json({ error: `UpdateActiveAccount in account controller error ${error}` });
+            res.json({ error: `UpdateActiveAccount in account controller error ${error}` });
         }
     }
 }
