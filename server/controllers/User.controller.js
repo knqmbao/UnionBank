@@ -8,7 +8,7 @@ const UserController = {
             await UserModel.create({ name, email, mobileno, password })
             res.json({ success: true, message: 'User created successfully!' })
         } catch (error) {
-            res.status(400).json({ error: `CreateUser in user controller error ${error}` });
+            res.json({ error: `CreateUser in user controller error ${error}` });
         }
     },
     GetAllUsers: async (req, res) => {
@@ -16,7 +16,7 @@ const UserController = {
             const data = await UserModel.find()
             res.json({ success: true, message: 'Fetch user successfully!', data })
         } catch (error) {
-            res.status(400).json({ error: `GetAllUser in user controller error ${error}` });
+            res.json({ error: `GetAllUser in user controller error ${error}` });
         }
     },
     SearchUser: async (req, res) => {
@@ -31,7 +31,7 @@ const UserController = {
             )
             res.json({ success: true, message: 'Fetched certain user successfully!', data })
         } catch (error) {
-            res.status(400).json({ error: `SearchUser in user controller error ${error}` });
+            res.json({ error: `SearchUser in user controller error ${error}` });
         }
     },
     UpdateUser: async (req, res) => {
@@ -49,7 +49,7 @@ const UserController = {
             )
             res.json({ success: true, message: 'User updated successfully!', data })
         } catch (error) {
-            res.status(400).json({ error: `UpdateUser in user controller error ${error}` });
+            res.json({ error: `UpdateUser in user controller error ${error}` });
         }
     },
     UpdateActiveUser: async (req, res) => {
@@ -67,7 +67,7 @@ const UserController = {
             )
             res.json({ success: true, message: 'User active updated successfully!', data })
         } catch (error) {
-            res.status(400).json({ error: `UpdateActiveUser in user controller error ${error}` });
+            res.json({ error: `UpdateActiveUser in user controller error ${error}` });
         }
     }
 }
