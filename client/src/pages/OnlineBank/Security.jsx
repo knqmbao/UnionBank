@@ -1,9 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Sidebar from '../../components/Sidebar'
 import { PaperClipIcon } from '@heroicons/react/20/solid'
 import Header from '../../components/Header__dashboard'
+import { useNavigate } from 'react-router-dom'
 
 export default function Security() {
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        fetchCredentials()
+    }, [])
+
+    const fetchCredentials = () => {
+        try {
+            const credentials = localStorage.getItem('credentials')
+            if (!credentials) return navigate('/unionbank')
+        } catch (error) {
+            console.error(error)
+        }
+    }
     return (
         <>
             <div className="flex">
