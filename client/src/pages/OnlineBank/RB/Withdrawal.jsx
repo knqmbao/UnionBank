@@ -1,8 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Sidebar from '../../../components/Sidebar'
 import Header__Dashboard from '../../../components/Header__dashboard'
+import { useNavigate } from 'react-router-dom'
 
 export default function Withdrawal() {
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        fetchCredentials()
+    }, [])
+
+    const fetchCredentials = () => {
+        try {
+            const credentials = localStorage.getItem('credentials')
+            if (!credentials) return navigate('/unionbank')
+        } catch (error) {
+            console.error(error)
+        }
+    }
     return (
         <>
             <div className="flex">
@@ -18,6 +33,24 @@ export default function Withdrawal() {
                                 </p>
 
                                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                    <div className="sm:col-span-2">
+                                        <label htmlFor="creditaccount" className="block text-sm font-medium leading-6 text-gray-900">
+                                            Account No.
+                                        </label>
+                                        <div className="mt-2">
+                                            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                                                <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">from/</span>
+                                                <input
+                                                    type="text"
+                                                    name="creditaccount"
+                                                    id="creditaccount"
+                                                    autoComplete="creditaccount"
+                                                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                                                    placeholder="4757****"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div className="sm:col-span-2">
                                         <label htmlFor="withdrawal" className="block text-sm font-medium leading-6 text-gray-900">
                                             Amount
