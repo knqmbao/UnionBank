@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '@mui/material'
 import Header__Dashboard from '../../../components/Header__dashboard'
 import Sidebar from '../../../components/Sidebar'
 import DataGrids from '../../../components/DataGrids';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Toggle from '../../../components/Toggle';
 
 const renderIsActiveToggle = (params) => {
@@ -83,7 +83,21 @@ const rows = [
 
 
 export default function Employees() {
-    const [value, setValue] = useState('1');
+    const [value, setValue] = useState('1')
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        fetchCredentials()
+    }, [])
+
+    const fetchCredentials = () => {
+        try {
+            const credentials = localStorage.getItem('credentials')
+            if (!credentials) return navigate('/unionbank')
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
