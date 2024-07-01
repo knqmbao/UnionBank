@@ -25,7 +25,7 @@ export default function Sidebar() {
 
     const fetchCredentials = () => {
         const credentials = localStorage.getItem('credentials')
-        if(!credentials) return navigate('/unionbank')
+        if (!credentials) return navigate('/unionbank')
         const { role } = JSON.parse(credentials)
         setUserRole(role)
     }
@@ -38,7 +38,14 @@ export default function Sidebar() {
         <>
             <div className="sm:w-[none] md:w-[none] lg:w-[20%] h-screen px-[.1rem] sm:px-[.3rem] md:px-[.5rem] lg:px-[1rem] py-[1rem] bg-[#ffffff] border-r border-gray-900/10 overflow-auto">
                 <div className="w-full h-[8%] flex justify-center sm:justify-center md:justify-center lg:justify-between items-center scale-[.7] sm:scale-[.7] md:scale-[.9] lg:scale-[1] py-[1rem]">
-                    <h1 className='hidden sm:hidden md:hidden lg:block text-[.8rem] sm:text-[1rem] md:text-[1.2rem] lg:text-[1.5rem]'>Solana</h1>
+                    <h1 className='hidden sm:hidden md:hidden lg:block text-[.7rem] sm:text-[.8rem] md:text-[.9rem] lg:text-[1rem]'>
+                        {userRole === 'admin' && 'Administrator'}
+                        {userRole === 'hr' && 'Human Resource'}
+                        {userRole === 'it' && 'IT Department'}
+                        {userRole === 'rb' && 'Retail Banking'}
+                        {userRole === 'developer' && 'UnionBank'}
+                        {userRole === 'user' && 'UnionBank'}
+                    </h1>
                     <MenuIcon style={{ cursor: 'pointer', fontSize: '2rem' }} />
                 </div>
                 <div className="w-full flex flex-col justify-between items-start pb-[6rem]">
