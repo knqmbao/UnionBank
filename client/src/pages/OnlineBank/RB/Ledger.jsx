@@ -16,10 +16,16 @@ export default function Ledger() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        fetchCredentials()
-        // if (details?.role === 'rb') return fetchTransactions()
-        fetchUserTransactions()
-    }, [])
+        fetchCredentials();
+    }, []);
+
+    useEffect(() => {
+        if (details?.role === 'rb' || details?.role === 'admin') {
+            fetchTransactions();
+        } else if (details.role === 'user') {
+            fetchUserTransactions();
+        }
+    }, [details.role]);
 
     const fetchCredentials = async () => {
         try {
@@ -228,8 +234,8 @@ export default function Ledger() {
                             </h1>
                         </div>
                         <div className="w-full h-[90%]">
-                            {details?.role === 'rb' && (<DataGrids columnsTest={RBColumns} rowsTest={values} />)}
-                            {details?.role === 'user' && (<DataGrids columnsTest={UserColumns} rowsTest={userTransactions} />)}
+                            {(details?.role === 'rb' || details?.role === 'admin') && (<DataGrids columnsTest={RBColumns} rowsTest={values} />)}
+                            {(details?.role === 'user' || details?.role === 'developer') && (<DataGrids columnsTest={UserColumns} rowsTest={userTransactions} />)}
                         </div>
                     </div>
                 </div>
