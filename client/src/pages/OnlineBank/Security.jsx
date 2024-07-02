@@ -13,7 +13,7 @@ export default function Security() {
 
     const fetchCredentials = () => {
         try {
-            const credentials = localStorage.getItem('credentials')
+            const credentials = sessionStorage.getItem('credentials')
             if (!credentials) return navigate('/unionbank')
         } catch (error) {
             console.error(error)
