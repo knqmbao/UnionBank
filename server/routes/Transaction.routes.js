@@ -27,6 +27,11 @@ router.get('/transactions',
     TransactionController.GetAllTransaction
 )
 
+router.get('/transactions/:userId',
+    TransactionMiddleware.CheckDeveloperTokenValid,
+    TransactionController.GetAllUserTransaction
+)
+
 router.get('/transactions/:accountId',
     TransactionMiddleware.CheckDeveloperTokenValid,
     TransactionController.SearchTransaction
