@@ -17,6 +17,11 @@ router.get('/accounts',
     AccountController.GetAllAccount
 )
 
+router.get('/useraccount/:uid',
+    AccountMiddleware.CheckDeveloperTokenValid,
+    AccountController.GetUserAccount
+)
+
 router.get('/accounts/:userId', //temp
     AccountMiddleware.CheckDeveloperTokenValid,
     AccountController.SearchAccount
