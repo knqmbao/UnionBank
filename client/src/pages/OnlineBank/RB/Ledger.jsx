@@ -8,27 +8,30 @@ const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function Ledger() {
     const [values, setValues] = useState([])
+    const [details, setDetails] = useState({
+        role: '',
+        uid: ''
+    })
+    const [userTransactions, setUserTransactions] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
         fetchCredentials()
-        fetchTransactions()
+        // if (details?.role === 'rb') return fetchTransactions()
+        fetchUserTransactions()
     }, [])
 
     const fetchCredentials = async () => {
         try {
             const credentials = sessionStorage.getItem('credentials')
             if (!credentials) return navigate('/unionbank')
-            const { userId } = JSON.parse(credentials)
+            const { userId, role } = JSON.parse(credentials)
+            setDetails((prev) => ({
+                ...prev,
+                role: role,
+                uid: userId
+            }))
 
-            const res = await axios.get(`${VITE_HOST}/api/useraccount/${userId}`, {
-                headers: {
-                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
-                }
-            })
-            if (res?.data?.success) {
-                setCardDetails(res?.data?.data)
-            }
         } catch (error) {
             console.error(error)
         }
@@ -58,6 +61,33 @@ export default function Ledger() {
         }
     }
 
+    const fetchUserTransactions = async () => {
+        try {
+            const credentials = sessionStorage.getItem('credentials')
+            const { userId } = JSON.parse(credentials)
+            const res = await axios.get(`${VITE_HOST}/api/transactions/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+
+            const transactions = res?.data?.data
+            const formattedData = transactions.map((trans, index) => ({
+                id: index + 1,
+                date: trans?.createdAt,
+                reference: trans?._id,
+                debit: trans?.amount,
+                credit: trans?.amount,
+                description: trans?.description,
+                transactionType: trans?.transactionType,
+                balance: trans?.balance
+            }))
+            setUserTransactions(formattedData)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     const renderDebitCell = (params) => {
         return (
             <div className="w-full h-full flex justify-center items-center">
@@ -82,7 +112,7 @@ export default function Ledger() {
         );
     };
 
-    const CustomerColumns = [
+    const RBColumns = [
         {
             field: 'id',
             headerName: 'No.',
@@ -130,6 +160,61 @@ export default function Ledger() {
         }
     ]
 
+    const UserColumns = [
+        {
+            field: 'id',
+            headerName: 'No.',
+            width: 90,
+            headerAlign: 'center',
+            align: 'center'
+        },
+        {
+            field: 'date',
+            headerName: 'Date',
+            width: 200,
+            headerAlign: 'center',
+            align: 'center'
+        },
+        {
+            field: 'reference',
+            headerName: 'Reference',
+            type: 'number',
+            width: 250,
+            headerAlign: 'center',
+            align: 'center'
+        },
+        {
+            field: 'debit',
+            headerName: 'Debit (PHP)',
+            width: 200,
+            headerAlign: 'center',
+            align: 'center',
+            renderCell: renderDebitCell
+        },
+        {
+            field: 'credit',
+            headerName: 'Credit (PHP)',
+            width: 200,
+            headerAlign: 'center',
+            align: 'center',
+            renderCell: renderCreditCell
+        },
+        {
+            field: 'description',
+            headerName: 'Description',
+            width: 300,
+            headerAlign: 'center',
+            align: 'center'
+        },
+        {
+            field: 'balance',
+            headerName: 'Balance',
+            width: 300,
+            headerAlign: 'center',
+            align: 'center'
+        }
+    ]
+
     return (
         <>
             <div className="flex">
@@ -143,7 +228,8 @@ export default function Ledger() {
                             </h1>
                         </div>
                         <div className="w-full h-[90%]">
-                            <DataGrids columnsTest={CustomerColumns} rowsTest={values} />
+                            {details?.role === 'rb' && (<DataGrids columnsTest={RBColumns} rowsTest={values} />)}
+                            {details?.role === 'user' && (<DataGrids columnsTest={UserColumns} rowsTest={userTransactions} />)}
                         </div>
                     </div>
                 </div>
