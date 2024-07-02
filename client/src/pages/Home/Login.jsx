@@ -77,7 +77,7 @@ export default function Login() {
                             </div>
                             <div className="w-full flex flex-col">
                                 <h1>Email</h1>
-                                <input onChange={handleOnChange} type="email" required name='email' className='px-[1rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your email...' />
+                                <input onChange={handleOnChange} type="email" required name='email' className='px-[1rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your email...'/>
                             </div>
                             <div className="w-full flex flex-col">
                                 <h1>Password</h1>
