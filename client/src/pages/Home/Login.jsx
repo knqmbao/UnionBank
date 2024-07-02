@@ -18,7 +18,7 @@ export default function Login() {
 
     const fetchCredentials = () => {
         try {
-            const credentials = localStorage.getItem('credentials')
+            const credentials = sessionStorage.getItem('credentials')
             if (credentials) return navigate('/')
         } catch (error) {
             console.error(error)
@@ -42,7 +42,7 @@ export default function Login() {
                 const userId = res.data.userId
                 const role = res.data.role
 
-                localStorage.setItem('credentials', JSON.stringify({ token, userId, role }))
+                sessionStorage.setItem('credentials', JSON.stringify({ token, userId, role }))
             } else {
                 alert(res.data.message)
             }
