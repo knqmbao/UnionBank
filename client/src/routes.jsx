@@ -20,6 +20,7 @@ import UpdateAccount from './pages/OnlineBank/UpdateAccount'
 import AccountStatement from './pages/OnlineBank/AccountStatement'
 import Deposit from './pages/OnlineBank/RB/Deposit'
 import Withdrawal from './pages/OnlineBank/RB/Withdrawal'
+import Ledger from './pages/OnlineBank/RB/Ledger'
 
 const Routes = createBrowserRouter([
   { path: '/', element: <Dashboard /> },
@@ -39,6 +40,7 @@ const Routes = createBrowserRouter([
 
   //RB DEPARTMENT
   { path: '/customers', element: <Customers /> },
+  { path: '/ledger', element: <Ledger /> },
   { path: '/customers/addcustomer', element: <AddCustomer /> },
   { path: '/customers/addcustomer/openaccount', element: <OpenAccount /> },
   { path: '/deposit', element: <Deposit /> },
