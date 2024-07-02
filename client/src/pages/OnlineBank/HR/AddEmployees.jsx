@@ -54,6 +54,7 @@ export default function AddEmployees() {
                                         </label>
                                         <div className="mt-2">
                                             <input
+                                                required
                                                 type="text"
                                                 name="first-name"
                                                 id="first-name"
@@ -69,6 +70,7 @@ export default function AddEmployees() {
                                         </label>
                                         <div className="mt-2">
                                             <input
+                                                required
                                                 type="text"
                                                 name="last-name"
                                                 id="last-name"
@@ -84,6 +86,7 @@ export default function AddEmployees() {
                                         </label>
                                         <div className="mt-2">
                                             <input
+                                                required
                                                 id="email"
                                                 name="email"
                                                 type="email"
@@ -98,6 +101,7 @@ export default function AddEmployees() {
                                         </label>
                                         <div className="mt-2">
                                             <input
+                                                required
                                                 id="mobileno"
                                                 name="mobileno"
                                                 type="text"
