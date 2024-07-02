@@ -250,8 +250,8 @@ export default function Customers() {
                     <TabContext value={value}>
                         <div className="w-full h-[4rem]">
                             <TabList onChange={handleChange}>
-                                <Tab label="Customers" value="1" style={{ fontWeight: '500' }} />
-                                <Tab label="Accounts" value="2" style={{ fontWeight: '500' }} />
+                                <Tab label="Registered Users" value="1" style={{ fontWeight: '500' }} />
+                                <Tab label="Account Holders" value="2" style={{ fontWeight: '500' }} />
                             </TabList>
                         </div>
                         <TabPanel value="1" className='w-full h-[90%]'>
