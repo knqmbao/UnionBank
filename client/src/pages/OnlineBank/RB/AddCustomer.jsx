@@ -94,6 +94,7 @@ export default function AddCustomer() {
                                         </label>
                                         <div className="mt-2">
                                             <input
+                                                required
                                                 onChange={handleOnChange}
                                                 id="email"
                                                 name="email"
@@ -109,6 +110,7 @@ export default function AddCustomer() {
                                         </label>
                                         <div className="mt-2">
                                             <input
+                                                required
                                                 onChange={handleOnChange}
                                                 id="mobileno"
                                                 name="mobileno"
