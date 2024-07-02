@@ -59,7 +59,7 @@ export default function Sidebar() {
                                 </h1>
                             </NavLink>
                             {
-                                (userRole === 'user' || userRole === 'developer' || userRole === 'admin') && (
+                                (userRole === 'user' || userRole === 'developer') && (
                                     <>
                                         {/* <NavLink to='/transactions' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md scale-[.7] sm:scale-[.8] md:scale-[.9] lg:scale-[1]">
                                             <ReceiptLongOutlinedIcon />
