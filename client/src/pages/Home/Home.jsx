@@ -42,6 +42,11 @@ export default function Home() {
                     <h1>!SecuredPassword123</h1>
                 </div>
             </div>
+            <marquee width="60%" direction="right" behavior="alternate" height="100px">
+                <h1 className='text-[2rem] font-bold px-[3rem]' >
+                    Ledger for developer side, need adjustments
+                </h1>
+            </marquee>
         </div>
     )
 }
