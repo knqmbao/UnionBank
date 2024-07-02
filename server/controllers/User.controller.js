@@ -136,7 +136,6 @@ const UserController = {
         try {
             const { userId } = req.params
             const { isactive } = req.body
-            console.log('Update Active User Controller: ', isactive, userId)
 
             const data = await UserModel.findByIdAndUpdate(
                 userId,
