@@ -11,13 +11,14 @@ export default function Home() {
                 <img src={test} alt="asd" className='w-full h-full object-cover' />
             </div> */}
             <div className="w-full h-full flex justify-center items-center gap-[7rem]">
-            <div className="flex flex-col items-center gap-[1rem]">
+                <div className="flex flex-col items-center gap-[1rem]">
                     <h1 className='text-[2rem] font-bold'>Department</h1>
                     <h1>ADMIN</h1>
                     <h1>HUMAN RESOURCE</h1>
                     <h1>IT DEPARTMENT</h1>
                     <h1>RETAIL BANKING</h1>
                     <h1>DEVELOPER</h1>
+                    <h1>USER</h1>
                     <h1>USER</h1>
                 </div>
                 <div className="flex flex-col items-center gap-[1rem]">
@@ -28,6 +29,7 @@ export default function Home() {
                     <h1>rb@gmail.com</h1>
                     <h1>developer@gmail.com</h1>
                     <h1>user@gmail.com</h1>
+                    <h1>yourparengmarc</h1>
                 </div>
                 <div className="flex flex-col items-center gap-[1rem]">
                     <h1 className='text-[2rem] font-bold'>Password</h1>
@@ -37,6 +39,7 @@ export default function Home() {
                     <h1>rb</h1>
                     <h1>developer</h1>
                     <h1>user</h1>
+                    <h1>!SecuredPassword123</h1>
                 </div>
             </div>
         </div>
