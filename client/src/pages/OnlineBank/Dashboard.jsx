@@ -36,56 +36,6 @@ export default function Dashboard() {
         }
     }
 
-    const CustomerColumns = [
-        {
-            field: 'id',
-            headerName: 'No.',
-            width: 90,
-            headerAlign: 'center',
-            align: 'center'
-        },
-        {
-            field: 'transId',
-            headerName: 'ID',
-            width: 300,
-            headerAlign: 'center',
-            align: 'center'
-        },
-        {
-            field: 'amount',
-            headerName: 'Amount',
-            type: 'number',
-            width: 250,
-            headerAlign: 'center',
-            align: 'center'
-        },
-        {
-            field: 'type',
-            headerName: 'Type',
-            width: 250,
-            headerAlign: 'center',
-            align: 'center'
-        },
-        {
-            field: 'status',
-            headerName: 'Status',
-            width: 250,
-            headerAlign: 'center',
-            align: 'center'
-        },
-        {
-            field: 'description',
-            headerName: 'Description',
-            width: 250,
-            headerAlign: 'center',
-            align: 'center'
-        }
-    ]
-
-    const rowste = [
-        { id: 1, transId: '1123', amount: '123123', type: 'Deposit', status: 'Completed', description: '' }
-    ]
-
     return (
         <>
             <div className="flex">
