@@ -21,7 +21,7 @@ export default function SignUp() {
 
     const fetchCredentials = () => {
         try {
-            const credentials = localStorage.getItem('credentials')
+            const credentials = sessionStorage.getItem('credentials')
             if (credentials) return navigate('/')
         } catch (error) {
             console.error(error)
