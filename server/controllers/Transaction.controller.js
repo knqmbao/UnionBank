@@ -32,15 +32,22 @@ const TransactionController = {
     WithdrawTransaction: async (req, res) => {
         try {
             const { account, amount } = req.body
+            const tax = 150
+
             console.log('Withdrawal Transaction Controller: ', { account, amount })
 
             const { _id: accountId } = await AccountModel.findOne({ accountno: account })
-
-            await TransactionModel.create({ account: accountId, amount, transactionType: 'withdrawal' })
+            const { balance } = await AccountModel.findById(accountId)
 
             const withdrawAmount = parseFloat(amount)
-            const { balance } = await AccountModel.findById(accountId)
+
+            const taxAmount = withdrawAmount + tax
+
+            if (taxAmount > balance) return res.json({ success: false, message: 'Insufficient Balance', balance: balance, taxPayable: tax, total: taxAmount })
+
             const currentBalance = balance - withdrawAmount
+
+            await TransactionModel.create({ account: accountId, amount: taxAmount, transactionType: 'withdrawal' })
 
             const data = await AccountModel.findByIdAndUpdate(
                 accountId,
@@ -50,6 +57,8 @@ const TransactionController = {
                 { new: true }
             )
 
+            // const {_id, } = data
+
             res.json({ success: true, message: 'Withdrawal transaction successfully!', data })
         } catch (error) {
             res.status(400).json({ error: `WithdrawTransaction in transaction controller error ${error}` });
@@ -58,21 +67,30 @@ const TransactionController = {
     TransferTransaction: async (req, res) => {
         try {
             const { debitAccount, creditAccount, amount } = req.body
+            const tax = 150
+
             console.log('Transfer Transaction Controller: ', { debitAccount, creditAccount, amount })
 
-            const { _id: debitAccountId } = await AccountModel.findOne({ user: debitAccount })
-            const { _id: creditAccountId } = await AccountModel.findOne({ user: creditAccount })
-
-            await TransactionModel.create({ account: debitAccountId, amount, transactionType: 'transfer' })
+            const { _id: debitAccountId } = await AccountModel.findOne({ accountno: debitAccount })
+            const { _id: creditAccountId } = await AccountModel.findOne({ accountno: creditAccount })
 
             const transferAmount = parseFloat(amount)
             const { balance: debitBalance } = await AccountModel.findById(debitAccountId)
             const { balance: creditBalance } = await AccountModel.findById(creditAccountId)
-            const debitFutureBalance = debitBalance - transferAmount
-            const creditFutureBalance = creditBalance + transferAmount
 
+            const taxAmount = transferAmount + tax
+            let debitFutureBalance
 
-            const debitData = await AccountModel.findByIdAndUpdate(
+            if (taxAmount > debitBalance) return res.json({ success: false, message: 'Insufficient Balance!', balance: debitBalance, taxPayable: tax, debitAmount: transferAmount, total: taxAmount })
+
+            debitFutureBalance = debitBalance - taxAmount
+            const creditFutureBalance = creditBalance + taxAmount
+
+            await TransactionModel.create({ account: creditAccountId, amount: taxAmount, transactionType: 'deposit' })
+            await TransactionModel.create({ account: debitAccountId, amount: taxAmount, transactionType: 'withdrawal' })
+            await TransactionModel.create({ account: debitAccountId, amount: taxAmount, transactionType: 'transfer' })
+
+            const { _id: did, userId: duserId, accountno: daccountno, accountType: daccountType, balance: dbalance } = await AccountModel.findByIdAndUpdate(
                 debitAccountId,
                 {
                     balance: debitFutureBalance
@@ -80,7 +98,7 @@ const TransactionController = {
                 { new: true }
             )
 
-            const creditData = await AccountModel.findByIdAndUpdate(
+            const { _id: cid, userId: cuserId, accountno: caccountno, accountType: caccountType, balance: cbalance } = await AccountModel.findByIdAndUpdate(
                 creditAccountId,
                 {
                     balance: creditFutureBalance
@@ -88,7 +106,12 @@ const TransactionController = {
                 { new: true }
             )
 
-            res.json({ success: true, message: 'Withdrawal transaction successfully!', debitData, creditData })
+            res.json({
+                success: true,
+                message: 'Transfer transaction successfully!',
+                debitData: { _id: did, userId: duserId, accountno: daccountno, accountType: daccountType, balance: dbalance, debitAmount: taxAmount },
+                creditData: { _id: cid, userId: cuserId, accountno: caccountno, accountType: caccountType, balance: cbalance, creditAmount: taxAmount }
+            })
         } catch (error) {
             res.status(400).json({ error: `TransferTransaction in transaction controller error ${error}` });
         }
