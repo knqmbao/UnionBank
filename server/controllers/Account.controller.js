@@ -20,12 +20,29 @@ const AccountController = {
             res.json({ error: `GetAllAccount in account controller error ${error}` });
         }
     },
+    GetUserAccount: async (req, res) => {
+        try {
+            const { uid } = req.params
+
+            const { _id, userId, accountno, accountType, balance, isactive } = await AccountModel.findOne({ userId: uid })
+            console.log({ _id, userId, accountno, accountType, balance, isactive })
+            const formattedBalance = new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(balance);
+
+            res.json({ success: true, message: 'Fetch accounts successfully!', data: { _id, userId, accountno, accountType, balance: formattedBalance, isactive } })
+        } catch (error) {
+            res.json({ error: `GetUserAccount in account controller error ${error}` });
+        }
+    },
     SearchAccount: async (req, res) => {
         try {
             const { userId } = req.params
             console.log('Search Account Controller: ', userId)
 
             const data = await AccountModel.find({ user: userId })
+
             res.json({ success: true, message: 'Fethced certain account successfully!', data })
         } catch (error) {
             res.json({ error: `SearchAccount in account controller error ${error}` });
