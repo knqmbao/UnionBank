@@ -1,24 +1,38 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Sidebar from '../../components/Sidebar'
 import Header__Dashboard from '../../components/Header__dashboard'
 import SavingsIcon from '@mui/icons-material/Savings';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios'
+const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function Dashboard() {
+    const [values, setValues] = useState('')
     const navigate = useNavigate()
 
     useEffect(() => {
         fetchCredentials()
     }, [])
 
-    const fetchCredentials = () => {
+    const fetchCredentials = async () => {
         try {
-            const credentials = localStorage.getItem('credentials')
+            const credentials = sessionStorage.getItem('credentials')
             if (!credentials) return navigate('/unionbank')
+            const { userId } = JSON.parse(credentials)
+
+            const res = await axios.get(`${VITE_HOST}/api/useraccount/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+            if (res?.data?.success) {
+                setValues(res?.data?.data)
+            }
         } catch (error) {
             console.error(error)
         }
     }
+
     return (
         <>
             <div className="flex">
@@ -30,22 +44,27 @@ export default function Dashboard() {
                             <h1 className='text-black font-[600] text-[1.2rem]'>Your Accounts</h1>
                         </div>
                         <div className="w-full flex justify-start items-start gap-[1rem] flex-wrap">
-                            <Link
-                                to={`/statement`}
-                                className="cursor-pointer hover:scale-[.98] duration-300 ease w-[18rem] sm:w-[20rem] md:w-[22rem] lg:w-[24rem] h-[10rem] sm:h-[11re] md:h-[12rem] lg:h-[13rem] rounded-md shadow-[_0_10px_15px_-3px_rgba(0,0,0,0.15)] flex flex-col justify-evenly bg-[#111111] items-start p-[1rem]">
-                                <h1 className='text-white font-[500] text-[.9rem]'>Savings Account</h1>
-                                <div className="w-full flex justify-start items-center gap-[1rem]">
-                                    <SavingsIcon style={{ color: 'white', fontSize: '2rem' }} />
-                                    <div className="flex flex-col justify-center items-start">
-                                        <h1 className='text-white'>REGULAR SAVINGS</h1>
-                                        <h1 className='text-white'>******1238</h1>
-                                    </div>
-                                </div>
-                                <div className="w-full flex justify-between items-center">
-                                    <h1 className='text-white'>Current Balance</h1>
-                                    <h1 className='text-white'>PHP 15,993.04</h1>
-                                </div>
-                            </Link>
+                            {
+                                values && (
+                                    <Link
+                                        to={`/statement`}
+                                        className="cursor-pointer hover:scale-[.98] duration-300 ease w-[18rem] sm:w-[20rem] md:w-[22rem] lg:w-[24rem] h-[10rem] sm:h-[11re] md:h-[12rem] lg:h-[13rem] rounded-md shadow-[_0_10px_15px_-3px_rgba(0,0,0,0.15)] flex flex-col justify-evenly bg-[#111111] items-start p-[1rem]">
+                                        <h1 className='text-white font-[500] text-[.9rem]'>Savings Account</h1>
+                                        <div className="w-full flex justify-start items-center gap-[1rem]">
+                                            <SavingsIcon style={{ color: 'white', fontSize: '2rem' }} />
+                                            <div className="flex flex-col justify-center items-start">
+                                                <h1 className='text-white'>REGULAR {values?.accountType === 'savings' && 'SAVINGS'}</h1>
+                                                <h1 className='text-white'>{values?.accountno}</h1>
+                                            </div>
+                                        </div>
+                                        <div className="w-full flex justify-between items-center">
+                                            <h1 className='text-white'>Current Balance</h1>
+                                            <h1 className='text-white'>PHP {values?.balance}</h1>
+                                        </div>
+                                    </Link>
+                                )
+                            }
+
                         </div>
                     </div>
                 </div>
