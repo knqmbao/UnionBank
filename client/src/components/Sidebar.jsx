@@ -61,12 +61,12 @@ export default function Sidebar() {
                             {
                                 (userRole === 'user' || userRole === 'developer' || userRole === 'admin') && (
                                     <>
-                                        <NavLink to='/transactions' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md scale-[.7] sm:scale-[.8] md:scale-[.9] lg:scale-[1]">
+                                        {/* <NavLink to='/transactions' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md scale-[.7] sm:scale-[.8] md:scale-[.9] lg:scale-[1]">
                                             <ReceiptLongOutlinedIcon />
                                             <h1 className='hidden sm:hidden md:hidden lg:block text-[#3D4751] text-[.7rem] sm:text-[.8rem] md:text-[.7rem] lg:text-[.9rem]'>
                                                 Transactions
                                             </h1>
-                                        </NavLink>
+                                        </NavLink> */}
                                         <NavLink to='/ledger' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md scale-[.7] sm:scale-[.8] md:scale-[.9] lg:scale-[1]">
                                             <SyncAltOutlinedIcon />
                                             <h1 className='hidden sm:hidden md:hidden lg:block text-[#3D4751] text-[.7rem] sm:text-[.8rem] md:text-[.7rem] lg:text-[.9rem]'>
