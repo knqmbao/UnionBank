@@ -27,7 +27,7 @@ export default function OpenAccount() {
 
     const fetchCredentials = () => {
         try {
-            const credentials = localStorage.getItem('credentials')
+            const credentials = sessionStorage.getItem('credentials')
             const customerdetails = sessionStorage.getItem('customerdetails')
 
             if (!credentials) return navigate('/unionbank')
