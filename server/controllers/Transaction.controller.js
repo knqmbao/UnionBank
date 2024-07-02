@@ -70,8 +70,8 @@ const TransactionController = {
             const debitFutureBalance = debitBalance - taxAmount
             const creditFutureBalance = creditBalance + transferAmount
 
-            await TransactionModel.create({ account: debitAccountId, amount: taxAmount, transactionType: 'transfer_debit', description: `Transfer to ${creditAccount}`, status: 'completed' })
-            await TransactionModel.create({ account: creditAccountId, amount: transferAmount, transactionType: 'transfer_credit', description: `Transfer from ${debitAccount}`, status: 'completed' })
+            await TransactionModel.create({ account: debitAccountId, amount: taxAmount, transactionType: 'transfer_debit', description: `${debitAccount} transferred to ${creditAccount}`, status: 'completed' })
+            await TransactionModel.create({ account: creditAccountId, amount: transferAmount, transactionType: 'transfer_credit', description: `Received from ${debitAccount}`, status: 'completed' })
 
             await AccountModel.findByIdAndUpdate(debitAccountId, { balance: debitFutureBalance }, { new: true })
             await AccountModel.findByIdAndUpdate(creditAccountId, { balance: creditFutureBalance }, { new: true })
@@ -84,7 +84,14 @@ const TransactionController = {
     GetAllTransaction: async (req, res) => {
         try {
             const data = await TransactionModel.find()
-            res.json({ success: true, message: 'Fetch transactions successfully!', data })
+            const formattedData = data.map(transaction => {
+                let debit
+                let credit
+                const { createdAt, _id, amount, description, transactionType } = transaction;
+                const formattedCreatedAt = new Date(createdAt).toLocaleDateString('en-US');
+                return { _id, amount, description, createdAt: formattedCreatedAt, transactionType };
+            });
+            res.json({ success: true, message: 'Fetch transactions successfully!', data: formattedData })
         } catch (error) {
             res.status(400).json({ error: `GetAllTransaction in transaction controller error ${error}` });
         }
