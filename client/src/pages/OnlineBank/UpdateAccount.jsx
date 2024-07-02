@@ -28,6 +28,11 @@ export default function UpdateAccount() {
     const handleCancel = () => {
         navigate('/account')
     }
+
+    const handleToggleCheck = (e) => {
+
+    }
+
     return (
         <>
             <div className="flex">
@@ -119,7 +124,7 @@ export default function UpdateAccount() {
                                         <label htmlFor="developer" className="block text-sm font-medium leading-6 text-gray-900">
                                             Developer
                                         </label>
-                                        <Toggle isCheck />
+                                        <Toggle isCheck={false} returnCheck={(e) => handleToggleCheck(e)} />
                                     </div>
                                 </div>
                             </div>
