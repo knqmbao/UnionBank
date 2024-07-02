@@ -7,20 +7,19 @@ import axios from 'axios'
 const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function Ledger() {
-    const [carddetails, setCardDetails] = useState('')
-    const [role, setRole] = useState('')
+    const [values, setValues] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
         fetchCredentials()
+        fetchTransactions()
     }, [])
 
     const fetchCredentials = async () => {
         try {
             const credentials = sessionStorage.getItem('credentials')
             if (!credentials) return navigate('/unionbank')
-            const { userId, role } = JSON.parse(credentials)
-            setRole(role)
+            const { userId } = JSON.parse(credentials)
 
             const res = await axios.get(`${VITE_HOST}/api/useraccount/${userId}`, {
                 headers: {
@@ -35,6 +34,54 @@ export default function Ledger() {
         }
     }
 
+    const fetchTransactions = async () => {
+        try {
+            const res = await axios.get(`${VITE_HOST}/api/transactions`, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+
+            const transactions = res?.data?.data
+            const formattedData = transactions.map((trans, index) => ({
+                id: index + 1,
+                date: trans?.createdAt,
+                reference: trans?._id,
+                debit: trans?.amount,
+                credit: trans?.amount,
+                description: trans?.description,
+                transactionType: trans?.transactionType
+            }))
+            setValues(formattedData)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const renderDebitCell = (params) => {
+        return (
+            <div className="w-full h-full flex justify-center items-center">
+                {
+                    (params.row.transactionType === 'withdrawal' || params.row.transactionType === 'transfer_debit') ? params.row.debit : '---'
+                }
+            </div>
+
+        );
+    };
+
+    const renderCreditCell = (params) => {
+        return (
+            <div className="w-full h-full flex justify-center items-center">
+                <h1 className='font-bold'>
+                    {
+                        (params.row.transactionType === 'deposit' || params.row.transactionType === 'transfer_credit') ? params.row.credit : '---'
+                    }
+                </h1>
+            </div>
+
+        );
+    };
+
     const CustomerColumns = [
         {
             field: 'id',
@@ -44,45 +91,43 @@ export default function Ledger() {
             align: 'center'
         },
         {
-            field: 'transId',
-            headerName: 'ID',
-            width: 300,
+            field: 'date',
+            headerName: 'Date',
+            width: 200,
             headerAlign: 'center',
             align: 'center'
         },
         {
-            field: 'amount',
-            headerName: 'Amount',
+            field: 'reference',
+            headerName: 'Reference',
             type: 'number',
             width: 250,
             headerAlign: 'center',
             align: 'center'
         },
         {
-            field: 'type',
-            headerName: 'Type',
-            width: 250,
+            field: 'debit',
+            headerName: 'Debit (PHP)',
+            width: 200,
             headerAlign: 'center',
-            align: 'center'
+            align: 'center',
+            renderCell: renderDebitCell
         },
         {
-            field: 'status',
-            headerName: 'Status',
-            width: 250,
+            field: 'credit',
+            headerName: 'Credit (PHP)',
+            width: 200,
             headerAlign: 'center',
-            align: 'center'
+            align: 'center',
+            renderCell: renderCreditCell
         },
         {
             field: 'description',
             headerName: 'Description',
-            width: 250,
+            width: 300,
             headerAlign: 'center',
             align: 'center'
         }
-    ]
-
-    const rowste = [
-        { id: 1, transId: '1123', amount: '123123', type: 'Deposit', status: 'Completed', description: '' }
     ]
 
     return (
@@ -98,7 +143,7 @@ export default function Ledger() {
                             </h1>
                         </div>
                         <div className="w-full h-[90%]">
-                            <DataGrids columnsTest={CustomerColumns} rowsTest={rowste} />
+                            <DataGrids columnsTest={CustomerColumns} rowsTest={values} />
                         </div>
                     </div>
                 </div>
