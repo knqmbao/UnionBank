@@ -23,7 +23,7 @@ router.post('/transfertransaction',
 )
 
 router.get('/transactions',
-    TransactionMiddleware.CheckUserTokenValid,
+    TransactionMiddleware.CheckDeveloperTokenValid,
     TransactionController.GetAllTransaction
 )
 
