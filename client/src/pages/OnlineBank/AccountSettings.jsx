@@ -53,7 +53,7 @@ export default function AccountSettings() {
                                 </div>
                                 <div className="w-full flex items-center justify-end gap-x-6 pt-[2rem]">
                                     <button
-                                    onClick={handleEdit}
+                                        onClick={handleEdit}
                                         className="rounded-md bg-[#111111] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#333333] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                     >
                                         Edit Account
