@@ -24,14 +24,14 @@ export default function Sidebar() {
     }, [])
 
     const fetchCredentials = () => {
-        const credentials = localStorage.getItem('credentials')
+        const credentials = sessionStorage.getItem('credentials')
         if (!credentials) return navigate('/unionbank')
         const { role } = JSON.parse(credentials)
         setUserRole(role)
     }
 
     const handleLogout = () => {
-        localStorage.clear()
+        sessionStorage.clear()
         window.location.reload()
     }
     return (
