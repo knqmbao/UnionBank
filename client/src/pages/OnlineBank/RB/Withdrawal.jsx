@@ -29,10 +29,13 @@ export default function Withdrawal() {
     const handleWithdrawal = async (e) => {
         try {
             e.preventDefault()
+            const credentials = sessionStorage.getItem('credentials')
+            const { userId } = JSON.parse(credentials)
             const { account, amount } = values
             const res = await axios.post(`${VITE_HOST}/api/withdrawtransaction`, { account, amount }, {
                 headers: {
-                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`,
+                    userId: userId
                 }
             })
             if (res?.data?.success) return alert(res?.data?.message)
