@@ -1,9 +1,16 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Sidebar from '../../components/Sidebar'
 import Header from '../../components/Header__dashboard'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function Transfer() {
+    const [values, setValues] = useState({
+        debitAccount: '',
+        creditAccount: '',
+        amount: ''
+    })
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -18,13 +25,40 @@ export default function Transfer() {
             console.error(error)
         }
     }
+
+    const handleTransfer = async (e) => {
+        try {
+            e.preventDefault()
+            const credentials = sessionStorage.getItem('credentials')
+            const { userId } = JSON.parse(credentials)
+            const res = await axios.post(`${VITE_HOST}/api/transfertransaction`, values, {
+                headers: {
+                    Authorization: `Bearer ${userId}`
+                }
+            })
+            console.log(res?.data)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const handleOnChange = (e) => {
+        const { name, value } = e.target
+        setValues((prev) => ({
+            ...prev,
+            [name]: value
+        }))
+    }
+
     return (
         <>
             <div className="flex">
                 <Sidebar />
                 <div className="w-[80%] h-screen flex flex-col justify-start items-center p-[1rem] overflow-auto ">
                     <Header title={`Make a Transfer`} />
-                    <form className='w-full h-[95%] flex flex-col justify-start items-center px-[15rem]'>
+                    <form
+                        onChange={handleTransfer}
+                        className='w-full h-[95%] flex flex-col justify-start items-center px-[15rem]'>
                         <div className="space-y-12 pt-[5rem] pb-[20rem]">
                             <div className="border-b border-gray-900/10 pb-12">
                                 <h2 className="text-base font-semibold leading-7 text-gray-900">Account Information</h2>
@@ -34,39 +68,58 @@ export default function Transfer() {
 
                                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                     <div className="sm:col-span-2">
-                                        <label htmlFor="debitaccount" className="block text-sm font-medium leading-6 text-gray-900">
+                                        <label htmlFor="debitAccount" className="block text-sm font-medium leading-6 text-gray-900">
                                             Debit Account
                                         </label>
                                         <div className="mt-2">
                                             <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                                 <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">from/</span>
                                                 <input
+                                                    onChange={handleOnChange}
                                                     required
                                                     type="text"
-                                                    name="debitaccount"
-                                                    id="debitaccount"
-                                                    autoComplete="debitaccount"
+                                                    name="debitAccount"
+                                                    id="debitAccount"
+                                                    autoComplete="debitAccount"
                                                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                                    placeholder="3747****"
                                                 />
                                             </div>
                                         </div>
                                     </div>
                                     <div className="sm:col-span-2">
-                                        <label htmlFor="creditaccount" className="block text-sm font-medium leading-6 text-gray-900">
+                                        <label htmlFor="creditAccount" className="block text-sm font-medium leading-6 text-gray-900">
                                             Credit Account
                                         </label>
                                         <div className="mt-2">
                                             <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                                 <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">to/</span>
                                                 <input
+                                                    onChange={handleOnChange}
                                                     required
                                                     type="text"
-                                                    name="creditaccount"
-                                                    id="creditaccount"
-                                                    autoComplete="creditaccount"
+                                                    name="creditAccount"
+                                                    id="creditAccount"
+                                                    autoComplete="creditAccount"
                                                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                                    placeholder="4757****"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="sm:col-span-2">
+                                        <label htmlFor="amount" className="block text-sm font-medium leading-6 text-gray-900">
+                                            Amount
+                                        </label>
+                                        <div className="mt-2">
+                                            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                                                <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">PHP/</span>
+                                                <input
+                                                    onChange={handleOnChange}
+                                                    required
+                                                    type="text"
+                                                    name="amount"
+                                                    id="amount"
+                                                    autoComplete="amount"
+                                                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                                 />
                                             </div>
                                         </div>
