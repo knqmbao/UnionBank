@@ -244,17 +244,23 @@ export default function Customers() {
         <>
             <div className="flex">
                 <Sidebar />
-                <div className="w-[80%] h-screen flex flex-col justify-start items-start p-[1rem] overflow-hidden">
+                <div className="w-[100%] sm:w-[100%] md:w-[100%] lg:w-[80%] h-screen flex flex-col justify-start items-start p-[1rem] overflow-hidden">
                     <Header__Dashboard title={`Customers`} />
+                    <div className="w-full h-[5%]">
+                        <h1 className='text-black font-[600] text-[1.2rem]'>
+                            Account Holders
+                        </h1>
+                    </div>
                     <TabContext value={value}>
-                        <div className="w-full h-[4rem]">
+                        <div className="w-full h-[7.5%]overflow-hidden">
                             <TabList onChange={handleChange}>
                                 <Tab label="Registered Users" value="1" style={{ fontWeight: '500' }} />
                                 <Tab label="Account Holders" value="2" style={{ fontWeight: '500' }} />
                             </TabList>
                         </div>
-                        <TabPanel value="1" className='w-full h-[90%]'>
-                            <div className="w-full flex justify-between items-center pt-[.5rem] pb-[2rem]">
+
+                        <TabPanel value="1" className='w-full h-[82%]'>
+                            <div className="w-full h-[5%] flex justify-between items-center pt-[.5rem] pb-[2rem]">
                                 <div className="flex justify-start items-center gap-[1rem]">
                                     <h1>
                                         Search
@@ -274,12 +280,12 @@ export default function Customers() {
                                     </Link>
                                 </div>
                             </div>
-                            <div className="w-full h-[88%]">
-                                <DataGrids columnsTest={CustomerColumns} rowsTest={details} />
+                            <div className="w-full h-[90%]">
+                                <DataGrids columnsTest={CustomerColumns} rowsTest={details} descCol={`id`} />
                             </div>
                         </TabPanel>
-                        <TabPanel value="2" className='w-full h-[90%]'>
-                            <div className="w-full flex justify-between items-center pt-[.5rem] pb-[2rem]">
+                        <TabPanel value="2" className='w-full h-[82%]'>
+                            <div className="w-full h-[5%] flex justify-between items-center pt-[.5rem] pb-[2rem]">
                                 <div className="flex justify-start items-center gap-[1rem]">
                                     <h1>
                                         Search
@@ -291,7 +297,7 @@ export default function Customers() {
                                     />
                                 </div>
                             </div>
-                            <div className="w-full h-[88%]">
+                            <div className="w-full h-[90%]">
                                 <DataGrids columnsTest={AccountColumns} rowsTest={accounts} descCol={`accountno`} colVisibility={{ id: false }} />
                             </div>
                         </TabPanel>
