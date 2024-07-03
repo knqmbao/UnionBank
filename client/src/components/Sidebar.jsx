@@ -106,12 +106,6 @@ export default function Sidebar() {
                             {
                                 (userRole === 'rb' || userRole === 'admin') && (
                                     <>
-                                        <NavLink to='/customers' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md scale-[.7] sm:scale-[.8] md:scale-[.9] lg:scale-[1]">
-                                            <AccessibilityOutlinedIcon />
-                                            <h1 className='hidden sm:hidden md:hidden lg:block text-[#3D4751] text-[.7rem] sm:text-[.8rem] md:text-[.7rem] lg:text-[.9rem]'>
-                                                Manage Customers
-                                            </h1>
-                                        </NavLink>
                                         <NavLink to='/ledger' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md scale-[.7] sm:scale-[.8] md:scale-[.9] lg:scale-[1]">
                                             <SyncAltOutlinedIcon />
                                             <h1 className='hidden sm:hidden md:hidden lg:block text-[#3D4751] text-[.7rem] sm:text-[.8rem] md:text-[.7rem] lg:text-[.9rem]'>
@@ -128,6 +122,12 @@ export default function Sidebar() {
                                             <HourglassEmptyOutlinedIcon />
                                             <h1 className='hidden sm:hidden md:hidden lg:block text-[#3D4751] text-[.7rem] sm:text-[.8rem] md:text-[.7rem] lg:text-[.9rem]'>
                                                 Withdrawal
+                                            </h1>
+                                        </NavLink>
+                                        <NavLink to='/customers' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md scale-[.7] sm:scale-[.8] md:scale-[.9] lg:scale-[1]">
+                                            <AccessibilityOutlinedIcon />
+                                            <h1 className='hidden sm:hidden md:hidden lg:block text-[#3D4751] text-[.7rem] sm:text-[.8rem] md:text-[.7rem] lg:text-[.9rem]'>
+                                                Manage Customers
                                             </h1>
                                         </NavLink>
                                     </>
