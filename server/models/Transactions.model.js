@@ -6,6 +6,11 @@ const transactionSchema = new mongoose.Schema({
         ref: 'Account',
         required: true,
     },
+    token: {
+        type: String,
+        required: true,
+        default: ''
+    },
     amount: {
         type: Number,
         required: true,
