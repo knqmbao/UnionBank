@@ -53,7 +53,7 @@ export default function OpenAccount() {
             const { name, email, mobileno, accountType } = values
             if (!accountType || accountType === 'none') return alert('Please choose the account type!')
                 
-            const res = await axios.post(`${VITE_HOST}/api/createuser`, { name, email, mobileno, password: '!SecuredPassword123' }, {
+            const res = await axios.post(`${VITE_HOST}/api/createuser`, { name, email, mobileno, password: '123' }, {
                 headers: {
                     Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
                 }
