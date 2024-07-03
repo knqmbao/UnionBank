@@ -24,15 +24,21 @@ router.post('/createdevelopertoken/:userId',
 //     DeveloperController.WithdrawTransaction
 // )
 
-router.post('/developer/transfertransaction',
+router.get('/unionbank/account/:accountno',
+    DeveloperMiddleware.CheckDeveloperTokenValid,
+    TransactionMiddleware.CreateTransactionCheckEmptyFields,
+    DeveloperController.GetRequestAccountNo
+)
+
+router.post('/unionbank/transfertransaction',
     DeveloperMiddleware.CheckDeveloperTokenValid,
     TransactionMiddleware.CreateTransactionCheckEmptyFields,
     DeveloperController.TransferTransaction
 )
 
-router.get('/tokens',
+router.get('/tokens/:userId',
     DeveloperMiddleware.CheckDeveloperTokenValid,
-    DeveloperController.GetAllTokens
+    DeveloperController.GetUserTokens
 )
 
 router.post('/deletetoken/:developerId',
