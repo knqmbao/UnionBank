@@ -5,6 +5,9 @@ const UserModel = require('../models/Users.model')
 const TransactionController = {
     DepositTransaction: async (req, res) => {
         try {
+            const userIdHeader = req.headers['userid']
+            console.log(userIdHeader)
+
             const { account, amount } = req.body
             const depositAmount = parseFloat(amount)
 
@@ -16,7 +19,7 @@ const TransactionController = {
 
             const currentBalance = balance + depositAmount
 
-            await TransactionModel.create({ account: accountId, amount: depositAmount, transactionType: 'deposit', balance: currentBalance })
+            await TransactionModel.create({ account: accountId, amount: depositAmount, transactionType: 'deposit', balance: currentBalance, token: `UnionBank userid : ${userIdHeader}`  })
             await AccountModel.findByIdAndUpdate(accountId, { balance: currentBalance }, { new: true })
 
             res.json({ success: true, message: 'Deposit transaction successfully!' })
@@ -26,6 +29,8 @@ const TransactionController = {
     },
     WithdrawTransaction: async (req, res) => {
         try {
+            const userIdHeader = req.headers['userid']
+
             const { account, amount } = req.body
             const withdrawAmount = parseFloat(amount)
             const tax = 150
@@ -41,7 +46,7 @@ const TransactionController = {
 
             const currentBalance = balance - taxAmount
 
-            await TransactionModel.create({ account: accountId, amount: taxAmount, transactionType: 'withdrawal', balance: currentBalance })
+            await TransactionModel.create({ account: accountId, amount: taxAmount, transactionType: 'withdrawal', balance: currentBalance, token: `UnionBank userid : ${userIdHeader}`  })
 
             await AccountModel.findByIdAndUpdate(accountId, { balance: currentBalance }, { new: true })
 
@@ -52,6 +57,8 @@ const TransactionController = {
     },
     TransferTransaction: async (req, res) => {
         try {
+            const userIdHeader = req.headers['userid']
+
             const { debitAccount, creditAccount, amount } = req.body
             const transferAmount = parseFloat(amount)
             const tax = 150
@@ -70,8 +77,8 @@ const TransactionController = {
             const debitFutureBalance = debitBalance - taxAmount
             const creditFutureBalance = creditBalance + transferAmount
 
-            await TransactionModel.create({ account: debitAccountId, amount: taxAmount, transactionType: 'transfer_debit', description: `${debitAccount} transferred to ${creditAccount}`, status: 'completed', balance: debitFutureBalance })
-            await TransactionModel.create({ account: creditAccountId, amount: transferAmount, transactionType: 'transfer_credit', description: `Received from ${debitAccount}`, status: 'completed', balance: creditFutureBalance })
+            await TransactionModel.create({ account: debitAccountId, amount: taxAmount, transactionType: 'transfer_debit', description: `${debitAccount} transferred to ${creditAccount}`, status: 'completed', balance: debitFutureBalance, token: `UnionBank userid : ${userIdHeader}` })
+            await TransactionModel.create({ account: creditAccountId, amount: transferAmount, transactionType: 'transfer_credit', description: `Received from ${debitAccount}`, status: 'completed', balance: creditFutureBalance, token: `UnionBank userid : ${userIdHeader}`  })
 
             await AccountModel.findByIdAndUpdate(debitAccountId, { balance: debitFutureBalance }, { new: true })
             await AccountModel.findByIdAndUpdate(creditAccountId, { balance: creditFutureBalance }, { new: true })
