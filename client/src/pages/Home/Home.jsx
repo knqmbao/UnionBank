@@ -20,6 +20,7 @@ export default function Home() {
                     <h1>DEVELOPER</h1>
                     <h1>USER</h1>
                     <h1>USER</h1>
+                    <h1>USER</h1>
                 </div>
                 <div className="flex flex-col items-center gap-[1rem]">
                     <h1 className='text-[2rem] font-bold'>Email</h1>
@@ -30,6 +31,7 @@ export default function Home() {
                     <h1>developer@gmail.com</h1>
                     <h1>user@gmail.com</h1>
                     <h1>yourparengmarc</h1>
+                    <h1>avgarces@gmail.com</h1>
                 </div>
                 <div className="flex flex-col items-center gap-[1rem]">
                     <h1 className='text-[2rem] font-bold'>Password</h1>
@@ -40,11 +42,12 @@ export default function Home() {
                     <h1>developer</h1>
                     <h1>user</h1>
                     <h1>!SecuredPassword123</h1>
+                    <h1>123</h1>
                 </div>
             </div>
             <marquee width="60%" direction="right" behavior="alternate" height="100px">
                 <h1 className='text-[2rem] font-bold px-[3rem]' >
-                    Ledger for developer side, need adjustments
+                    Ledger for developer side, need adjustments, plus yung api to link account like /api/getuser forda developer side 
                 </h1>
             </marquee>
         </div>
