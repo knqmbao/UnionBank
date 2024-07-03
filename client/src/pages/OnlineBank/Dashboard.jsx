@@ -53,7 +53,7 @@ export default function Dashboard() {
                             carddetails && (
                                 <div className="w-full flex justify-start items-start gap-[1rem] flex-wrap">
                                     <Link
-                                        to={`/statement`}
+                                        to={`/carddetails`}
                                         className="cursor-pointer hover:scale-[.98] duration-300 ease w-[18rem] sm:w-[20rem] md:w-[22rem] lg:w-[24rem] h-[10rem] sm:h-[11re] md:h-[12rem] lg:h-[13rem] rounded-md shadow-[_0_10px_15px_-3px_rgba(0,0,0,0.15)] flex flex-col justify-evenly bg-[#111111] items-start p-[1rem]">
                                         <h1 className='text-white font-[500] text-[.9rem]'>Savings Account</h1>
                                         <div className="w-full flex justify-start items-center gap-[1rem]">
