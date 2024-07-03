@@ -47,7 +47,7 @@ export default function Home() {
             </div>
             <marquee width="60%" direction="right" behavior="alternate" height="100px">
                 <h1 className='text-[2rem] font-bold px-[3rem]' >
-                    Ledger for developer side, need adjustments, plus yung api to link account like /api/getuser forda developer side 
+                    Ledger for developer side, need adjustments, plus yung api to link account like /api/getuser forda developer side. Mali din debit credit, baliktad
                 </h1>
             </marquee>
         </div>
