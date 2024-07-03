@@ -19,13 +19,13 @@ export default function Ledger() {
         fetchCredentials();
     }, []);
 
-    useEffect(() => {
-        if (details?.role === 'rb' || details?.role === 'admin') {
-            fetchTransactions();
-        } else if (details.role === 'user') {
-            fetchUserTransactions();
-        }
-    }, [details.role]);
+    // useEffect(() => {
+    //     if (details?.role === 'rb' || details?.role === 'admin') {
+    //         fetchTransactions();
+    //     } else if (details.role === 'user') {
+    //         fetchUserTransactions();
+    //     }
+    // }, [details.role]);
 
     const fetchCredentials = async () => {
         try {
@@ -43,34 +43,11 @@ export default function Ledger() {
         }
     }
 
-    const fetchTransactions = async () => {
-        try {
-            const res = await axios.get(`${VITE_HOST}/api/transactions`, {
-                headers: {
-                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
-                }
-            })
-
-            const transactions = res?.data?.data
-            const formattedData = transactions.map((trans, index) => ({
-                id: index + 1,
-                date: trans?.createdAt,
-                reference: trans?._id,
-                debit: trans?.amount,
-                credit: trans?.amount,
-                description: trans?.description,
-                transactionType: trans?.transactionType
-            }))
-            setValues(formattedData)
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
     const fetchUserTransactions = async () => {
         try {
             const credentials = sessionStorage.getItem('credentials')
             const { userId } = JSON.parse(credentials)
+
             const res = await axios.get(`${VITE_HOST}/api/transactions/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
@@ -93,6 +70,10 @@ export default function Ledger() {
             console.error(error)
         }
     }
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
 
     const renderDebitCell = (params) => {
         return (
@@ -118,54 +99,6 @@ export default function Ledger() {
         );
     };
 
-    const RBColumns = [
-        {
-            field: 'id',
-            headerName: 'No.',
-            width: 90,
-            headerAlign: 'center',
-            align: 'center'
-        },
-        {
-            field: 'date',
-            headerName: 'Date',
-            width: 200,
-            headerAlign: 'center',
-            align: 'center'
-        },
-        {
-            field: 'reference',
-            headerName: 'Reference',
-            type: 'number',
-            width: 250,
-            headerAlign: 'center',
-            align: 'center'
-        },
-        {
-            field: 'debit',
-            headerName: 'Debit (PHP)',
-            width: 200,
-            headerAlign: 'center',
-            align: 'center',
-            renderCell: renderDebitCell
-        },
-        {
-            field: 'credit',
-            headerName: 'Credit (PHP)',
-            width: 200,
-            headerAlign: 'center',
-            align: 'center',
-            renderCell: renderCreditCell
-        },
-        {
-            field: 'description',
-            headerName: 'Description',
-            width: 300,
-            headerAlign: 'center',
-            align: 'center'
-        }
-    ]
-
     const UserColumns = [
         {
             field: 'id',
@@ -185,36 +118,36 @@ export default function Ledger() {
             field: 'reference',
             headerName: 'Reference',
             type: 'number',
-            width: 250,
+            width: 200,
             headerAlign: 'center',
             align: 'center'
         },
         {
-            field: 'debit',
-            headerName: 'Debit (PHP)',
+            field: 'withdrawal',
+            headerName: 'Withdrawal',
             width: 200,
             headerAlign: 'center',
             align: 'center',
             renderCell: renderDebitCell
         },
         {
-            field: 'credit',
-            headerName: 'Credit (PHP)',
+            field: 'deposit',
+            headerName: 'Deposit',
             width: 200,
             headerAlign: 'center',
             align: 'center',
             renderCell: renderCreditCell
         },
         {
-            field: 'description',
-            headerName: 'Description',
+            field: 'balance',
+            headerName: 'Balance',
             width: 300,
             headerAlign: 'center',
             align: 'center'
         },
         {
-            field: 'balance',
-            headerName: 'Balance',
+            field: 'description',
+            headerName: 'Description',
             width: 300,
             headerAlign: 'center',
             align: 'center'
@@ -226,21 +159,29 @@ export default function Ledger() {
             <div className="flex">
                 <Sidebar />
                 <div className="w-[80%] h-screen flex flex-col justify-start items-start p-[1rem] overflow-auto">
-                    <Header__Dashboard title={`Ledger`} />
+                    <Header__Dashboard title={`View Statement`} />
                     <div className="w-full h-[95%] flex flex-col justify-start items-start gap-[1rem]">
                         <div className="w-full h-[5%]">
                             <h1 className='text-black font-[600] text-[1.2rem]'>
                                 Transaction History
                             </h1>
                         </div>
-                        <div className="w-full h-[90%]">
-                            {(details?.role === 'rb' || details?.role === 'admin') && (<DataGrids columnsTest={RBColumns} rowsTest={values} />)}
-                            {(details?.role === 'user' || details?.role === 'developer') && (<DataGrids columnsTest={UserColumns} rowsTest={userTransactions} />)}
+                        <div className="w-full h-[5%] flex justify-start items-center gap-[1rem]">
+                            <h1>
+                                Search
+                            </h1>
+                            <input
+                                type="text"
+                                className="block w-[20rem] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                placeholder='Search here...'
+                            />
+                        </div>
+                        <div className="w-full h-[80%]">
+                            <DataGrids columnsTest={UserColumns} rowsTest={userTransactions} descCol={`id`} colVisibility={{ id: false }} />
                         </div>
                     </div>
                 </div>
             </div>
-
         </>
     )
 }
