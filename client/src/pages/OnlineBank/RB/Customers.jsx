@@ -292,7 +292,7 @@ export default function Customers() {
                                 </div>
                             </div>
                             <div className="w-full h-[88%]">
-                                <DataGrids columnsTest={AccountColumns} rowsTest={accounts} />
+                                <DataGrids columnsTest={AccountColumns} rowsTest={accounts} descCol={`accountno`} colVisibility={{ id: false }} />
                             </div>
                         </TabPanel>
                     </TabContext>
