@@ -55,7 +55,7 @@ export default function Accounts() {
         return (
             <div className="w-full h-full flex justify-center items-center">
                 <Button onClick={() => handleViewAccount(params?.row?.uid)} className="flex justify-center items-center hover:scale-[.98] duration-300 ease">
-                    <h1>View</h1>
+                    <h1>View Statement</h1>
                 </Button>
             </div>
 
@@ -88,7 +88,7 @@ export default function Accounts() {
         {
             field: 'actions',
             headerName: 'Actions',
-            width: 200,
+            width: 250,
             headerAlign: 'center',
             align: 'center',
             renderCell: renderViewCell
