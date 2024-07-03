@@ -4,20 +4,20 @@ import Home from './pages/Home/Home'
 import Login from './pages/Home/Login'
 import SignUp from './pages/Home/SignUp'
 import Dashboard from './pages/OnlineBank/Dashboard'
-import AccountSettings from './pages/OnlineBank/AccountSettings'
+import Profile from './pages/OnlineBank/Profile'
 import Security from './pages/OnlineBank/Security'
 import Transfer from './pages/OnlineBank/Transfer'
 import APIKeys from './pages/OnlineBank/IT/APIKeys'
 import AuditLog from './pages/OnlineBank/IT/AuditLog'
 import Developers from './pages/OnlineBank/IT/Developers'
 import Employees from './pages/OnlineBank/HR/Employees'
-import Transactions from './pages/OnlineBank/Transactions'
+import Statement from './pages/OnlineBank/Statement'
 import Customers from './pages/OnlineBank/RB/Customers'
 import AddCustomer from './pages/OnlineBank/RB/AddCustomer'
 import OpenAccount from './pages/OnlineBank/RB/OpenAccount'
 import AddEmployees from './pages/OnlineBank/HR/AddEmployees'
-import UpdateAccount from './pages/OnlineBank/UpdateAccount'
-import AccountStatement from './pages/OnlineBank/AccountStatement'
+import UpdateProfile from './pages/OnlineBank/UpdateProfile'
+import CardDetails from './pages/OnlineBank/CardDetails'
 import Deposit from './pages/OnlineBank/RB/Deposit'
 import Withdrawal from './pages/OnlineBank/RB/Withdrawal'
 import Ledger from './pages/OnlineBank/RB/Ledger'
@@ -27,12 +27,12 @@ const Routes = createBrowserRouter([
   { path: '/unionbank', element: <Home /> },
   { path: '/login', element: <Login /> },
   { path: '/signup', element: <SignUp /> },
-  { path: '/account', element: <AccountSettings /> },
-  { path: '/account/updateaccount', element: <UpdateAccount /> },
+  { path: '/profile', element: <Profile /> },
+  { path: '/profile/updateprofile', element: <UpdateProfile /> },
   { path: '/security', element: <Security /> },
-  { path: '/transactions', element: <Transactions /> },
+  { path: '/statement', element: <Statement /> },
   { path: '/transfer', element: <Transfer /> },
-  { path: '/statement', element: <AccountStatement /> },
+  { path: '/carddetails', element: <CardDetails /> },
 
   // HR DEPARTMENT
   { path: '/employees', element: <Employees /> },
