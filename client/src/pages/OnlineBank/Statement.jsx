@@ -92,7 +92,7 @@ export default function Transactions() {
         {
             field: 'date',
             headerName: 'Date',
-            width: 200,
+            width: 250,
             headerAlign: 'center',
             align: 'center'
         },
