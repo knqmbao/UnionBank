@@ -248,11 +248,11 @@ export default function Customers() {
                     <Header__Dashboard title={`Customers`} />
                     <div className="w-full h-[5%]">
                         <h1 className='text-black font-[600] text-[1.2rem]'>
-                            Manage Customers
+                            Manage
                         </h1>
                     </div>
                     <TabContext value={value}>
-                        <div className="w-full h-[7.5%]overflow-hidden">
+                        <div className="w-full h-[7.5%] overflow-hidden">
                             <TabList onChange={handleChange}>
                                 <Tab label="Registered Users" value="1" style={{ fontWeight: '500' }} />
                                 <Tab label="Account Holders" value="2" style={{ fontWeight: '500' }} />
