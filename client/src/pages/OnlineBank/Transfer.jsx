@@ -30,15 +30,19 @@ export default function Transfer() {
         try {
             e.preventDefault()
             const credentials = sessionStorage.getItem('credentials')
-            const { userId } = JSON.parse(credentials)
+            const { userId, token } = JSON.parse(credentials)
             const res = await axios.post(`${VITE_HOST}/api/transfertransaction`, values, {
                 headers: {
-                    Authorization: `Bearer ${userId}`
+                    Authorization: `Bearer ${token}`,
+                    userId: userId
                 }
             })
-            console.log(res?.data)
+            if (res?.data?.success) return alert(res?.data?.message)
+            alert(res?.data?.message)
         } catch (error) {
             console.error(error)
+        } finally {
+            handleCleanUp()
         }
     }
 
@@ -50,6 +54,15 @@ export default function Transfer() {
         }))
     }
 
+    const handleCleanUp = () => {
+        setValues((prev) => ({
+            ...prev,
+            debitAccount: '',
+            creditAccount: '',
+            amount: ''
+        }))
+    }
+
     return (
         <>
             <div className="flex">
@@ -57,8 +70,8 @@ export default function Transfer() {
                 <div className="w-[80%] h-screen flex flex-col justify-start items-center p-[1rem] overflow-auto ">
                     <Header title={`Make a Transfer`} />
                     <form
-                        onChange={handleTransfer}
-                        className='w-full h-[95%] flex flex-col justify-start items-center px-[15rem]'>
+                        onSubmit={handleTransfer}
+                        className='w-full h-[95%] flex flex-col justify-start items-center px-[5rem]'>
                         <div className="space-y-12 pt-[5rem] pb-[20rem]">
                             <div className="border-b border-gray-900/10 pb-12">
                                 <h2 className="text-base font-semibold leading-7 text-gray-900">Account Information</h2>
