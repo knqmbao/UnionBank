@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Sidebar from '../../../components/Sidebar'
 import Header__Dashboard from '../../../components/Header__dashboard'
 import DataGrids from '../../../components/DataGrids'
@@ -7,6 +7,7 @@ import axios from 'axios'
 const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function Ledger() {
+    const { accountid } = useParams()
     const [values, setValues] = useState([])
     const [details, setDetails] = useState({
         role: '',
@@ -19,13 +20,9 @@ export default function Ledger() {
         fetchCredentials();
     }, []);
 
-    // useEffect(() => {
-    //     if (details?.role === 'rb' || details?.role === 'admin') {
-    //         fetchTransactions();
-    //     } else if (details.role === 'user') {
-    //         fetchUserTransactions();
-    //     }
-    // }, [details.role]);
+    useEffect(() => {
+        fetchUserTransactions()
+    }, []);
 
     const fetchCredentials = async () => {
         try {
@@ -45,10 +42,7 @@ export default function Ledger() {
 
     const fetchUserTransactions = async () => {
         try {
-            const credentials = sessionStorage.getItem('credentials')
-            const { userId } = JSON.parse(credentials)
-
-            const res = await axios.get(`${VITE_HOST}/api/transactions/${userId}`, {
+            const res = await axios.get(`${VITE_HOST}/api/transactions/${accountid}`, {
                 headers: {
                     Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
                 }
@@ -70,10 +64,6 @@ export default function Ledger() {
             console.error(error)
         }
     }
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
 
     const renderDebitCell = (params) => {
         return (
@@ -110,7 +100,7 @@ export default function Ledger() {
         {
             field: 'date',
             headerName: 'Date',
-            width: 200,
+            width: 250,
             headerAlign: 'center',
             align: 'center'
         },
@@ -159,7 +149,7 @@ export default function Ledger() {
             <div className="flex">
                 <Sidebar />
                 <div className="w-[80%] h-screen flex flex-col justify-start items-start p-[1rem] overflow-auto">
-                    <Header__Dashboard title={`View Statement`} />
+                    <Header__Dashboard title={`View Statement`} linkName={`View Accounts`} link={`/ledger`} />
                     <div className="w-full h-[95%] flex flex-col justify-start items-start gap-[1rem]">
                         <div className="w-full h-[5%]">
                             <h1 className='text-black font-[600] text-[1.2rem]'>
