@@ -9,7 +9,7 @@ export default function DataGrids({columnsTest, rowsTest}) {
             initialState={{
                 pagination: {
                     paginationModel: {
-                        pageSize: 10,
+                        pageSize: 25,
                     },
                 },
             }}
