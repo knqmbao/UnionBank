@@ -67,7 +67,7 @@ export default function Deposit() {
             <div className="flex">
                 <Sidebar />
                 <div className="w-[80%] h-screen flex flex-col justify-start items-center p-[1rem] overflow-auto ">
-                    <Header__Dashboard title={`Deposit`} />
+                    <Header__Dashboard breadcrumbs={breadCrumbs} />
                     <form
                         onSubmit={handleDeposit}
                         className='w-full h-[95%] flex flex-col justify-start items-center px-[5rem]'>
@@ -132,10 +132,15 @@ export default function Deposit() {
                         </div>
                     </form>
                     <div className="w-full h-[100vh] bg-black">
-                        
+
                     </div>
                 </div>
             </div >
         </>
     )
 }
+
+const breadCrumbs = [
+    // { title: 'Home', href: '/', isLink: true },
+    { title: 'Deposit', isLink: false },
+]
