@@ -38,7 +38,7 @@ export default function UpdateAccount() {
             <div className="flex">
                 <Sidebar />
                 <div className="w-[80%] h-screen flex flex-col justify-start items-center p-[1rem] overflow-auto ">
-                    <Header__Dashboard linkName={`Account`} link={`/account`} title={`Edit Account`} />
+                    <Header__Dashboard breadcrumbs={breadCrumbs} />
                     <form
                         onSubmit={handleUpdate}
                         className='w-full h-[95%] flex flex-col justify-start items-center px-[5rem]'>
@@ -186,3 +186,8 @@ export default function UpdateAccount() {
         </>
     )
 }
+
+const breadCrumbs = [
+    { title: 'Profile', href: '/profile', isLink: true },
+    { title: 'Edit Profile', isLink: false },
+]
