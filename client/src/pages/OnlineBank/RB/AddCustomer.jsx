@@ -48,7 +48,7 @@ export default function AddCustomer() {
             <div className="flex">
                 <Sidebar />
                 <div className="w-[80%] h-screen flex flex-col justify-start items-center p-[1rem] overflow-auto ">
-                    <Header__Dashboard linkName={`Customers`} link={`/customers`} title={`Add Customer`} />
+                    <Header__Dashboard breadcrumbs={breadCrumbs} />
                     <div className='w-full h-[95%] flex flex-col justify-start items-center px-[5rem]'>
                         <div className="space-y-12 pt-[5rem] pb-[20rem]  ">
                             <div className="border-b border-gray-900/10 pb-12 ">
@@ -143,3 +143,8 @@ export default function AddCustomer() {
         </>
     )
 }
+
+const breadCrumbs = [
+    { title: 'Customers', href: '/customers', isLink: true },
+    { title: 'Add Customer', isLink: false },
+]
