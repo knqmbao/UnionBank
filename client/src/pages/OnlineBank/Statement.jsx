@@ -7,7 +7,6 @@ import axios from 'axios'
 const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function Transactions() {
-    const [value, setValue] = useState('1');
     const [userTransactions, setUserTransactions] = useState([])
     const navigate = useNavigate()
 
@@ -53,15 +52,11 @@ export default function Transactions() {
         }
     }
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-
     const renderDebitCell = (params) => {
         return (
             <div className="w-full h-full flex justify-center items-center">
                 {
-                    (params.row.transactionType === 'withdrawal' || params.row.transactionType === 'transfer_debit') ? params.row.debit : '---'
+                    (params.row.transactionType === 'deposit' || params.row.transactionType === 'transfer_credit') ? params.row.debit : '---'
                 }
             </div>
 
@@ -73,7 +68,7 @@ export default function Transactions() {
             <div className="w-full h-full flex justify-center items-center">
                 <h1 className='font-bold'>
                     {
-                        (params.row.transactionType === 'deposit' || params.row.transactionType === 'transfer_credit') ? params.row.credit : '---'
+                        (params.row.transactionType === 'withdrawal' || params.row.transactionType === 'transfer_debit') ? params.row.credit : '---'
                     }
                 </h1>
             </div>
