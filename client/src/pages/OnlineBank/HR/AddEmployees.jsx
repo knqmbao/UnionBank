@@ -38,7 +38,7 @@ export default function AddEmployees() {
             <div className="flex">
                 <Sidebar />
                 <div className="w-[80%] h-screen flex flex-col justify-start items-center p-[1rem] overflow-auto ">
-                    <Header__Dashboard linkName={`Employees`} link={`/employees`} title={`Add Employee`} />
+                    <Header__Dashboard breadcrumbs={breadCrumbs} />
                     <form
                         onSubmit={handleSubmit}
                         className='w-full h-[95%] flex flex-col justify-start items-center px-[10rem]'>
@@ -181,3 +181,8 @@ export default function AddEmployees() {
         </>
     )
 }
+
+const breadCrumbs = [
+    { title: 'Employees', href: '/employees', isLink: true },
+    { title: 'Add Employee', isLink: false },
+]
