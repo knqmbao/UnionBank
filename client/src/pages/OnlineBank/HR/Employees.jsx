@@ -111,7 +111,7 @@ export default function Employees() {
             <div className="flex">
                 <Sidebar />
                 <div className="w-[80%] h-screen flex flex-col justify-start items-start p-[1rem] overflow-hidden">
-                    <Header__Dashboard title={`Employees`} />
+                    <Header__Dashboard breadcrumbs={breadCrumbs} />
                     <div className="w-full h-[95%] flex flex-col justify-start gap-[1rem]">
                         <div className="w-full flex justify-between items-center">
                             <div className="flex justify-start items-center gap-[1rem]">
@@ -140,3 +140,8 @@ export default function Employees() {
         </>
     )
 }
+
+const breadCrumbs = [
+    // { title: 'Home', href: '/', isLink: true },
+    { title: 'Employees', isLink: false },
+]
