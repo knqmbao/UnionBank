@@ -131,6 +131,9 @@ export default function Deposit() {
                             </div>
                         </div>
                     </form>
+                    <div className="w-full h-[100vh] bg-black">
+                        
+                    </div>
                 </div>
             </div >
         </>
