@@ -113,20 +113,20 @@ export default function Ledger() {
             align: 'center'
         },
         {
-            field: 'withdrawal',
-            headerName: 'Withdrawal',
-            width: 200,
-            headerAlign: 'center',
-            align: 'center',
-            renderCell: renderDebitCell
-        },
-        {
             field: 'deposit',
             headerName: 'Deposit',
             width: 200,
             headerAlign: 'center',
             align: 'center',
             renderCell: renderCreditCell
+        },
+        {
+            field: 'withdrawal',
+            headerName: 'Withdrawal',
+            width: 200,
+            headerAlign: 'center',
+            align: 'center',
+            renderCell: renderDebitCell
         },
         {
             field: 'balance',
