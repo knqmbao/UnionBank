@@ -52,8 +52,12 @@ export default function APIKeys() {
             console.log(res?.data)
         } catch (error) {
             console.error(error)
+        } finally {
+            fetchUserTokens()
         }
     }
+
+    // const handleTrans
 
     return (
         <>
