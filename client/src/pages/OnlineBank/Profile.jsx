@@ -27,7 +27,7 @@ export default function Profile() {
             <div className="flex">
                 <Sidebar />
                 <div className="w-[80%] h-screen flex flex-col justify-start items-center p-[1rem] overflow-auto">
-                    <Header title={`Account`} />
+                    <Header breadcrumbs={breadCrumbs} />
                     <div className="w-full h-[95%] px-[20rem] py-[5rem]">
                         <div className="px-4 sm:px-0">
                             <h3 className="text-base font-semibold leading-7 text-gray-900">Account Information</h3>
@@ -67,3 +67,8 @@ export default function Profile() {
         </>
     )
 }
+
+const breadCrumbs = [
+    // { title: 'Home', href: '/', isLink: true },
+    { title: 'Profile', isLink: false },
+]
