@@ -68,7 +68,7 @@ export default function Withdrawal() {
             <div className="flex">
                 <Sidebar />
                 <div className="w-[80%] h-screen flex flex-col justify-start items-center p-[1rem] overflow-auto ">
-                    <Header__Dashboard title={`Withdrawal`} />
+                    <Header__Dashboard breadcrumbs={breadCrumbs} />
                     <form
                         onSubmit={handleWithdrawal}
                         className='w-full h-[95%] flex flex-col justify-start items-center px-[5rem]'>
@@ -137,3 +137,8 @@ export default function Withdrawal() {
         </>
     )
 }
+
+const breadCrumbs = [
+    // { title: 'Home', href: '/', isLink: true },
+    { title: 'Withdrawal', isLink: false },
+]
