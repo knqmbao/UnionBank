@@ -94,7 +94,7 @@ export default function Developers() {
             <div className="flex">
                 <Sidebar />
                 <div className="w-[80%] h-screen flex flex-col justify-start items-start p-[1rem] overflow-hidden">
-                    <Header__Dashboard title={`Developers`} />
+                    <Header__Dashboard breadcrumbs={breadCrumbs} />
                     <div className="w-full h-[95%] flex flex-col gap-[1rem]">
                         <div className="flex justify-start items-center gap-[1rem]">
                             <h1>
@@ -113,3 +113,8 @@ export default function Developers() {
         </>
     )
 }
+
+const breadCrumbs = [
+    // { title: 'Home', href: '/', isLink: true },
+    { title: 'Developers', isLink: false },
+]
