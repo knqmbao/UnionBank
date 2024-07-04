@@ -149,7 +149,7 @@ export default function Ledger() {
             <div className="flex">
                 <Sidebar />
                 <div className="w-[80%] h-screen flex flex-col justify-start items-start p-[1rem] overflow-auto">
-                    <Header__Dashboard title={`View Statement`} linkName={`View Accounts`} link={`/ledger`} />
+                    <Header__Dashboard breadcrumbs={breadCrumbs} title={`View Statement`} linkName={`View Accounts`} link={`/ledger`} />
                     <div className="w-full h-[95%] flex flex-col justify-start items-start gap-[1rem]">
                         <div className="w-full h-[5%]">
                             <h1 className='text-black font-[600] text-[1.2rem]'>
@@ -175,3 +175,8 @@ export default function Ledger() {
         </>
     )
 }
+
+const breadCrumbs = [
+    { title: 'View Accounts', href: '/ledger', isLink: true },
+    { title: 'View Statement', isLink: false },
+]
