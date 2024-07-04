@@ -14,9 +14,6 @@ export default function Header__Home() {
                         Home
                     </Link>
                     <Link to={`/unionbank`} className='text-black font-[500] text-[.9rem]'>
-                        Developer
-                    </Link>
-                    <Link to={`/unionbank`} className='text-black font-[500] text-[.9rem]'>
                         About Us
                     </Link>
                     <Link to={`/unionbank`} className='text-black font-[500] text-[.9rem]'>
