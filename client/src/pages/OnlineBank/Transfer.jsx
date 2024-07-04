@@ -68,7 +68,7 @@ export default function Transfer() {
             <div className="flex">
                 <Sidebar />
                 <div className="w-[80%] h-screen flex flex-col justify-start items-center p-[1rem] overflow-auto ">
-                    <Header title={`Make a Transfer`} />
+                    <Header breadcrumbs={breadCrumbs} />
                     <form
                         onSubmit={handleTransfer}
                         className='w-full h-[95%] flex flex-col justify-start items-center px-[5rem]'>
@@ -170,3 +170,8 @@ export default function Transfer() {
         </>
     )
 }
+
+const breadCrumbs = [
+    // { title: 'Home', href: '/', isLink: true },
+    { title: 'Make a Transfer', isLink: false },
+]
