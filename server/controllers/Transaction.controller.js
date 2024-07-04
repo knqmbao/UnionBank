@@ -19,7 +19,7 @@ const TransactionController = {
 
             const currentBalance = balance + depositAmount
 
-            await TransactionModel.create({ account: accountId, amount: depositAmount, transactionType: 'deposit', balance: currentBalance, token: `UnionBank userid : ${userIdHeader}`  })
+            await TransactionModel.create({ account: accountId, amount: depositAmount, transactionType: 'deposit', balance: currentBalance, token: `UnionBank userid : ${userIdHeader}`, description: 'Deposited from UnionBank'  })
             await AccountModel.findByIdAndUpdate(accountId, { balance: currentBalance }, { new: true })
 
             res.json({ success: true, message: 'Deposit transaction successfully!' })
@@ -46,7 +46,7 @@ const TransactionController = {
 
             const currentBalance = balance - taxAmount
 
-            await TransactionModel.create({ account: accountId, amount: taxAmount, transactionType: 'withdrawal', balance: currentBalance, token: `UnionBank userid : ${userIdHeader}`  })
+            await TransactionModel.create({ account: accountId, amount: taxAmount, transactionType: 'withdrawal', balance: currentBalance, token: `UnionBank userid : ${userIdHeader}`, description: 'Withdrawal from UnionBank'  })
 
             await AccountModel.findByIdAndUpdate(accountId, { balance: currentBalance }, { new: true })
 
