@@ -102,7 +102,7 @@ export default function OpenAccount() {
             <div className="flex">
                 <Sidebar />
                 <div className="w-[80%] h-screen flex flex-col justify-start items-center p-[1rem] overflow-auto ">
-                    <Header__Dashboard linkName={`Customers`} linkName1={`Add Customer`} link={`/customers`} link1={`/customers/addcustomer`} title={`Open Account`} />
+                    <Header__Dashboard breadcrumbs={breadCrumbs}/>
                     <form
                         onSubmit={handleCreateAccount}
                         className='w-full h-[95%] flex flex-col justify-start items-center px-[5rem]'>
@@ -185,3 +185,9 @@ export default function OpenAccount() {
         </>
     )
 }
+
+const breadCrumbs = [
+    { title: 'Customers', href: '/customers', isLink: true },
+    {title: 'Add Customer', href: '/customers/addcustomer', isLink: true},
+    { title: 'Open Account', isLink: false },
+]
