@@ -29,11 +29,6 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
         default: false
-    },
-    isdeveloper: {
-        type: Boolean,
-        required: true,
-        default: false
     }
 }, { timestamps: true });
 
