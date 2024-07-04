@@ -27,7 +27,7 @@ export default function AccountStatement() {
             <div className="flex">
                 <Sidebar />
                 <div className="w-[80%] h-screen flex flex-col justify-start items-center p-[1rem] overflow-auto">
-                    <Header__Dashboard linkName={`Dashboard`} link={`/`} title={`Account Statement`} />
+                    <Header__Dashboard breadcrumbs={breadCrumbs} />
                     <div className="w-full h-[95%] px-[20rem] py-[5rem]">
                         <div className="px-4 sm:px-0">
                             <h3 className="text-base font-semibold leading-7 text-gray-900">Account Statement</h3>
@@ -63,3 +63,8 @@ export default function AccountStatement() {
         </>
     )
 }
+
+const breadCrumbs = [
+    { title: 'Dashboard', href: '/', isLink: true },
+    { title: 'Card Details', isLink: false },
+]
