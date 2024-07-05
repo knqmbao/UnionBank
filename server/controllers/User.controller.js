@@ -94,6 +94,8 @@ const UserController = {
                 },
             ]);
 
+            console.log(accountsWithUsers)
+
             res.json({ success: true, message: 'Fetch user successfully!', data: accountsWithUsers })
         } catch (error) {
             res.json({ error: `GetAllUser in user controller error ${error}` });
