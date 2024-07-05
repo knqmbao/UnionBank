@@ -8,14 +8,13 @@ import axios from 'axios'
 const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function UpdateAccount() {
+    const [userRole, setUserRole] = useState('')
     const [values, setValues] = useState({
         name: '',
         email: '',
         mobileno: '',
-        // password: '',
-        role: false
+        role: ''
     })
-    const [confirmpassword, setPasswword] = useState('')
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -37,17 +36,15 @@ export default function UpdateAccount() {
             const name = res?.data?.data?.name
             const mobileno = res?.data?.data?.mobileno
             const email = res?.data?.data?.email
-            const role = res?.data?.data?.role
+            const isRole = res?.data?.data?.role
 
             setValues((prev) => ({
                 ...prev,
                 name: name,
                 email: email,
                 mobileno: mobileno,
-                role: role
+                role: isRole
             }))
-            console.log(role)
-            console.log(values)
         } catch (error) {
             console.error(error)
         }
@@ -75,10 +72,18 @@ export default function UpdateAccount() {
     }
 
     const handleToggleCheck = (e) => {
-        setValues((prev) => ({
-            ...prev,
-            role: e
-        }))
+        if (e === true) {
+            setValues((prev) => ({
+                ...prev,
+                role: 'developer'
+            }))
+        } else {
+            setValues((prev) => ({
+                ...prev,
+                role: 'user'
+            }))
+        }
+
     }
 
     const handleOnChange = (e) => {
@@ -201,17 +206,21 @@ export default function UpdateAccount() {
                                         </div>
                                     </div>
                                 </div> */}
-                                <div className='mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-3'>
-
-                                    <div className="sm:col-span-1">
-                                        <div className="sm:col-span-3 flex justify-between items-center">
-                                            <div className="block text-sm font-medium leading-6 text-gray-900">
-                                                Developer
+                                {
+                                    (values?.role === 'user' || values?.role === 'developer') && (
+                                        <div className='mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-3'>
+                                            <div className="sm:col-span-1">
+                                                <div className="sm:col-span-3 flex justify-between items-center">
+                                                    <div className="block text-sm font-medium leading-6 text-gray-900">
+                                                        Developer
+                                                    </div>
+                                                    <Toggle isCheck={values?.role === 'user' ? false : true} returnCheck={(e) => handleToggleCheck(e)} />
+                                                </div>
                                             </div>
-                                            <Toggle isCheck={values?.role} returnCheck={(e) => handleToggleCheck(e)} />
                                         </div>
-                                    </div>
-                                </div>
+                                    )
+                                }
+
                             </div>
                             <div className="w-full flex items-center justify-end gap-x-6">
                                 <button
