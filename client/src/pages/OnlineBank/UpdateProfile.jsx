@@ -1,28 +1,73 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../../components/Sidebar'
 import Header__Dashboard from '../../components/Header__dashboard'
 import Toggle from '../../components/Toggle'
+import axios from 'axios'
+
+const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function UpdateAccount() {
+    const [values, setValues] = useState({
+        name: '',
+        email: '',
+        mobileno: '',
+        // password: '',
+        role: false
+    })
+    const [confirmpassword, setPasswword] = useState('')
     const navigate = useNavigate()
 
     useEffect(() => {
         fetchCredentials()
     }, [])
 
-    const fetchCredentials = () => {
+    const fetchCredentials = async () => {
         try {
             const credentials = sessionStorage.getItem('credentials')
             if (!credentials) return navigate('/unionbank')
+
+            const { userId } = JSON.parse(credentials)
+            const res = await axios.get(`${VITE_HOST}/api/users/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+
+            const name = res?.data?.data?.name
+            const mobileno = res?.data?.data?.mobileno
+            const email = res?.data?.data?.email
+            const role = res?.data?.data?.role
+
+            setValues((prev) => ({
+                ...prev,
+                name: name,
+                email: email,
+                mobileno: mobileno,
+                role: role
+            }))
+            console.log(role)
+            console.log(values)
         } catch (error) {
             console.error(error)
         }
     }
 
-    const handleUpdate = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        alert('Test Update')
+        const credentials = sessionStorage.getItem('credentials')
+        const { userId } = JSON.parse(credentials)
+        const res = await axios.post(`${VITE_HOST}/api/updateuser/${userId}`, values, {
+            headers: {
+                Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+            }
+        })
+
+        if (res?.data?.success) {
+            alert(res?.data?.message)
+            sessionStorage.clear()
+            location.reload()
+        }
     }
 
     const handleCancel = () => {
@@ -30,7 +75,18 @@ export default function UpdateAccount() {
     }
 
     const handleToggleCheck = (e) => {
+        setValues((prev) => ({
+            ...prev,
+            role: e
+        }))
+    }
 
+    const handleOnChange = (e) => {
+        const { name, value } = e.target
+        setValues((prev) => ({
+            ...prev,
+            [name]: value
+        }))
     }
 
     return (
@@ -40,7 +96,7 @@ export default function UpdateAccount() {
                 <div className="w-[80%] h-screen flex flex-col justify-start items-center p-[1rem] overflow-auto ">
                     <Header__Dashboard breadcrumbs={breadCrumbs} />
                     <form
-                        onSubmit={handleUpdate}
+                        onSubmit={handleSubmit}
                         className='w-full h-[95%] flex flex-col justify-start items-center px-[5rem]'>
                         <div className="space-y-12 pt-[5rem] pb-[20rem]">
                             <div className="border-b border-gray-900/10 pb-12">
@@ -49,36 +105,22 @@ export default function UpdateAccount() {
 
                                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-8">
                                     <div className="sm:col-span-4">
-                                        <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
-                                            First name
+                                        <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
+                                            Full Name
                                         </label>
                                         <div className="mt-2">
                                             <input
+                                                onChange={handleOnChange}
+                                                value={values?.name}
+                                                required
                                                 type="text"
-                                                name="first-name"
-                                                id="first-name"
-                                                autoComplete="given-name"
+                                                name="name"
+                                                id="name"
+                                                autoComplete="name"
                                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             />
                                         </div>
                                     </div>
-
-                                    <div className="sm:col-span-4">
-                                        <label htmlFor="last-name" className="block text-sm font-medium leading-6 text-gray-900">
-                                            Last name
-                                        </label>
-                                        <div className="mt-2">
-                                            <input
-                                                type="text"
-                                                name="last-name"
-                                                id="last-name"
-                                                autoComplete="family-name"
-                                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            />
-                                        </div>
-                                    </div>
-
-
                                 </div>
                                 <div className='mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-3'>
                                     <div className="sm:col-span-2">
@@ -87,6 +129,9 @@ export default function UpdateAccount() {
                                         </label>
                                         <div className="mt-2">
                                             <input
+                                                onChange={handleOnChange}
+                                                value={values?.email}
+                                                required
                                                 id="email"
                                                 name="email"
                                                 type="email"
@@ -96,11 +141,13 @@ export default function UpdateAccount() {
                                         </div>
                                     </div>
                                     <div className="sm:col-span-1">
-                                        <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                                        <label htmlFor="mobileno" className="block text-sm font-medium leading-6 text-gray-900">
                                             Mobile No.
                                         </label>
                                         <div className="mt-2">
                                             <input
+                                                onChange={handleOnChange}
+                                                value={values?.mobileno}
                                                 id="mobileno"
                                                 name="mobileno"
                                                 type="text"
@@ -110,7 +157,7 @@ export default function UpdateAccount() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-3'>
+                                {/* <div className='mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-3'>
                                     <div className="sm:col-span-1 flex flex-col gap-[.7rem]">
                                         <div className="sm:col-span-1">
                                             <label htmlFor="currentpassword" className="block text-sm font-medium leading-6 text-gray-900">
@@ -153,7 +200,7 @@ export default function UpdateAccount() {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className='mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-3'>
 
                                     <div className="sm:col-span-1">
@@ -161,7 +208,7 @@ export default function UpdateAccount() {
                                             <div className="block text-sm font-medium leading-6 text-gray-900">
                                                 Developer
                                             </div>
-                                            <Toggle isCheck={false} returnCheck={(e) => handleToggleCheck(e)} />
+                                            <Toggle isCheck={values?.role} returnCheck={(e) => handleToggleCheck(e)} />
                                         </div>
                                     </div>
                                 </div>
