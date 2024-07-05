@@ -10,6 +10,7 @@ const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function Accounts() {
     const [values, setValues] = useState([])
+    const [search, setSearch] = useState('')
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -29,6 +30,30 @@ export default function Accounts() {
     const fetchRBAccounts = async () => {
         try {
             const res = await axios.get(`${VITE_HOST}/api/rbaccounts`, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+            const accounts = res?.data?.data
+            const formattedData = accounts.map((acc, index) => ({
+                id: index + 1,
+                uid: acc?.user?._id,
+                accountno: acc?.accountno,
+                name: acc?.user?.name,
+                balance: acc?.balance
+            }))
+            setValues(formattedData)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const handleOnChangeSearch = async (e) => {
+        try {
+            const { value } = e.target
+            if (value === '') return fetchRBAccounts()
+
+            const res = await axios.get(`${VITE_HOST}/api/accounts/${value}`, {
                 headers: {
                     Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
                 }
@@ -132,13 +157,14 @@ export default function Accounts() {
                                 Search
                             </h1>
                             <input
+                                onChange={handleOnChangeSearch}
                                 type="text"
                                 className="block w-[20rem] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 placeholder='Search here...'
                             />
-                            <Button>
+                            {/* <Button>
                                 <SearchIcon />
-                            </Button>
+                            </Button> */}
                         </div>
                         <div className="w-full h-[80%]">
                             <DataGrids columnsTest={UserColumns} rowsTest={values} descCol={`id`} colVisibility={{ id: false }} />
