@@ -60,7 +60,7 @@ const UserController = {
     },
     GetAllRBAccounts: async (req, res) => {
         try {
-            const accountsWithUsers = await AccountModel.aggregate([
+            const AccountUsers = await AccountModel.aggregate([
                 // Lookup users associated with each account
                 {
                     $lookup: {
@@ -94,9 +94,9 @@ const UserController = {
                 },
             ]);
 
-            console.log(accountsWithUsers)
+            console.log(AccountUsers)
 
-            res.json({ success: true, message: 'Fetch user successfully!', data: accountsWithUsers })
+            res.json({ success: true, message: 'Fetch user successfully!', data: AccountUsers })
         } catch (error) {
             res.json({ error: `GetAllUser in user controller error ${error}` });
         }
