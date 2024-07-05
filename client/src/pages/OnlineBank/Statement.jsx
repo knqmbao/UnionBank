@@ -42,6 +42,7 @@ export default function Transactions() {
                 reference: trans?._id,
                 debit: trans?.amount,
                 credit: trans?.amount,
+                servicefee: trans?.fee,
                 description: trans?.description,
                 transactionType: trans?.transactionType,
                 balance: trans?.balance
@@ -87,7 +88,7 @@ export default function Transactions() {
         {
             field: 'date',
             headerName: 'Date',
-            width: 250,
+            width: 200,
             headerAlign: 'center',
             align: 'center'
         },
@@ -116,9 +117,16 @@ export default function Transactions() {
             renderCell: renderCreditCell
         },
         {
+            field: 'servicefee',
+            headerName: 'Service fee',
+            width: 200,
+            headerAlign: 'center',
+            align: 'center'
+        },
+        {
             field: 'balance',
             headerName: 'Balance',
-            width: 300,
+            width: 200,
             headerAlign: 'center',
             align: 'center'
         },
