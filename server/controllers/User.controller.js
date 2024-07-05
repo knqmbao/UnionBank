@@ -106,18 +106,10 @@ const UserController = {
             const { userId } = req.params
             console.log('Search User Controller: ', userId)
 
-            const { name, email, mobileno, role } = await UserModel.findById(userId)
-            console.log({ name, email, mobileno, role })
+            const { name, email, mobileno, role, isactive } = await UserModel.findById(userId)
+            console.log({ name, email, mobileno, role, isactive } )
 
-            let filteredRole;
-            if (role === 'user') {
-                filteredRole = false;
-            } else if (role === 'developer') {
-                filteredRole = true;
-            }
-            console.log('filtyer', filteredRole)
-
-            res.json({ success: true, message: 'Fetched certain user successfully!', data: { name, email, mobileno, role: filteredRole } })
+            res.json({ success: true, message: 'Fetched certain user successfully!', data: { name, email, mobileno, role, isactive } })
         } catch (error) {
             res.json({ error: `GetCurrentUser in user controller error ${error}` });
         }
@@ -143,17 +135,13 @@ const UserController = {
             const { name, email, mobileno, role } = req.body
             console.log('Update User Controller: ', { name, email, mobileno, role })
 
-            let filteredRole
-            role === false ? filteredRole = 'user' : filteredRole = 'developer'
-
-            console.log(filteredRole)
             const data = await UserModel.findByIdAndUpdate(
                 userId,
                 {
                     name: name,
                     email: email,
                     mobileno: mobileno,
-                    role: filteredRole
+                    role: role
                 },
                 { new: true }
             )
