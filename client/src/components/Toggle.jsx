@@ -3,6 +3,10 @@ import React, { useEffect, useState } from 'react'
 export default function Toggle({ isCheck, returnCheck }) {
     const [isChecked, setIsChecked] = useState(isCheck)
 
+    useEffect(() => {
+        setIsChecked(isCheck); // Sync with parent prop changes
+    }, [isCheck]);
+
     useEffect(()=> {
         returnCheck(isChecked)
     },[isChecked])
