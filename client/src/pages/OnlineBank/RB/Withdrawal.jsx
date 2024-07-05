@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Sidebar from '../../../components/Sidebar'
 import Header__Dashboard from '../../../components/Header__dashboard'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function Withdrawal() {
+    const { accountid } = useParams()
     const [values, setValues] = useState({
         account: '',
         amount: '',
@@ -14,6 +15,7 @@ export default function Withdrawal() {
 
     useEffect(() => {
         fetchCredentials()
+        fetchAccountNo()
     }, [])
 
     const fetchCredentials = () => {
@@ -47,6 +49,23 @@ export default function Withdrawal() {
         }
     }
 
+    const fetchAccountNo = async () => {
+        try {
+            const res = await axios.get(`${VITE_HOST}/api/useraccount/${accountid}`, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+            const accountno = res?.data?.data?.accountno
+            setValues((prev) => ({
+                ...prev,
+                account: accountno
+            }))
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     const handleOnChange = (e) => {
         const { name, value } = e.target
         setValues((prev) => ({
@@ -58,9 +77,12 @@ export default function Withdrawal() {
     const handleCleanUp = () => {
         setValues((prev) => ({
             ...prev,
-            account: '',
             amount: ''
         }))
+    }
+
+    const handleBack = () => {
+        navigate('/ledger')
     }
 
     return (
@@ -124,6 +146,11 @@ export default function Withdrawal() {
                             </div>
                             <div className="w-full flex items-center justify-end gap-x-6">
                                 <button
+                                    onClick={handleBack}
+                                    className="text-sm font-semibold leading-6 text-gray-900">
+                                    Back
+                                </button>
+                                <button
                                     type="submit"
                                     className="rounded-md bg-[#111111] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#333333] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                 >
@@ -139,6 +166,6 @@ export default function Withdrawal() {
 }
 
 const breadCrumbs = [
-    // { title: 'Home', href: '/', isLink: true },
+    { title: 'View Accounts', href: '/', isLink: true },
     { title: 'Withdrawal', isLink: false },
 ]
