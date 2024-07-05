@@ -19,7 +19,7 @@ const TransactionController = {
 
             const currentBalance = balance + depositAmount
 
-            await TransactionModel.create({ account: accountId, amount: depositAmount, transactionType: 'deposit', balance: currentBalance, token: `UnionBank userid : ${userIdHeader}`, description: 'Deposited from UnionBank'  })
+            await TransactionModel.create({ account: accountId, fee: 0, amount: depositAmount, transactionType: 'deposit', balance: currentBalance, token: `UnionBank userid : ${userIdHeader}`, description: 'Deposited from UnionBank' })
             await AccountModel.findByIdAndUpdate(accountId, { balance: currentBalance }, { new: true })
 
             res.json({ success: true, message: 'Deposit transaction successfully!' })
@@ -46,7 +46,7 @@ const TransactionController = {
 
             const currentBalance = balance - taxAmount
 
-            await TransactionModel.create({ account: accountId, amount: taxAmount, transactionType: 'withdrawal', balance: currentBalance, token: `UnionBank userid : ${userIdHeader}`, description: 'Withdrawal from UnionBank'  })
+            await TransactionModel.create({ account: accountId, fee: tax, amount: withdrawAmount, transactionType: 'withdrawal', balance: currentBalance, token: `UnionBank userid : ${userIdHeader}`, description: 'Withdrawed from UnionBank' })
 
             await AccountModel.findByIdAndUpdate(accountId, { balance: currentBalance }, { new: true })
 
@@ -77,8 +77,8 @@ const TransactionController = {
             const debitFutureBalance = debitBalance - taxAmount
             const creditFutureBalance = creditBalance + transferAmount
 
-            await TransactionModel.create({ account: debitAccountId, amount: taxAmount, transactionType: 'transfer_debit', description: `${debitAccount} transferred to ${creditAccount}`, status: 'completed', balance: debitFutureBalance, token: `UnionBank userid : ${userIdHeader}` })
-            await TransactionModel.create({ account: creditAccountId, amount: transferAmount, transactionType: 'transfer_credit', description: `Received from ${debitAccount}`, status: 'completed', balance: creditFutureBalance, token: `UnionBank userid : ${userIdHeader}`  })
+            await TransactionModel.create({ account: debitAccountId, fee: tax, amount: transferAmount, transactionType: 'transfer_debit', description: `${debitAccount} transferred to ${creditAccount}`, status: 'completed', balance: debitFutureBalance, token: `Retail Banking : ${userIdHeader}` })
+            await TransactionModel.create({ account: creditAccountId, fee: tax, amount: transferAmount, transactionType: 'transfer_credit', description: `Received from ${debitAccount}`, status: 'completed', balance: creditFutureBalance, token: `Retail Banking : ${userIdHeader}` })
 
             await AccountModel.findByIdAndUpdate(debitAccountId, { balance: debitFutureBalance }, { new: true })
             await AccountModel.findByIdAndUpdate(creditAccountId, { balance: creditFutureBalance }, { new: true })
@@ -110,7 +110,7 @@ const TransactionController = {
             const data = await TransactionModel.find({ account: accountId })
 
             const formattedData = data.map(transaction => {
-                const { createdAt, _id, amount, description, transactionType, balance } = transaction;
+                const { createdAt, _id, amount, description, transactionType, balance, fee } = transaction;
 
                 // Format date including time
                 const formattedCreatedAt = new Date(createdAt).toLocaleString('en-US', {
@@ -121,7 +121,7 @@ const TransactionController = {
                     minute: '2-digit'
                 });
 
-                return { _id, amount, description, createdAt: formattedCreatedAt, transactionType, balance };
+                return { _id, amount, description, createdAt: formattedCreatedAt, transactionType, balance, fee };
             });
 
             res.json({ success: true, message: 'Fetch transactions successfully!', data: formattedData })
