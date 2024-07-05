@@ -45,8 +45,8 @@ const Routes = createBrowserRouter([
   { path: '/ledger/:accountid', element: <Ledger /> },
   { path: '/customers/addcustomer', element: <AddCustomer /> },
   { path: '/customers/addcustomer/openaccount', element: <OpenAccount /> },
-  { path: '/deposit', element: <Deposit /> },
-  { path: '/withdrawal', element: <Withdrawal /> },
+  { path: '/ledger/deposit/:accountid', element: <Deposit /> },
+  { path: '/ledger/withdrawal/:accountid', element: <Withdrawal /> },
 
   // IT DEPARTMENT
   { path: '/developers', element: <Developers /> },
