@@ -1,4 +1,7 @@
 const AccountModel = require('../models/Account.model')
+const fetch = require('node-fetch')
+
+const HOST = 'http://localhost:3001'
 
 const AccountController = {
     CreateAccount: async (req, res) => {
@@ -38,12 +41,37 @@ const AccountController = {
     },
     SearchAccount: async (req, res) => {
         try {
-            const { userId } = req.params
-            console.log('Search Account Controller: ', userId)
+            const { searchId } = req.params
+            console.log('Search Account Controller: ', searchId)
+            const response = await fetch(`${HOST}/api/rbaccounts`, {
+                headers: {
+                    Authorization: `Bearer ${process.env.ADMIN_TOKEN}`
+                }
+            })
 
-            const data = await AccountModel.find({ user: userId })
+            if (!response.ok) return res.json({ success: false, message: 'API Request error from search account controller!' })
 
-            res.json({ success: true, message: 'Fethced certain account successfully!', data })
+            const accounts = await response.json()
+            const regex = new RegExp(searchId, 'i');
+
+            // if (!searchId) { return res.json({ success: true, message: 'Fetched search account successfully!', data: accounts }) }
+
+            const filteredData = accounts?.data?.filter((item) => {
+                const { accountno, user } = item;
+                const { name } = user;
+                return regex.test(accountno) || regex.test(name);
+            })
+
+            // For Specific datas only
+            // .map((item) => {
+            //     const { accountno, user } = item;
+            //     const { name } = user;
+            //     return { accountno, name };
+            // });
+
+            console.log('the data: ', filteredData)
+
+            res.json({ success: true, message: 'Fethced certain account successfully!', data: filteredData })
         } catch (error) {
             res.json({ error: `SearchAccount in account controller error ${error}` });
         }
