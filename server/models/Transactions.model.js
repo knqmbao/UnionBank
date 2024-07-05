@@ -15,6 +15,10 @@ const transactionSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    fee: {
+        type: Number,
+        required: true
+    },
     transactionType: {
         type: String,
         enum: ['deposit', 'withdrawal', 'transfer_debit', 'transfer_credit'],
