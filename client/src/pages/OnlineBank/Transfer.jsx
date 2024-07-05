@@ -17,10 +17,25 @@ export default function Transfer() {
         fetchCredentials()
     }, [])
 
-    const fetchCredentials = () => {
+    const fetchCredentials = async () => {
         try {
             const credentials = sessionStorage.getItem('credentials')
             if (!credentials) return navigate('/unionbank')
+
+            const { userId } = JSON.parse(credentials)
+
+            const res = await axios.get(`${VITE_HOST}/api/useraccount/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+
+            const accountno = res?.data?.data?.accountno
+
+            setValues((prev) => ({
+                ...prev,
+                debitAccount: accountno
+            }))
         } catch (error) {
             console.error(error)
         }
@@ -57,7 +72,6 @@ export default function Transfer() {
     const handleCleanUp = () => {
         setValues((prev) => ({
             ...prev,
-            debitAccount: '',
             creditAccount: '',
             amount: ''
         }))
@@ -88,6 +102,8 @@ export default function Transfer() {
                                             <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                                 <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">from/</span>
                                                 <input
+                                                    readOnly
+                                                    value={values?.debitAccount}
                                                     onChange={handleOnChange}
                                                     required
                                                     type="text"
