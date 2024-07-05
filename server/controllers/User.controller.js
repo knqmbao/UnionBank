@@ -101,6 +101,27 @@ const UserController = {
             res.json({ error: `GetAllUser in user controller error ${error}` });
         }
     },
+    GetCurrentUser: async (req, res) => {
+        try {
+            const { userId } = req.params
+            console.log('Search User Controller: ', userId)
+
+            const { name, email, mobileno, role } = await UserModel.findById(userId)
+            console.log({ name, email, mobileno, role })
+
+            let filteredRole;
+            if (role === 'user') {
+                filteredRole = false;
+            } else if (role === 'developer') {
+                filteredRole = true;
+            }
+            console.log('filtyer', filteredRole)
+
+            res.json({ success: true, message: 'Fetched certain user successfully!', data: { name, email, mobileno, role: filteredRole } })
+        } catch (error) {
+            res.json({ error: `GetCurrentUser in user controller error ${error}` });
+        }
+    },
     SearchUser: async (req, res) => {
         try {
             const { name } = req.params
@@ -119,17 +140,24 @@ const UserController = {
     UpdateUser: async (req, res) => {
         try {
             const { userId } = req.params
-            const { name, password } = req.body
-            console.log('Update User Controller: ', { name, password, userId })
+            const { name, email, mobileno, role } = req.body
+            console.log('Update User Controller: ', { name, email, mobileno, role })
 
+            let filteredRole
+            role === false ? filteredRole = 'user' : filteredRole = 'developer'
+
+            console.log(filteredRole)
             const data = await UserModel.findByIdAndUpdate(
                 userId,
                 {
-                    name: name
+                    name: name,
+                    email: email,
+                    mobileno: mobileno,
+                    role: filteredRole
                 },
                 { new: true }
             )
-            res.json({ success: true, message: 'User updated successfully!', data })
+            res.json({ success: true, message: 'User updated successfully, please login again!', data })
         } catch (error) {
             res.json({ error: `UpdateUser in user controller error ${error}` });
         }
