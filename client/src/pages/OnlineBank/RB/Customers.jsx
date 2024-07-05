@@ -66,6 +66,7 @@ export default function Customers() {
                     Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
                 }
             })
+
             const accounts = res?.data?.data
             const formattedData = accounts.map((acc, index) => ({
                 id: index + 1,
@@ -156,7 +157,7 @@ export default function Customers() {
         {
             field: 'name',
             headerName: 'Full Name',
-            width: 300,
+            width: 250,
             headerAlign: 'center',
             align: 'center'
         },
@@ -164,21 +165,21 @@ export default function Customers() {
             field: 'email',
             headerName: 'Email',
             type: 'number',
-            width: 250,
+            width: 200,
             headerAlign: 'center',
             align: 'center'
         },
         {
             field: 'mobileno',
             headerName: 'Mobile No.',
-            width: 250,
+            width: 200,
             headerAlign: 'center',
             align: 'center'
         },
         {
             field: 'isactive',
             headerName: 'Active',
-            width: 200,
+            width: 150,
             headerAlign: 'center',
             align: 'center',
             renderCell: renderIsActiveToggle
@@ -211,7 +212,7 @@ export default function Customers() {
         {
             field: 'name',
             headerName: 'Full Name',
-            width: 300,
+            width: 200,
             headerAlign: 'center',
             align: 'center'
         },
@@ -219,21 +220,21 @@ export default function Customers() {
             field: 'email',
             headerName: 'Email',
             type: 'number',
-            width: 250,
+            width: 200,
             headerAlign: 'center',
             align: 'center'
         },
         {
             field: 'mobileno',
             headerName: 'Mobile No.',
-            width: 250,
+            width: 200,
             headerAlign: 'center',
             align: 'center'
         },
         {
             field: 'isactive',
             headerName: 'Active',
-            width: 200,
+            width: 150,
             headerAlign: 'center',
             align: 'center',
             renderCell: renderIsActiveToggle
