@@ -20,6 +20,8 @@ export default function Profile() {
     }
 
     const handleEdit = () => {
+        const credentials = sessionStorage.getItem('credentials')
+        const { userId } = JSON.parse(credentials)
         navigate('/profile/updateprofile')
     }
     return (
