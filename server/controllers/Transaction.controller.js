@@ -77,7 +77,7 @@ const TransactionController = {
             const debitFutureBalance = debitBalance - taxAmount
             const creditFutureBalance = creditBalance + transferAmount
 
-            await TransactionModel.create({ account: debitAccountId, fee: tax, amount: transferAmount, transactionType: 'transfer_debit', description: `${debitAccount} transferred to ${creditAccount}`, status: 'completed', balance: debitFutureBalance, token: `Retail Banking : ${userIdHeader}` })
+            await TransactionModel.create({ account: debitAccountId, fee: tax, amount: transferAmount, transactionType: 'transfer_debit', description: `Transferred to ${creditAccount}`, status: 'completed', balance: debitFutureBalance, token: `Retail Banking : ${userIdHeader}` })
             await TransactionModel.create({ account: creditAccountId, fee: tax, amount: transferAmount, transactionType: 'transfer_credit', description: `Received from ${debitAccount}`, status: 'completed', balance: creditFutureBalance, token: `Retail Banking : ${userIdHeader}` })
 
             await AccountModel.findByIdAndUpdate(debitAccountId, { balance: debitFutureBalance }, { new: true })
