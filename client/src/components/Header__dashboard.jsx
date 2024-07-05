@@ -13,12 +13,12 @@ export default function HeaderDashboard({ breadcrumbs }) {
                             <Link underline="hover" key={i} fontSize={`.9rem`} href={item?.href}>
                                 {item?.title}
                             </Link>
-                    ) : (
+                        ) : (
                             <h1 key={i} className='font-[500] text-[.9rem] text-[#111111]'>
                                 {item?.title}
                             </h1>
-                    )
-                )}
+                        )
+                    )}
             </Breadcrumbs>
         </div>
     );
