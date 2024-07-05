@@ -1,8 +1,6 @@
 const AccountModel = require('../models/Account.model')
 const fetch = require('node-fetch')
 
-const HOST = 'http://localhost:3001'
-
 const AccountController = {
     CreateAccount: async (req, res) => {
         try {
@@ -43,7 +41,7 @@ const AccountController = {
         try {
             const { searchId } = req.params
             console.log('Search Account Controller: ', searchId)
-            const response = await fetch(`${HOST}/api/rbaccounts`, {
+            const response = await fetch(`${process.env.REQUEST}/api/rbaccounts`, {
                 headers: {
                     Authorization: `Bearer ${process.env.ADMIN_TOKEN}`
                 }
