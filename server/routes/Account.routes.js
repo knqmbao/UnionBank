@@ -22,7 +22,7 @@ router.get('/useraccount/:uid',
     AccountController.GetUserAccount
 )
 
-router.get('/accounts/:userId', //temp
+router.get('/accounts/:searchId',
     AccountMiddleware.CheckDeveloperTokenValid,
     AccountController.SearchAccount
 )
