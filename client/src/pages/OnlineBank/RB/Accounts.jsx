@@ -51,12 +51,32 @@ export default function Accounts() {
         navigate(`/ledger/${e}`)
     }
 
+    const handleDeposit = (e) => {
+        navigate(`/ledger/deposit/${e}`)
+    }
+
+    const handleWithdraw = (e) => {
+        navigate(`/ledger/withdrawal/${e}`)
+    }
+
     const renderViewCell = (params) => {
         return (
-            <div className="w-full h-full flex justify-center items-center">
-                <Button onClick={() => handleViewAccount(params?.row?.uid)} className="flex justify-center items-center hover:scale-[.98] duration-300 ease">
-                    <h1>View Statement</h1>
-                </Button>
+            <div className="w-full h-full flex justify-evenly items-center">
+                <div>
+                    <Button onClick={() => handleViewAccount(params?.row?.uid)} className="flex justify-center items-center hover:scale-[.98] duration-300 ease">
+                        <h1>View Statement</h1>
+                    </Button>
+                </div>
+
+                <div>
+                    <Button onClick={() => handleDeposit(params?.row?.uid)} className="flex justify-center items-center hover:scale-[.98] duration-300 ease">
+                        <h1>Deposit</h1>
+                    </Button>
+                    <Button onClick={() => handleWithdraw(params?.row?.uid)} className="flex justify-center items-center hover:scale-[.98] duration-300 ease">
+                        <h1>Withdraw</h1>
+                    </Button>
+                </div>
+
             </div>
 
         );
@@ -88,7 +108,7 @@ export default function Accounts() {
         {
             field: 'actions',
             headerName: 'Actions',
-            width: 250,
+            width: 450,
             headerAlign: 'center',
             align: 'center',
             renderCell: renderViewCell
