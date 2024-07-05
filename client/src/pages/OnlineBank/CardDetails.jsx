@@ -1,19 +1,46 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../../components/Sidebar'
 import Header__Dashboard from '../../components/Header__dashboard'
+import axios from 'axios'
+
+const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function AccountStatement() {
+    const [carddetails, setCardDetails] = useState({
+        accountType: '',
+        accountno: '',
+        balance: ''
+    })
     const navigate = useNavigate()
 
     useEffect(() => {
         fetchCredentials()
     }, [])
 
-    const fetchCredentials = () => {
+    const fetchCredentials = async () => {
         try {
             const credentials = sessionStorage.getItem('credentials')
             if (!credentials) return navigate('/unionbank')
+            const { userId } = JSON.parse(credentials)
+
+            const res = await axios.get(`${VITE_HOST}/api/useraccount/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+
+            const type = res?.data?.data?.accountType
+            const accountno = res?.data?.data?.accountno
+            const balance = res?.data?.data?.balance
+
+            setCardDetails((prev) => ({
+                ...prev,
+                accountType: type,
+                accountno: accountno,
+                balance: balance
+            }))
+
         } catch (error) {
             console.error(error)
         }
@@ -30,22 +57,29 @@ export default function AccountStatement() {
                     <Header__Dashboard breadcrumbs={breadCrumbs} />
                     <div className="w-full h-[95%] px-[20rem] py-[5rem]">
                         <div className="px-4 sm:px-0">
-                            <h3 className="text-base font-semibold leading-7 text-gray-900">Account Statement</h3>
-                            <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Account details.</p>
+                            <h3 className="text-base font-semibold leading-7 text-gray-900">Card Details</h3>
+                            <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">An information of your card.</p>
                         </div>
                         <div className="border-t border-gray-100 mt-[1.5rem] pb-[20rem]">
                             <dl className="divide-y divide-gray-100 ">
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                     <dt className="text-sm font-medium leading-6 text-gray-900">Account Type</dt>
-                                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">Regular Savings</dd>
+                                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                        {carddetails?.accountType === 'savings' && 'Regular Savings'}
+                                    </dd>
                                 </div>
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                     <dt className="text-sm font-medium leading-6 text-gray-900">Account Number</dt>
-                                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">123456789</dd>
+                                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                        {carddetails?.accountno}
+                                    </dd>
                                 </div>
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                     <dt className="text-sm font-medium leading-6 text-gray-900">Current Balance</dt>
-                                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">PHP 15,999.00</dd>
+                                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                        PHP
+                                        {carddetails?.balance}
+                                    </dd>
                                 </div>
                                 <div className="w-full flex items-center justify-end gap-x-6 pt-[2rem]">
                                     <button
