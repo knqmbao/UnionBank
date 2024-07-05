@@ -57,6 +57,7 @@ export default function Ledger() {
                 credit: trans?.amount,
                 description: trans?.description,
                 transactionType: trans?.transactionType,
+                servicefee: trans?.fee,
                 balance: trans?.balance
             }))
             setUserTransactions(formattedData)
@@ -115,7 +116,7 @@ export default function Ledger() {
         {
             field: 'deposit',
             headerName: 'Deposit',
-            width: 200,
+            width: 150,
             headerAlign: 'center',
             align: 'center',
             renderCell: renderCreditCell
@@ -123,15 +124,23 @@ export default function Ledger() {
         {
             field: 'withdrawal',
             headerName: 'Withdrawal',
-            width: 200,
+            width: 150,
             headerAlign: 'center',
             align: 'center',
             renderCell: renderDebitCell
         },
         {
+            field: 'servicefee',
+            headerName: 'Service fee',
+            width: 150,
+            headerAlign: 'center',
+            align: 'center',
+            // renderCell: renderDebitCell
+        },
+        {
             field: 'balance',
             headerName: 'Balance',
-            width: 300,
+            width: 150,
             headerAlign: 'center',
             align: 'center'
         },
