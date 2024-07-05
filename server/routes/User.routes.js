@@ -24,6 +24,11 @@ router.get('/users',
     UserController.GetAllUsers
 )
 
+router.get('/users/:userId',
+    UserMiddleware.CheckDeveloperTokenValid,
+    UserController.GetCurrentUser
+)
+
 router.get('/rbusers',
     UserMiddleware.CheckDeveloperTokenValid,
     UserController.GetAllRBUsers
@@ -34,15 +39,15 @@ router.get('/rbaccounts',
     UserController.GetAllRBAccounts
 )
 
+router.post('/updateuser/:userId',
+    UserMiddleware.CheckDeveloperTokenValid,
+    UserMiddleware.UpdateUserCheckEmptyFields,
+    UserController.UpdateUser
+)
+
 router.get('/users/:name', //temp
     UserMiddleware.CheckDeveloperTokenValid,
     UserController.SearchUser
-)
-
-router.post('/updateuser/:userId', //temp
-    UserMiddleware.CheckUserTokenValid,
-    UserMiddleware.UpdateUserCheckEmptyFields,
-    UserController.UpdateUser
 )
 
 router.post('/updateactiveuser/:userId', //temp
