@@ -1,27 +1,55 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Sidebar from '../../components/Sidebar'
 import Header from '../../components/Header__dashboard'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+
+const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function Profile() {
+    const [values, setValues] = useState({
+        name: '',
+        email: '',
+        isactive: '',
+        role: ''
+    })
     const navigate = useNavigate()
 
     useEffect(() => {
         fetchCredentials()
     }, [])
 
-    const fetchCredentials = () => {
+    const fetchCredentials = async () => {
         try {
             const credentials = sessionStorage.getItem('credentials')
             if (!credentials) return navigate('/unionbank')
+
+            const { userId } = JSON.parse(credentials)
+            const res = await axios.get(`${VITE_HOST}/api/users/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+
+            const name = res?.data?.data?.name
+            const isactive = res?.data?.data?.isactive
+            const email = res?.data?.data?.email
+            const role = res?.data?.data?.role
+
+            setValues((prev) => ({
+                ...prev,
+                name: name,
+                isactive: isactive,
+                email: email,
+                role: role
+            }))
+            console.log(values)
         } catch (error) {
             console.error(error)
         }
     }
 
     const handleEdit = () => {
-        const credentials = sessionStorage.getItem('credentials')
-        const { userId } = JSON.parse(credentials)
         navigate('/profile/updateprofile')
     }
     return (
@@ -39,20 +67,34 @@ export default function Profile() {
                             <dl className="divide-y divide-gray-100 ">
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                     <dt className="text-sm font-medium leading-6 text-gray-900">Full name</dt>
-                                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">Margot Foster</dd>
+                                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                        {values?.name}
+                                    </dd>
                                 </div>
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                     <dt className="text-sm font-medium leading-6 text-gray-900">Email address</dt>
-                                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">margotfoster@example.com</dd>
+                                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                        {values?.email}
+                                    </dd>
                                 </div>
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                     <dt className="text-sm font-medium leading-6 text-gray-900">Account status</dt>
-                                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">Active</dd>
+                                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                        {values?.isactive === false ? 'Inactive' : 'Active'}
+                                    </dd>
                                 </div>
-                                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                    <dt className="text-sm font-medium leading-6 text-gray-900">Developer</dt>
-                                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">Active</dd>
-                                </div>
+                                {
+                                    (values?.role === 'user' || values?.role === 'developer') && (
+                                        <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                            <dt className="text-sm font-medium leading-6 text-gray-900">Developer</dt>
+                                            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                                {values?.role === 'user' && 'Inactive'}
+                                                {values?.role === 'developer' && 'Active'}
+                                            </dd>
+                                        </div>
+                                    )
+                                }
+
                                 <div className="w-full flex items-center justify-end gap-x-6 pt-[2rem]">
                                     <button
                                         onClick={handleEdit}
