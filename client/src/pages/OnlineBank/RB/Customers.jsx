@@ -89,22 +89,25 @@ export default function Customers() {
 
     const fethcRBAccounts = async () => {
         try {
+
             const res = await axios.get(`${VITE_HOST}/api/rbaccounts`, {
                 headers: {
                     Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
                 }
             })
 
-            const accounts = res?.data?.data
-            const formattedData = accounts.map((acc, index) => ({
+            const RBaccounts = res?.data?.data
+            const formattedData = RBaccounts.map((acc, index) => ({
                 id: index + 1,
+                uid: acc?._id,
                 accountno: acc?.accountno,
                 name: acc?.user?.name,
                 email: acc?.user?.email,
                 mobileno: acc?.user?.mobileno,
-                accountactive: acc?.user?.isactive
+                accountactive: acc?.isactive
             }))
             setAccounts(formattedData)
+
         } catch (error) {
             console.error(error)
         }
@@ -121,14 +124,15 @@ export default function Customers() {
                 }
             })
 
-            const accounts = res?.data?.data
-            const formattedData = accounts.map((acc, index) => ({
+            const RBaccounts = res?.data?.data
+            const formattedData = RBaccounts.map((acc, index) => ({
                 id: index + 1,
+                uid: acc?._id,
                 accountno: acc?.accountno,
                 name: acc?.user?.name,
                 email: acc?.user?.email,
                 mobileno: acc?.user?.mobileno,
-                accountactive: acc?.user?.isactive
+                accountactive: acc?.isactive
             }))
             setAccounts(formattedData)
         } catch (error) {
@@ -142,8 +146,11 @@ export default function Customers() {
         } catch (error) {
             console.error(error)
         } finally {
-            fetchRBUsers()
-            fethcRBAccounts()
+            if (value == '1') {
+                fetchRBUsers()
+            } else if (value === '2') {
+                fethcRBAccounts()
+            }
         }
     }
 
@@ -167,7 +174,7 @@ export default function Customers() {
 
     const handleUpdateActiveCustomer = async (e, id) => {
         try {
-            await axios.post(`${VITE_HOST}/api/updateactiveuser/${id}`, { isactive: e }, {
+          await axios.post(`${VITE_HOST}/api/updateactiveuser/${id}`, { isactive: e }, {
                 headers: {
                     Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
                 }
@@ -177,7 +184,19 @@ export default function Customers() {
         }
     }
 
-    const renderIsActiveToggle = (params) => {
+    const handleUpdateActiveAccount = async (e, id) => {
+        try {
+            await axios.post(`${VITE_HOST}/api/updateactiveaccount/${id}`, { isactive: e }, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const renderIsRBUserActiveToggle = (params) => {
         return (
             <div className="w-full h-full flex justify-center items-center">
                 <Toggle isCheck={params.row.isactive} returnCheck={(checkState) => handleUpdateActiveCustomer(checkState, params.row.uid)} />
@@ -186,10 +205,10 @@ export default function Customers() {
         );
     };
 
-    const renderIsAccountActiveToggle = (params) => {
+    const renderIsRBAccountActiveToggle = (params) => {
         return (
             <div className="w-full h-full flex justify-center items-center">
-                <Toggle isCheck={params.row.accountactive} />
+                <Toggle isCheck={params.row.accountactive} returnCheck={(checkState) => handleUpdateActiveAccount(checkState, params.row.uid)} />
             </div>
 
         );
@@ -242,7 +261,7 @@ export default function Customers() {
             width: 150,
             headerAlign: 'center',
             align: 'center',
-            renderCell: renderIsActiveToggle
+            renderCell: renderIsRBUserActiveToggle
         },
         {
             field: 'actions',
@@ -297,7 +316,7 @@ export default function Customers() {
             width: 150,
             headerAlign: 'center',
             align: 'center',
-            renderCell: renderIsActiveToggle
+            renderCell: renderIsRBAccountActiveToggle
         }
     ]
 
