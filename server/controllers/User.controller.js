@@ -1,5 +1,6 @@
 const AccountModel = require('../models/Account.model')
 const UserModel = require('../models/Users.model')
+const fetch = require('node-fetch')
 
 const UserController = {
     CreateUser: async (req, res) => {
@@ -107,24 +108,64 @@ const UserController = {
             console.log('Search User Controller: ', userId)
 
             const { name, email, mobileno, role, isactive } = await UserModel.findById(userId)
-            console.log({ name, email, mobileno, role, isactive } )
+            console.log({ name, email, mobileno, role, isactive })
 
             res.json({ success: true, message: 'Fetched certain user successfully!', data: { name, email, mobileno, role, isactive } })
         } catch (error) {
             res.json({ error: `GetCurrentUser in user controller error ${error}` });
         }
     },
-    SearchUser: async (req, res) => {
+    SearchRBUser: async (req, res) => {
         try {
-            const { name } = req.params
-            console.log('Search User Controller: ', name)
+            const { searchId } = req.params
+            console.log('Search User Controller: ', searchId)
 
-            const data = await UserModel.find(
-                {
-                    name: { $regex: new RegExp(name, 'i') }
+            const response = await fetch(`${process.env.REQUEST}/api/rbusers`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${process.env.ADMIN_TOKEN}`
                 }
-            )
-            res.json({ success: true, message: 'Fetched certain user successfully!', data })
+            })
+
+            if (!response.ok) return res.json({ success: false, message: 'API Request error from search rb user controller!' })
+
+            const rbusers = await response.json()
+            const regex = new RegExp(searchId, 'i');
+
+            const formattedUsers = rbusers?.data?.filter((item) => {
+                const { name, email, mobileno } = item
+                return regex.test(name) || regex.test(email) || regex.test(mobileno)
+            })
+
+            res.json({ success: true, message: 'Fetched certain user successfully!', data: formattedUsers })
+        } catch (error) {
+            res.json({ error: `SearchUser in user controller error ${error}` });
+        }
+    },
+    SearchRBAccounts: async (req, res) => {
+        try {
+            const { searchId } = req.params
+            console.log('Search User Controller: ', searchId)
+
+            const response = await fetch(`${process.env.REQUEST}/api/rbaccounts`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${process.env.ADMIN_TOKEN}`
+                }
+            })
+
+            if (!response.ok) return res.json({ success: false, message: 'API Request error from search user controller!' })
+
+            const rbaccounts = await response.json()
+            const regex = new RegExp(searchId, 'i');
+
+            const formattedAccounts = rbaccounts?.data?.filter((item) => {
+                const { accountno, user } = item
+                const { name, email, mobileno } = user
+                return regex.test(name) || regex.test(email) || regex.test(mobileno) || regex.test(accountno)
+            })
+
+            res.json({ success: true, message: 'Fetched certain user successfully!', data: formattedAccounts })
         } catch (error) {
             res.json({ error: `SearchUser in user controller error ${error}` });
         }
