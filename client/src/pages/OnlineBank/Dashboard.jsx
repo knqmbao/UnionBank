@@ -47,6 +47,7 @@ export default function Dashboard() {
                             <h1 className='text-black font-[600] text-[1.2rem]'>
                                 {carddetails && ('Your Accounts')}
                                 {role === 'rb' && ('Welcome')}
+                                {role === 'hr' && ('Welcome')}
                             </h1>
                         </div>
                         {
