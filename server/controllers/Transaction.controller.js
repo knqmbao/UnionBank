@@ -1,6 +1,5 @@
 const TransactionModel = require('../models/Transactions.model')
 const AccountModel = require('../models/Account.model')
-const UserModel = require('../models/Users.model')
 
 const TransactionController = {
     DepositTransaction: async (req, res) => {
