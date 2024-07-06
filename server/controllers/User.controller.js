@@ -5,9 +5,9 @@ const fetch = require('node-fetch')
 const UserController = {
     CreateUser: async (req, res) => {
         try {
-            const { name, email, mobileno, password } = req.body
+            const { name, email, mobileno, password, role } = req.body
             // console.log('Create User Controller: ', values)
-            const data = await UserModel.create({ name, email, mobileno, password })
+            const data = await UserModel.create({ name, email, mobileno, password, role })
             res.json({ success: true, message: 'User created successfully!', data: data?._id })
         } catch (error) {
             res.json({ error: `CreateUser in user controller error ${error}` });
