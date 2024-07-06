@@ -42,6 +42,7 @@ const AccountController = {
             const { searchId } = req.params
             console.log('Search Account Controller: ', searchId)
             const response = await fetch(`${process.env.REQUEST}/api/rbaccounts`, {
+                method: 'GET',
                 headers: {
                     Authorization: `Bearer ${process.env.ADMIN_TOKEN}`
                 }
