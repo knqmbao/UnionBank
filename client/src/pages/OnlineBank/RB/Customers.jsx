@@ -59,6 +59,34 @@ export default function Customers() {
         }
     }
 
+    const handleOnChangeRBUsers = async (e) => {
+        try {
+            const { value } = e.target
+            if (value === '') return fetchRBUsers()
+
+            const res = await axios.get(`${VITE_HOST}/api/searchrbusers/${value}`, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+
+            const users = res?.data?.data
+
+            const formattedData = users.map((user, index) => ({
+                id: index + 1,
+                uid: user?._id,
+                name: user?.name,
+                email: user?.email,
+                mobileno: user?.mobileno,
+                isactive: user?.isactive,
+                accountactive: user?.isactive
+            }))
+            setDetails(formattedData)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     const fethcRBAccounts = async () => {
         try {
             const res = await axios.get(`${VITE_HOST}/api/rbaccounts`, {
@@ -82,10 +110,42 @@ export default function Customers() {
         }
     }
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
+    const handleOnChangeRBAccounts = async (e) => {
+        try {
+            const { value } = e.target
+            if (value === '') return fethcRBAccounts()
+
+            const res = await axios.get(`${VITE_HOST}/api/searchrbaccounts/${value}`, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+
+            const accounts = res?.data?.data
+            const formattedData = accounts.map((acc, index) => ({
+                id: index + 1,
+                accountno: acc?.accountno,
+                name: acc?.user?.name,
+                email: acc?.user?.email,
+                mobileno: acc?.user?.mobileno,
+                accountactive: acc?.user?.isactive
+            }))
+            setAccounts(formattedData)
+        } catch (error) {
+            console.error(error)
+        }
     }
 
+    const handleChange = (event, newValue) => {
+        try {
+            setValue(newValue);
+        } catch (error) {
+            console.error(error)
+        } finally {
+            fetchRBUsers()
+            fethcRBAccounts()
+        }
+    }
 
     const handleOpenAccount = async (name) => {
         try {
@@ -267,6 +327,7 @@ export default function Customers() {
                                         Search
                                     </h1>
                                     <input
+                                        onChange={handleOnChangeRBUsers}
                                         type="text"
                                         className="block w-[20rem] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         placeholder='Search here...'
@@ -292,6 +353,7 @@ export default function Customers() {
                                         Search
                                     </h1>
                                     <input
+                                        onChange={handleOnChangeRBAccounts}
                                         type="text"
                                         className="block w-[20rem] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         placeholder='Search here...'
