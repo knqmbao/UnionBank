@@ -21,6 +21,14 @@ const UserController = {
             res.json({ error: `GetAllUser in user controller error ${error}` });
         }
     },
+    GetAllDeveloperUsers: async (req, res) => {
+        try {
+            const data = await UserModel.find({ role: 'developer' });
+            res.json({ success: true, message: 'Fetch employed users successfully!', data })
+        } catch (error) {
+            res.json({ error: `GetAllEmployedUsers in user controller error ${error}` });
+        }
+    },
     GetAllEmployedUsers: async (req, res) => {
         try {
             const data = await UserModel.find({ role: { $nin: ['user', 'developer', 'admin'] } });
@@ -121,6 +129,33 @@ const UserController = {
             res.json({ success: true, message: 'Fetched certain user successfully!', data: { name, email, mobileno, role, isactive } })
         } catch (error) {
             res.json({ error: `GetCurrentUser in user controller error ${error}` });
+        }
+    },
+    SearchDeveloperUsers: async (req, res) => {
+        try {
+            const { searchId } = req.params
+            console.log('Search User Controller: ', searchId)
+
+            const response = await fetch(`${process.env.REQUEST}/api/developerusers`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${process.env.ADMIN_TOKEN}`
+                }
+            })
+
+            if (!response.ok) return res.json({ success: false, message: 'API Request error from search all developer in user controller!' })
+
+            const developers = await response.json()
+            const regex = new RegExp(searchId, 'i');
+
+            const formattedData = developers?.data?.filter((item) => {
+                const { name, email, _id } = item
+                return regex.test(name) || regex.test(email) || regex.test(_id)
+            })
+
+            res.json({ success: true, message: 'Fetched certain user successfully!', data: formattedData })
+        } catch (error) {
+            res.json({ error: `SearchDeveloperUsers in user controller error ${error}` });
         }
     },
     SearchEmployedUsers: async (req, res) => {
