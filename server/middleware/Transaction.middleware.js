@@ -1,6 +1,3 @@
-const TransactionModel = require('../models/Transactions.model')
-const DeveloperModel = require('../models/Developer.model')
-const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
