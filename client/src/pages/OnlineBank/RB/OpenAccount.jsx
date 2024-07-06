@@ -7,10 +7,6 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
-
 export default function OpenAccount() {
     const [values, setValues] = useState({
         name: '',
