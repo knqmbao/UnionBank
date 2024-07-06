@@ -61,7 +61,7 @@ export default function UpdateAccount() {
         })
 
         if (res?.data?.success) {
-            alert(res?.data?.message)
+            alert(`${res?.data?.message}, please login again!`)
             sessionStorage.clear()
             location.reload()
         }
