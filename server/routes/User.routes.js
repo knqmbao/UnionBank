@@ -44,6 +44,11 @@ router.get('/rbaccounts',
     UserController.GetAllRBAccounts
 )
 
+router.get('/searchremployedusers/:searchId',
+    UserMiddleware.CheckDeveloperTokenValid,
+    UserController.SearchEmployedUsers
+)
+
 router.get('/searchrbusers/:searchId',
     UserMiddleware.CheckDeveloperTokenValid,
     UserController.SearchRBUser
