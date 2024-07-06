@@ -1,6 +1,4 @@
 const AccountModel = require('../models/Account.model')
-const DeveloperModel = require('../models/Developer.model')
-const bcrypt = require('bcrypt')
 
 const AccountMidlleware = {
     CheckUserTokenValid: async (req, res, next) => {
