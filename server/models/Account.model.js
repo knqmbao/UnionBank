@@ -24,7 +24,7 @@ const accountSchema = new mongoose.Schema({
     isactive: {
         type: Boolean,
         required: true,
-        default: false
+        default: true //July 06, 2024 from false to true
     }
 }, { timestamps: true });
 
