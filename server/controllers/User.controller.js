@@ -221,7 +221,7 @@ const UserController = {
                 },
                 { new: true }
             )
-            res.json({ success: true, message: 'User updated successfully, please login again!', data })
+            res.json({ success: true, message: 'User updated successfully!', data })
         } catch (error) {
             res.json({ error: `UpdateUser in user controller error ${error}` });
         }
