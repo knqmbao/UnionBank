@@ -93,8 +93,8 @@ const AccountController = {
             const { isactive } = req.body
             console.log('Update Active Account Controller: ', isactive, accountId)
 
-            const data = await AccountModel.findOneAndUpdate(
-                { user: accountId },
+            const data = await AccountModel.findByIdAndUpdate(
+                accountId,
                 { isactive: isactive },
                 { new: true }
             )
