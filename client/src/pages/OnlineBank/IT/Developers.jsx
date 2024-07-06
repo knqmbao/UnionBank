@@ -4,13 +4,17 @@ import Header__Dashboard from '../../../components/Header__dashboard';
 import DataGrids from '../../../components/DataGrids';
 import Toggle from '../../../components/Toggle';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
+
+const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function Developers() {
-    const [value, setValue] = useState('1');
+    const [values, setValues] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
         fetchCredentials()
+        fetchDeveloperUsers()
     }, [])
 
     const fetchCredentials = () => {
@@ -22,18 +26,65 @@ export default function Developers() {
         }
     }
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
+    const fetchDeveloperUsers = async () => {
+        try {
+            const res = await axios.get(`${VITE_HOST}/api/developerusers`, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+
+            const developers = res?.data?.data
+            const formattedData = developers.map((acc, index) => ({
+                id: index + 1,
+                uid: acc?._id,
+                name: acc?.name,
+                email: acc?.email,
+                isactive: acc?.isactive
+            }))
+            setValues(formattedData)
+        } catch (error) {
+            console.error(error)
+        }
     }
 
-    const handleToggleCheck = (e) => {
-        
+    const handleUpdateActiveDeveloper = async (e, id) => {
+        await axios.post(`${VITE_HOST}/api/updateactiveuser/${id}`, { isactive: e }, {
+            headers: {
+                Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+            }
+        })
+    }
+
+    const handleOnChangeSearch = async (e) => {
+        try {
+            const { value } = e.target
+
+            if (value === '') return fetchDeveloperUsers()
+
+            const res = await axios.get(`${VITE_HOST}/api/searchrdeveloperusers/${value}`, {
+                headers: {
+                    Authorization: `BEarer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+            const employees = res?.data?.data
+            const formattedData = employees.map((acc, index) => ({
+                id: index + 1,
+                uid: acc?._id,
+                name: acc?.name,
+                email: acc?.email,
+                isactive: acc?.isactive
+            }))
+            setValues(formattedData)
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     const renderActionButtons = (params) => {
         return (
             <div className="w-full h-full flex justify-center items-center">
-                <Toggle isCheck={false} returnCheck={(e) => handleToggleCheck(e)} />
+                <Toggle isCheck={params.row.isactive} returnCheck={(checkState) => handleUpdateActiveDeveloper(checkState, params.row.uid)} />
             </div>
 
         );
@@ -48,7 +99,7 @@ export default function Developers() {
             align: 'center'
         },
         {
-            field: 'userid',
+            field: 'uid',
             headerName: 'ID',
             width: 200,
             headerAlign: 'center',
@@ -78,17 +129,6 @@ export default function Developers() {
         }
     ];
 
-    const developerRows = [
-        { id: 1, userid: '000000012', name: 'Jon', email: 14 },
-        { id: 2, userid: '000000012', name: 'Jon', email: 14 },
-        { id: 3, userid: '000000012', name: 'Jon', email: 14 },
-        { id: 4, userid: '000000012', name: 'Jon', email: 14 },
-        { id: 5, userid: '000000012', name: 'Jon', email: 14 },
-        { id: 6, userid: '000000012', name: 'Jon', email: 14 },
-        { id: 7, userid: '000000012', name: 'Jon', email: 14 },
-        { id: 8, userid: '000000012', name: 'Jon', email: 14 },
-    ]
-
     return (
         <>
             <div className="flex">
@@ -101,12 +141,13 @@ export default function Developers() {
                                 Search
                             </h1>
                             <input
+                                onChange={handleOnChangeSearch}
                                 type="text"
                                 className="block w-[20rem] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 placeholder='Search here...'
                             />
                         </div>
-                        <DataGrids columnsTest={developerCol} rowsTest={developerRows} />
+                        <DataGrids columnsTest={developerCol} rowsTest={values} />
                     </div>
                 </div>
             </div >
