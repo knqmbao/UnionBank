@@ -24,6 +24,11 @@ router.get('/users',
     UserController.GetAllUsers
 )
 
+router.get('/developerusers',
+    UserMiddleware.CheckDeveloperTokenValid,
+    UserController.GetAllDeveloperUsers
+)
+
 router.get('/employedusers',
     UserMiddleware.CheckDeveloperTokenValid,
     UserController.GetAllEmployedUsers
@@ -42,6 +47,11 @@ router.get('/rbusers',
 router.get('/rbaccounts',
     UserMiddleware.CheckDeveloperTokenValid,
     UserController.GetAllRBAccounts
+)
+
+router.get('/searchrdeveloperusers/:searchId',
+    UserMiddleware.CheckDeveloperTokenValid,
+    UserController.SearchDeveloperUsers
 )
 
 router.get('/searchremployedusers/:searchId',
