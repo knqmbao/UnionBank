@@ -1,6 +1,12 @@
 const DeveloperModel = require('../models/Developer.model')
 const TransactionModel = require('../models/Transactions.model')
 const AccountModel = require('../models/Account.model')
+const { exec } = require('child_process')
+
+const dbName = 'unionbank';
+
+const mongodumpPath = '"C:\\Program Files\\MongoDB\\Tools\\100\\bin\\mongodump"';
+const mongorestorePath = '"C:\\Program Files\\MongoDB\\Tools\\100\\bin\\mongorestore"';
 
 const DeveloperController = {
     CreateDeveloperToken: async (req, res) => {
@@ -12,7 +18,7 @@ const DeveloperController = {
             console.log('Create Tokens Controller: ', newToken)
             res.json({ success: true, message: 'Tokens created successfully!', newToken })
         } catch (error) {
-            res.status(400).json({ error: `CreateDeveloperToken in developer controller error ${error}` });
+            res.json({ error: `CreateDeveloperToken in developer controller error ${error}` });
         }
     },
     GetUserTokens: async (req, res) => {
@@ -21,7 +27,7 @@ const DeveloperController = {
             const data = await DeveloperModel.find({ user: userId })
             res.json({ success: true, message: 'Fetch tokens successfully!', data })
         } catch (error) {
-            res.status(400).json({ error: `GetAllTokens in developer controller error ${error}` });
+            res.json({ error: `GetAllTokens in developer controller error ${error}` });
         }
     },
     GetRequestAccountNo: async (req, res) => {
@@ -31,7 +37,7 @@ const DeveloperController = {
             if (data) return res.json({ success: true, message: 'Account exist!' })
             res.json({ success: false, message: 'Account does not exist!' })
         } catch (error) {
-            res.status(400).json({ error: `GetAllTokens in developer controller error ${error}` });
+            res.json({ error: `GetAllTokens in developer controller error ${error}` });
         }
     },
     TransferTransaction: async (req, res) => {
@@ -73,7 +79,34 @@ const DeveloperController = {
             const { tokenId } = req.params
             res.json({ success: true, message: 'Token deleted successfully!', tokenId })
         } catch (error) {
-            res.status(400).json({ error: `DeleteToken in developer controller error ${error}` });
+            res.json({ error: `DeleteToken in developer controller error ${error}` });
+        }
+    },
+    BackUp: async (req, res) => {
+        try {
+            exec(`${mongodumpPath} --db ${dbName} --out ${dbName}backup`, (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`Error executing command: ${error}`);
+                    return res.json({ success: false, message: 'Failed to backup database!' });
+                }
+                res.json({ success: true, message: 'Backup completed successfully!' });
+            });
+        } catch (error) {
+            res.json({ success: false, message: `Error backup in developer controller: ${error}` });
+        }
+    },
+
+    Restore: async (req, res) => {
+        try {
+            exec(`${mongorestorePath} ${dbName}backup`, (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`Error restoring backup: ${stderr}`);
+                    return res.json({ success: false, message: `Error restoring backup: ${stderr}` });
+                }
+                res.json({ success: true, message: 'Restore completed successfully!' });
+            });
+        } catch (error) {
+            res.json({ success: false, message: `Error restore controller: ${error}` });
         }
     }
 }
