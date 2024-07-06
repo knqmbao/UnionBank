@@ -26,7 +26,7 @@ const UserController = {
             const data = await UserModel.find({ role: { $nin: ['user', 'developer', 'admin'] } });
             res.json({ success: true, message: 'Fetch employed users successfully!', data })
         } catch (error) {
-            res.json({ error: `GetAllUser in user controller error ${error}` });
+            res.json({ error: `GetAllEmployedUsers in user controller error ${error}` });
         }
     },
     GetAllRBUsers: async (req, res) => {
@@ -107,7 +107,7 @@ const UserController = {
 
             res.json({ success: true, message: 'Fetch user successfully!', data: AccountUsers })
         } catch (error) {
-            res.json({ error: `GetAllUser in user controller error ${error}` });
+            res.json({ error: `GetAllRBAccounts in user controller error ${error}` });
         }
     },
     GetCurrentUser: async (req, res) => {
@@ -121,6 +121,33 @@ const UserController = {
             res.json({ success: true, message: 'Fetched certain user successfully!', data: { name, email, mobileno, role, isactive } })
         } catch (error) {
             res.json({ error: `GetCurrentUser in user controller error ${error}` });
+        }
+    },
+    SearchEmployedUsers: async (req, res) => {
+        try {
+            const { searchId } = req.params
+            console.log('Search User Controller: ', searchId)
+
+            const response = await fetch(`${process.env.REQUEST}/api/employedusers`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${process.env.ADMIN_TOKEN}`
+                }
+            })
+
+            if (!response.ok) return res.json({ success: false, message: 'API Request error from search user controller!' })
+
+            const employees = await response.json()
+            const regex = new RegExp(searchId, 'i');
+
+            const formattedData = employees?.data?.filter((item) => {
+                const { name, email, mobileno } = item
+                return regex.test(name) || regex.test(email) || regex.test(mobileno)
+            })
+
+            res.json({ success: true, message: 'Fetched certain user successfully!', data: formattedData })
+        } catch (error) {
+            res.json({ error: `SearchEmployedUsers in user controller error ${error}` });
         }
     },
     SearchRBUser: async (req, res) => {
@@ -147,7 +174,7 @@ const UserController = {
 
             res.json({ success: true, message: 'Fetched certain user successfully!', data: formattedUsers })
         } catch (error) {
-            res.json({ error: `SearchUser in user controller error ${error}` });
+            res.json({ error: `SearchRBUser in user controller error ${error}` });
         }
     },
     SearchRBAccounts: async (req, res) => {
@@ -175,7 +202,7 @@ const UserController = {
 
             res.json({ success: true, message: 'Fetched certain user successfully!', data: formattedAccounts })
         } catch (error) {
-            res.json({ error: `SearchUser in user controller error ${error}` });
+            res.json({ error: `SearchRBAccounts in user controller error ${error}` });
         }
     },
     UpdateUser: async (req, res) => {
