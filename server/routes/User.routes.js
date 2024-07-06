@@ -45,9 +45,14 @@ router.post('/updateuser/:userId',
     UserController.UpdateUser
 )
 
-router.get('/users/:name', //temp
+router.get('/searchrbusers/:searchId',
     UserMiddleware.CheckDeveloperTokenValid,
-    UserController.SearchUser
+    UserController.SearchRBUser
+)
+
+router.get('/searchrbaccounts/:searchId',
+    UserMiddleware.CheckDeveloperTokenValid,
+    UserController.SearchRBAccounts
 )
 
 router.post('/updateactiveuser/:userId', //temp
