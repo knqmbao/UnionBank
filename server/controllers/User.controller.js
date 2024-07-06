@@ -21,6 +21,14 @@ const UserController = {
             res.json({ error: `GetAllUser in user controller error ${error}` });
         }
     },
+    GetAllEmployedUsers: async (req, res) => {
+        try {
+            const data = await UserModel.find()
+            res.json({ success: true, message: 'Fetch user successfully!', data })
+        } catch (error) {
+            res.json({ error: `GetAllUser in user controller error ${error}` });
+        }
+    },
     GetAllRBUsers: async (req, res) => {
         try {
             const usersWithoutAccounts = await UserModel.aggregate([
