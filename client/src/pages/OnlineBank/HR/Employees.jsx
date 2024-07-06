@@ -5,13 +5,17 @@ import Sidebar from '../../../components/Sidebar'
 import DataGrids from '../../../components/DataGrids';
 import { Link, useNavigate } from 'react-router-dom';
 import Toggle from '../../../components/Toggle';
+import axios from 'axios'
+
+const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function Employees() {
-    const [value, setValue] = useState('1')
+    const [values, setValues] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
         fetchCredentials()
+        fetchEmployedUsers()
     }, [])
 
     const fetchCredentials = () => {
@@ -23,23 +27,44 @@ export default function Employees() {
         }
     }
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
+    const fetchEmployedUsers = async () => {
+        try {
+            const res = await axios.get(`${VITE_HOST}/api/employedusers`, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+            const employees = res?.data?.data
+            const formattedData = employees.map((acc, index) => ({
+                id: index + 1,
+                uid: acc?._id,
+                name: acc?.name,
+                email: acc?.email,
+                isactive: acc?.isactive
+            }))
+            setValues(formattedData)
+        } catch (error) {
+            console.error(error)
+        }
     }
 
-    const handleToggleCheck = (e) => {
-        
+    const handleUpdateActiveEmployee = async (e, id) => {
+        await axios.post(`${VITE_HOST}/api/updateactiveuser/${id}`, { isactive: e }, {
+            headers: {
+                Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+            }
+        })
     }
 
     const renderIsActiveToggle = (params) => {
         return (
             <div className="w-full h-full flex justify-center items-center">
-                <Toggle isCheck={false} returnCheck={(e) => handleToggleCheck(e)} />
+                <Toggle isCheck={params.row.isactive} returnCheck={(checkState) => handleUpdateActiveEmployee(checkState, params.row.uid)} />
             </div>
-    
+
         );
     };
-    
+
     const renderActionButtons = (params) => {
         return (
             <div className="w-full h-full flex justify-center items-center">
@@ -49,19 +74,12 @@ export default function Employees() {
             </div>
         );
     };
-    
+
     const columns = [
         {
             field: 'id',
             headerName: 'No.',
             width: 90,
-            headerAlign: 'center',
-            align: 'center'
-        },
-        {
-            field: 'userid',
-            headerName: 'ID',
-            width: 200,
             headerAlign: 'center',
             align: 'center'
         },
@@ -96,16 +114,7 @@ export default function Employees() {
             renderCell: renderActionButtons
         }
     ];
-    
-    const rows = [
-        { id: 1, userid: '000000012', name: 'Jon', email: 'yourpareng@gmail.coms' },
-        { id: 2, userid: '000000012', name: 'Jon', email: 'yourpareng@gmail.com' },
-        { id: 3, userid: '000000012', name: 'Jon', email: 'yourpareng@gmail.com' },
-        { id: 4, userid: '000000012', name: 'Jon', email: 'yourpareng@gmail.com' },
-        { id: 5, userid: '000000012', name: 'Jon', email: 'yourpareng@gmail.com' },
-        { id: 6, userid: '000000012', name: 'Jon', email: 'yourpareng@gmail.com' },
-    ];
-    
+
     return (
         <>
             <div className="flex">
@@ -133,7 +142,7 @@ export default function Employees() {
                                 </Link>
                             </div>
                         </div>
-                        <DataGrids columnsTest={columns} rowsTest={rows} />
+                        <DataGrids columnsTest={columns} rowsTest={values} />
                     </div>
                 </div>
             </div >
