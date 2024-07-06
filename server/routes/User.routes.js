@@ -24,6 +24,11 @@ router.get('/users',
     UserController.GetAllUsers
 )
 
+router.get('/employedusers',
+    UserMiddleware.CheckDeveloperTokenValid,
+    UserController.GetAllEmployedUsers
+)
+
 router.get('/users/:userId',
     UserMiddleware.CheckDeveloperTokenValid,
     UserController.GetCurrentUser
@@ -55,7 +60,7 @@ router.post('/updateuser/:userId',
     UserController.UpdateUser
 )
 
-router.post('/updateactiveuser/:userId', //temp
+router.post('/updateactiveuser/:userId',
     UserMiddleware.CheckDeveloperTokenValid,
     UserController.UpdateActiveUser
 )
