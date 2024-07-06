@@ -1,15 +1,21 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header__Dashboard from '../../../components/Header__dashboard'
 import Sidebar from '../../../components/Sidebar'
 import { useNavigate } from 'react-router-dom'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import axios from 'axios'
 
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
+const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function AddEmployees() {
+    const [values, setValues] = useState({
+        firstname: '',
+        lastname: '',
+        email: '',
+        mobileno: '',
+        role: ''
+    })
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -25,14 +31,63 @@ export default function AddEmployees() {
         }
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        alert('Test Submit')
+    const handleSubmit = async (e) => {
+        try {
+            e.preventDefault()
+            const fullname = values?.firstname + " " + values?.lastname
+            const res = await axios.post(`${VITE_HOST}/api/createuser`,
+                {
+                    name: fullname,
+                    email: values?.email,
+                    password: '123',
+                    mobileno: values?.mobileno,
+                    role: values?.role
+                }, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+
+            if (res?.data?.success) return alert(res?.data?.message)
+            alert(res?.data?.message)
+        } catch (error) {
+            console.error(error)
+        } finally {
+            handleCleanUp()
+        }
     }
 
     const handleCancel = () => {
         navigate('/employees')
     }
+
+    const handleOnChange = (e) => {
+        const { name, value } = e.target
+
+        setValues((prev) => ({
+            ...prev,
+            [name]: value
+        }))
+    }
+
+    const handleUserRole = (e) => {
+        setValues((prev) => ({
+            ...prev,
+            role: e
+        }))
+    }
+
+    const handleCleanUp = () => {
+        setValues((prev) => ({
+            ...prev,
+            firstname: '',
+            lastname: '',
+            email: '',
+            mobileno: '',
+            role: ''
+        }))
+    }
+
     return (
         <>
             <div className="flex">
@@ -49,32 +104,36 @@ export default function AddEmployees() {
 
                                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                     <div className="sm:col-span-3">
-                                        <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
+                                        <label htmlFor="firstname" className="block text-sm font-medium leading-6 text-gray-900">
                                             First name
                                         </label>
                                         <div className="mt-2">
                                             <input
+                                                onChange={handleOnChange}
+                                                value={values?.firstname}
                                                 required
                                                 type="text"
-                                                name="first-name"
-                                                id="first-name"
-                                                autoComplete="given-name"
+                                                name="firstname"
+                                                id="firstname"
+                                                autoComplete="firstname"
                                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             />
                                         </div>
                                     </div>
 
                                     <div className="sm:col-span-3">
-                                        <label htmlFor="last-name" className="block text-sm font-medium leading-6 text-gray-900">
+                                        <label htmlFor="lastname" className="block text-sm font-medium leading-6 text-gray-900">
                                             Last name
                                         </label>
                                         <div className="mt-2">
                                             <input
+                                                onChange={handleOnChange}
+                                                value={values?.lastname}
                                                 required
                                                 type="text"
-                                                name="last-name"
-                                                id="last-name"
-                                                autoComplete="family-name"
+                                                name="lastname"
+                                                id="lastname"
+                                                autoComplete="lastname"
                                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             />
                                         </div>
@@ -86,6 +145,8 @@ export default function AddEmployees() {
                                         </label>
                                         <div className="mt-2">
                                             <input
+                                                onChange={handleOnChange}
+                                                value={values?.email}
                                                 required
                                                 id="email"
                                                 name="email"
@@ -96,11 +157,13 @@ export default function AddEmployees() {
                                         </div>
                                     </div>
                                     <div className="sm:col-span-4">
-                                        <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                                        <label htmlFor="mobileno" className="block text-sm font-medium leading-6 text-gray-900">
                                             Mobile No.
                                         </label>
                                         <div className="mt-2">
                                             <input
+                                                onChange={handleOnChange}
+                                                value={values?.mobileno}
                                                 required
                                                 id="mobileno"
                                                 name="mobileno"
@@ -113,47 +176,37 @@ export default function AddEmployees() {
                                             <Menu as="div" className="relative inline-block text-left">
                                                 <div>
                                                     <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                                                        Options
+                                                        {values?.role === '' && 'Options'}
+                                                        {values?.role === 'none' && 'Options'}
+                                                        {values?.role === 'hr' && 'HR'}
+                                                        {values?.role === 'it' && 'IT'}
+                                                        {values?.role === 'rb' && 'RB'}
                                                         <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
                                                     </MenuButton>
                                                 </div>
 
-                                                <MenuItems
-                                                    transition
-                                                    className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
-                                                >
-                                                    <div className="py-1">
-                                                        <MenuItem>
-                                                            {({ focus }) => (
-                                                                <a
-                                                                    href="#"
-                                                                    className={classNames(focus ? 'bg-gray-100 text-gray-900 text-center' : 'text-gray-700', 'block px-4 py-2 text-sm text-center')}
-                                                                >
-                                                                    Human Resource
-                                                                </a>
-                                                            )}
-                                                        </MenuItem>
-                                                        <MenuItem>
-                                                            {({ focus }) => (
-                                                                <a
-                                                                    href="#"
-                                                                    className={classNames(focus ? 'bg-gray-100 text-gray-900 text-center' : 'text-gray-700', 'block px-4 py-2 text-sm text-center')}
-                                                                >
-                                                                    IT Department
-                                                                </a>
-                                                            )}
-                                                        </MenuItem>
-                                                        <MenuItem>
-                                                            {({ focus }) => (
-                                                                <a
-                                                                    href="#"
-                                                                    className={classNames(focus ? 'bg-gray-100 text-gray-900 text-center' : 'text-gray-700', 'block px-4 py-2 text-sm text-center')}
-                                                                >
-                                                                    Retail Banking
-                                                                </a>
-                                                            )}
-                                                        </MenuItem>
-                                                    </div>
+                                                <MenuItems transition className="absolute cursor-pointer  right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in">
+                                                    <MenuItem onClick={() => handleUserRole('none')} className='hover:bg-gray-100 py-[.7rem]'>
+                                                        <h1 className={`text-gray-700 block px-4 py-2 text-sm text-center`} >
+                                                            None
+                                                        </h1>
+                                                    </MenuItem>
+                                                    <MenuItem onClick={() => handleUserRole('hr')} className='hover:bg-gray-100 py-[.7rem]'>
+                                                        <h1 className={`text-gray-700 block px-4 py-2 text-sm text-center`} >
+                                                            Human Resource
+                                                        </h1>
+                                                    </MenuItem>
+                                                    <MenuItem onClick={() => handleUserRole('it')} className='hover:bg-gray-100 py-[.7rem]'>
+                                                        <h1 className={`text-gray-700 block px-4 py-2 text-sm text-center`} >
+                                                            IT Department
+                                                        </h1>
+                                                    </MenuItem>
+                                                    <MenuItem onClick={() => handleUserRole('rb')} className='hover:bg-gray-100 py-[.7rem]'>
+                                                        <h1 className={`text-gray-700 block px-4 py-2 text-sm text-center`} >
+                                                            Retail Banking
+                                                        </h1>
+                                                    </MenuItem>
+
                                                 </MenuItems>
                                             </Menu>
                                         </div>
