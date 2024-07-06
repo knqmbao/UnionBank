@@ -81,6 +81,10 @@ export default function Employees() {
         })
     }
 
+    const handleOnClickEdit = (e) => {
+        navigate(`/employees/${e}`)
+    }
+
     const renderIsActiveToggle = (params) => {
         return (
             <div className="w-full h-full flex justify-center items-center">
@@ -93,7 +97,7 @@ export default function Employees() {
     const renderActionButtons = (params) => {
         return (
             <div className="w-full h-full flex justify-center items-center">
-                <Button variant="text">
+                <Button variant="text" onClick={() => handleOnClickEdit(params.row.uid)}>
                     <h1>Edit</h1>
                 </Button>
             </div>
@@ -161,7 +165,7 @@ export default function Employees() {
                             </div>
                             <div className="w-full flex items-center justify-end gap-x-6">
                                 <Link
-                                    to={`/employees/addemployee`}
+                                    to={`/employees/manageemployee`}
                                     className="rounded-md bg-[#111111] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#333333] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                 >
                                     Add Employee
