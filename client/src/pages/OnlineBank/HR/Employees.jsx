@@ -48,6 +48,31 @@ export default function Employees() {
         }
     }
 
+    const handleOnChangeSearch = async (e) => {
+        try {
+            const { value } = e.target
+
+            if (value === '') return fetchEmployedUsers()
+
+            const res = await axios.get(`${VITE_HOST}/api/searchremployedusers/${value}`, {
+                headers: {
+                    Authorization: `BEarer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+            const employees = res?.data?.data
+            const formattedData = employees.map((acc, index) => ({
+                id: index + 1,
+                uid: acc?._id,
+                name: acc?.name,
+                email: acc?.email,
+                isactive: acc?.isactive
+            }))
+            setValues(formattedData)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     const handleUpdateActiveEmployee = async (e, id) => {
         await axios.post(`${VITE_HOST}/api/updateactiveuser/${id}`, { isactive: e }, {
             headers: {
@@ -128,6 +153,7 @@ export default function Employees() {
                                     Search
                                 </h1>
                                 <input
+                                    onChange={handleOnChangeSearch}
                                     type="text"
                                     className="block w-[20rem] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     placeholder='Search here...'
