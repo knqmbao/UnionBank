@@ -37,10 +37,12 @@ router.post('/deletetoken/:developerId',
 
 router.get('/it/backup',
     UserMiddleware.CheckDeveloperTokenValid,
-    DeveloperController.BackUp)
+    DeveloperController.BackUp
+)
 
 router.get('/it/restore',
     UserMiddleware.CheckDeveloperTokenValid,
-    DeveloperController.Restore)
+    DeveloperController.Restore
+)
 
 module.exports = router
