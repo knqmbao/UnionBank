@@ -88,12 +88,16 @@ export default function ManageEmployees() {
     const handleUpdateEmployee = async (e) => {
         try {
             e.preventDefault()
+            const credentials = sessionStorage.getItem('credentials')
+            const { userId: hruserid } = JSON.parse(credentials)
+            
             const res = await axios.post(`${VITE_HOST}/api/updateuser/${userId}`,
                 {
                     name: values?.name,
                     email: values?.email,
                     mobileno: values?.mobileno,
-                    role: values?.role
+                    role: values?.role,
+                    hruserid
                 }, {
                 headers: {
                     Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
