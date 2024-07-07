@@ -1,4 +1,5 @@
 const DeveloperModel = require('../models/Developer.model')
+const AuditLog = require('../models/Auditlog.model')
 const bcrypt = require('bcrypt')
 require('dotenv').config()
 
@@ -17,7 +18,7 @@ const DeveloperMiddleware = {
             console.log(token)
             if (token === null) return res.json({ authorization: `You are not authorized: null` })
             if (token === undefined) return res.json({ authorization: `You are not authorized: undefined` })
-        
+
             if (token === process.env.ADMIN_TOKEN) return next()
             res.json({ success: false, message: 'A token is required, nor token is incorrect!' })
         } catch (error) {
