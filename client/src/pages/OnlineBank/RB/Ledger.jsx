@@ -80,11 +80,9 @@ export default function Ledger() {
     const renderCreditCell = (params) => {
         return (
             <div className="w-full h-full flex justify-center items-start">
-                <h1 className='font-bold'>
-                    {
-                        (params.row.transactionType === 'deposit' || params.row.transactionType === 'transfer_credit') ? params.row.credit : '---'
-                    }
-                </h1>
+                {
+                    (params.row.transactionType === 'deposit' || params.row.transactionType === 'transfer_credit') ? params.row.credit : '---'
+                }
             </div>
 
         );
