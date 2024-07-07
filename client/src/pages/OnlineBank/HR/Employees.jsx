@@ -51,7 +51,6 @@ export default function Employees() {
     const handleOnChangeSearch = async (e) => {
         try {
             const { value } = e.target
-
             if (value === '') return fetchEmployedUsers()
 
             const res = await axios.get(`${VITE_HOST}/api/searchremployedusers/${value}`, {
@@ -73,26 +72,42 @@ export default function Employees() {
         }
     }
 
-    const handleUpdateActiveEmployee = async (e, id) => {
-        await axios.post(`${VITE_HOST}/api/updateactiveuser/${id}`, { isactive: e }, {
-            headers: {
-                Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
-            }
-        })
-    }
-
     const handleOnClickEdit = (e) => {
         navigate(`/employees/${e}`)
     }
 
     const renderIsActiveToggle = (params) => {
+        const [isActive, setIsActive] = useState(params.row.isactive);
+
+        const handleUpdateActiveEmployee = async (e) => {
+            setIsActive(e);
+            try {
+                const credentials = sessionStorage.getItem('credentials')
+                const { userId } = JSON.parse(credentials)
+                await axios.post(`${VITE_HOST}/api/updateactiveuser/${params.row.uid}`,
+                    {
+                        isactive: e,
+                        rbid: userId
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${VITE_ADMIN_TOKEN}`,
+                        }
+                    });
+            } catch (error) {
+                console.error('Error updating active status:', error);
+            }
+        };
         return (
-            <div className="w-full h-full flex justify-center items-center">
-                <Toggle isCheck={params.row.isactive} returnCheck={(checkState) => handleUpdateActiveEmployee(checkState, params.row.uid)} />
+            <div className="w-full h-full flex justify-center items-start">
+                <Toggle
+                    isCheck={isActive}
+                    returnCheck={handleUpdateActiveEmployee}
+                />
             </div>
 
-        );
-    };
+        )
+    }
 
     const renderActionButtons = (params) => {
         return (
