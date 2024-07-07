@@ -50,8 +50,7 @@ export default function Customers() {
                 name: user?.name,
                 email: user?.email,
                 mobileno: user?.mobileno,
-                isactive: user?.isactive,
-                accountactive: user?.isactive
+                isactive: user?.isactive
             }))
             setDetails(formattedData)
         } catch (error) {
@@ -78,8 +77,7 @@ export default function Customers() {
                 name: user?.name,
                 email: user?.email,
                 mobileno: user?.mobileno,
-                isactive: user?.isactive,
-                accountactive: user?.isactive
+                isactive: user?.isactive
             }))
             setDetails(formattedData)
         } catch (error) {
@@ -156,7 +154,9 @@ export default function Customers() {
 
     const handleOpenAccount = async (name) => {
         try {
-            const res = await axios.post(`${VITE_HOST}/api/createaccount`, { userId: name, accountType: 'savings' }, {
+            const credentials = sessionStorage.getItem('credentials')
+            const { userId: rbid } = JSON.parse(credentials)
+            const res = await axios.post(`${VITE_HOST}/api/createaccount`, { userId: name, accountType: 'savings', rbid: rbid }, {
                 headers: {
                     Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
                 }
@@ -172,48 +172,71 @@ export default function Customers() {
         }
     }
 
-    const handleUpdateActiveCustomer = async (e, id) => {
-        try {
-          await axios.post(`${VITE_HOST}/api/updateactiveuser/${id}`, { isactive: e }, {
-                headers: {
-                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
-                }
-            })
-        } catch (error) {
-            console.error(error)
-        }
-    }
+    const renderIsActiveRBUsersToggle = (params) => {
+        const [isActive, setIsActive] = useState(params.row.isactive);
 
-    const handleUpdateActiveAccount = async (e, id) => {
-        try {
-            await axios.post(`${VITE_HOST}/api/updateactiveaccount/${id}`, { isactive: e }, {
-                headers: {
-                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
-                }
-            })
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
-    const renderIsRBUserActiveToggle = (params) => {
+        const handleUpdateActiveUsers = async (e) => {
+            setIsActive(e);
+            try {
+                const credentials = sessionStorage.getItem('credentials')
+                const { userId } = JSON.parse(credentials)
+                await axios.post(`${VITE_HOST}/api/updateactiveuser/${params.row.uid}`,
+                    {
+                        isactive: e,
+                        rbid: userId
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${VITE_ADMIN_TOKEN}`,
+                        }
+                    });
+            } catch (error) {
+                console.error('Error updating active status:', error);
+            }
+        };
         return (
-            <div className="w-full h-full flex justify-center items-center">
-                <Toggle isCheck={params.row.isactive} returnCheck={(checkState) => handleUpdateActiveCustomer(checkState, params.row.uid)} />
+            <div className="w-full h-full flex justify-center items-start">
+                <Toggle
+                    isCheck={isActive}
+                    returnCheck={handleUpdateActiveUsers}
+                />
             </div>
 
-        );
-    };
+        )
+    }
 
-    const renderIsRBAccountActiveToggle = (params) => {
+    const renderIsActiveRBAccountsToggle = (params) => {
+        const [isActiveAcc, setIsActiveAcc] = useState(params.row.accountactive);
+
+        const handleUpdateActiveAccounts = async (e) => {
+            setIsActiveAcc(e);
+            try {
+                const credentials = sessionStorage.getItem('credentials')
+                const { userId } = JSON.parse(credentials)
+                await axios.post(`${VITE_HOST}/api/updateactiveaccount/${params.row.uid}`,
+                    {
+                        isactive: e,
+                        rbid: userId
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${VITE_ADMIN_TOKEN}`,
+                        }
+                    });
+            } catch (error) {
+                console.error('Error updating active status:', error);
+            }
+        };
         return (
-            <div className="w-full h-full flex justify-center items-center">
-                <Toggle isCheck={params.row.accountactive} returnCheck={(checkState) => handleUpdateActiveAccount(checkState, params.row.uid)} />
+            <div className="w-full h-full flex justify-center items-start">
+                <Toggle
+                    isCheck={isActiveAcc}
+                    returnCheck={handleUpdateActiveAccounts}
+                />
             </div>
 
-        );
-    };
-
+        )
+    }
 
     const renderActionButtons = (params) => {
         return (
@@ -261,7 +284,7 @@ export default function Customers() {
             width: 150,
             headerAlign: 'center',
             align: 'center',
-            renderCell: renderIsRBUserActiveToggle
+            renderCell: renderIsActiveRBUsersToggle
         },
         {
             field: 'actions',
@@ -316,7 +339,7 @@ export default function Customers() {
             width: 150,
             headerAlign: 'center',
             align: 'center',
-            renderCell: renderIsRBAccountActiveToggle
+            renderCell: renderIsActiveRBAccountsToggle
         }
     ]
 
