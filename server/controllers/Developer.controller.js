@@ -1,10 +1,15 @@
 const DeveloperModel = require('../models/Developer.model')
 const TransactionModel = require('../models/Transactions.model')
 const AccountModel = require('../models/Account.model')
+const AuditLog = require('../models/Auditlog.model')
+
 const { exec } = require('child_process')
 
-const dbName = 'unionbank';
+const Log = async ({ userId, action, collectionName, documentId, changes, description }) => {
+    await AuditLog.create({ userId, action, collectionName, documentId, changes, description })
+}
 
+const dbName = 'unionbank';
 const mongodumpPath = '"C:\\Program Files\\MongoDB\\Tools\\100\\bin\\mongodump"';
 const mongorestorePath = '"C:\\Program Files\\MongoDB\\Tools\\100\\bin\\mongorestore"';
 
@@ -45,6 +50,8 @@ const DeveloperController = {
             const authHeader = req.headers['authorization']
             const token = authHeader && authHeader.split(' ')[1]
 
+            const { user: developerUserId, _id: developerId } = await DeveloperModel.findOne({ token: token })
+
             const { debitAccount, creditAccount, amount } = req.body
             const transferAmount = parseFloat(amount)
             const tax = 150
@@ -63,11 +70,29 @@ const DeveloperController = {
             const debitFutureBalance = debitBalance - taxAmount
             const creditFutureBalance = creditBalance + transferAmount
 
-            await TransactionModel.create({ account: debitAccountId, fee: tax, amount: taxAmount, transactionType: 'transfer_debit', description: `${debitAccount} transferred to ${creditAccount}`, status: 'completed', balance: debitFutureBalance, token: token })
-            await TransactionModel.create({ account: creditAccountId, fee: tax, amount: transferAmount, transactionType: 'transfer_credit', description: `Received from ${debitAccount}`, status: 'completed', balance: creditFutureBalance, token: token })
+            const { _id: debitTransactionId } = await TransactionModel.create({ account: debitAccountId, fee: tax, amount: taxAmount, transactionType: 'transfer_debit', description: `${debitAccount} transferred to ${creditAccount}`, status: 'completed', balance: debitFutureBalance, token: token })
+            const { _id: creditTransactionId } = await TransactionModel.create({ account: creditAccountId, fee: tax, amount: transferAmount, transactionType: 'transfer_credit', description: `Received from ${debitAccount}`, status: 'completed', balance: creditFutureBalance, token: token })
 
             await AccountModel.findByIdAndUpdate(debitAccountId, { balance: debitFutureBalance }, { new: true })
             await AccountModel.findByIdAndUpdate(creditAccountId, { balance: creditFutureBalance }, { new: true })
+
+            Log({
+                userId: developerUserId,
+                action: 'create',
+                collectionName: 'Transaction',
+                documentId: debitTransactionId,
+                changes: { balance: debitFutureBalance },
+                description: `Foreign user: ${developerUserId} with developer document id of ${developerId} attempted to transfer. ${debitAccount} transferred an amount of ${transferAmount} with a service fee of ${tax}, totaling ${taxAmount}. The balance changed from ${debitBalance} to ${debitFutureBalance}.`
+            })
+
+            Log({
+                userId: developerUserId,
+                action: 'update',
+                collectionName: 'Transaction',
+                documentId: creditTransactionId,
+                changes: { balance: creditFutureBalance },
+                description: `Foreign user: ${developerUserId} with developer document id of ${developerId} attempted to transfer. ${creditAccount} credited an amount of ${transferAmount} The balance changed from ${creditBalance} to ${creditFutureBalance}`
+            })
 
             res.json({ success: true, message: 'Transfer transaction successfully!' })
         } catch (error) {
