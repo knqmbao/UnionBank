@@ -48,14 +48,6 @@ export default function Developers() {
         }
     }
 
-    const handleUpdateActiveDeveloper = async (e, id) => {
-        await axios.post(`${VITE_HOST}/api/updateactiveuser/${id}`, { isactive: e }, {
-            headers: {
-                Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
-            }
-        })
-    }
-
     const handleOnChangeSearch = async (e) => {
         try {
             const { value } = e.target
@@ -81,14 +73,38 @@ export default function Developers() {
         }
     }
 
-    const renderActionButtons = (params) => {
+    const renderIsActiveToggle = (params) => {
+        const [isActive, setIsActive] = useState(params.row.isactive);
+
+        const handleUpdateActiveEmployee = async (e) => {
+            setIsActive(e);
+            try {
+                const credentials = sessionStorage.getItem('credentials')
+                const { userId } = JSON.parse(credentials)
+                await axios.post(`${VITE_HOST}/api/updateactiveuser/${params.row.uid}`,
+                    {
+                        isactive: e,
+                        rbid: userId
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${VITE_ADMIN_TOKEN}`,
+                        }
+                    });
+            } catch (error) {
+                console.error('Error updating active status:', error);
+            }
+        };
         return (
-            <div className="w-full h-full flex justify-center items-center">
-                <Toggle isCheck={params.row.isactive} returnCheck={(checkState) => handleUpdateActiveDeveloper(checkState, params.row.uid)} />
+            <div className="w-full h-full flex justify-center items-start">
+                <Toggle
+                    isCheck={isActive}
+                    returnCheck={handleUpdateActiveEmployee}
+                />
             </div>
 
-        );
-    };
+        )
+    }
 
     const developerCol = [
         {
@@ -120,12 +136,12 @@ export default function Developers() {
             align: 'center'
         },
         {
-            field: 'actions',
+            field: 'isactive',
             headerName: 'Active',
             width: 200,
             headerAlign: 'center',
             align: 'center',
-            renderCell: renderActionButtons
+            renderCell: renderIsActiveToggle
         }
     ];
 
