@@ -33,7 +33,7 @@ router.post('/updateaccount/:accountId', //temp
     AccountController.UpdateAccount
 )
 
-router.post('/updateactiveaccount/:accountId', //temp
+router.post('/updateactiveaccount/:accountId',
     AccountMiddleware.CheckDeveloperTokenValid,
     AccountController.UpdateActiveAccount
 )
