@@ -89,15 +89,15 @@ export default function ManageEmployees() {
         try {
             e.preventDefault()
             const credentials = sessionStorage.getItem('credentials')
-            const { userId: hruserid } = JSON.parse(credentials)
-            
+            const { userId:rbid } = JSON.parse(credentials)
+
             const res = await axios.post(`${VITE_HOST}/api/updateuser/${userId}`,
                 {
                     name: values?.name,
                     email: values?.email,
                     mobileno: values?.mobileno,
                     role: values?.role,
-                    hruserid
+                    rbid: rbid
                 }, {
                 headers: {
                     Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
@@ -108,8 +108,6 @@ export default function ManageEmployees() {
             alert(res?.data?.message)
         } catch (error) {
             console.error(error)
-        } finally {
-            handleCleanUp()
         }
     }
 
