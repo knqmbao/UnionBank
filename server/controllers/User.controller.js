@@ -12,7 +12,7 @@ const UserController = {
         try {
             const { name, email, mobileno, password, role } = req.body
             // console.log('Create User Controller: ', values)
-            
+
             const data = await UserModel.create({ name, email, mobileno, password, role })
             res.json({ success: true, message: 'User created successfully!', data: data?._id })
         } catch (error) {
@@ -249,7 +249,7 @@ const UserController = {
     UpdateUser: async (req, res) => {
         try {
             const { userId } = req.params
-            const { name, email, mobileno, role } = req.body
+            const { name, email, mobileno, role, hruserid } = req.body
             console.log('Update User Controller: ', { name, email, mobileno, role })
 
             const data = await UserModel.findByIdAndUpdate(
@@ -262,6 +262,36 @@ const UserController = {
                 },
                 { new: true }
             )
+
+            if (hruserid === null || hruserid === '' || hruserid === undefined) {
+                Log({
+                    userId: userId,
+                    action: 'update',
+                    collectionName: 'User',
+                    documentId: data?._id, changes: {
+                        name: name,
+                        email: email,
+                        mobileno: mobileno,
+                        role: role
+                    },
+                    description: `Attempted to update its profile`
+                })
+            } else {
+                Log({
+                    userId: hruserid,
+                    action: 'update',
+                    collectionName: 'User',
+                    documentId: data?._id, changes: {
+                        name: name,
+                        email: email,
+                        mobileno: mobileno,
+                        role: role
+                    },
+                    description: `Attempted to update the profile of ${data?.email}`
+                })
+            }
+
+
             res.json({ success: true, message: 'User updated successfully!', data })
         } catch (error) {
             res.json({ error: `UpdateUser in user controller error ${error}` });
