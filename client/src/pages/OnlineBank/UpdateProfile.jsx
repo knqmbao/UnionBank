@@ -214,7 +214,10 @@ export default function UpdateAccount() {
                                                     <div className="block text-sm font-medium leading-6 text-gray-900">
                                                         Developer
                                                     </div>
-                                                    <Toggle isCheck={values?.role === 'user' ? false : true} returnCheck={(e) => handleToggleCheck(e)} />
+                                                    <Toggle
+                                                        isCheck={values?.role === 'user' ? false : true}
+                                                        returnCheck={handleToggleCheck}
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
