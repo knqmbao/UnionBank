@@ -46,22 +46,25 @@ export default function OpenAccount() {
     const handleCreateAccount = async (e) => {
         try {
             e.preventDefault()
+            const credentials = sessionStorage.getItem('credentials')
+            const { userId: rbid } = JSON.parse(credentials)
             const { name, email, mobileno, accountType } = values
+            
             if (!accountType || accountType === 'none') return alert('Please choose the account type!')
-                
-            const res = await axios.post(`${VITE_HOST}/api/createuser`, { name, email, mobileno, password: '123' }, {
+
+            const res = await axios.post(`${VITE_HOST}/api/createuser`, { name, email, mobileno, password: '123', rbid: rbid }, {
                 headers: {
                     Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
                 }
             })
             const userId = res?.data?.data
 
-            const createaccount = await axios.post(`${VITE_HOST}/api/createaccount`, { userId, accountType }, {
+            const createaccount = await axios.post(`${VITE_HOST}/api/createaccount`, { userId, accountType, rbid: rbid }, {
                 headers: {
                     Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
                 }
             })
-            console.log(createaccount?.data)
+
             if (createaccount?.data?.success) {
                 alert(createaccount?.data?.message)
                 navigate('/customers')
@@ -98,7 +101,7 @@ export default function OpenAccount() {
             <div className="flex">
                 <Sidebar />
                 <div className="w-[80%] h-screen flex flex-col justify-start items-center p-[1rem] overflow-auto ">
-                    <Header__Dashboard breadcrumbs={breadCrumbs}/>
+                    <Header__Dashboard breadcrumbs={breadCrumbs} />
                     <form
                         onSubmit={handleCreateAccount}
                         className='w-full h-[95%] flex flex-col justify-start items-center px-[5rem]'>
@@ -184,6 +187,6 @@ export default function OpenAccount() {
 
 const breadCrumbs = [
     { title: 'Customers', href: '/customers', isLink: true },
-    {title: 'Add Customer', href: '/customers/addcustomer', isLink: true},
+    { title: 'Add Customer', href: '/customers/addcustomer', isLink: true },
     { title: 'Open Account', isLink: false },
 ]
