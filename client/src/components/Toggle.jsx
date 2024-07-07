@@ -1,32 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 export default function Toggle({ isCheck, returnCheck }) {
-    const [isChecked, setIsChecked] = useState(isCheck)
-
-    // useEffect(() => {
-    //     setIsChecked(isCheck); // Sync with parent prop changes
-    // }, [isCheck]);
-
-    useEffect(()=> {
-        returnCheck(isChecked)
-    },[isChecked])
 
     const handleToggleState = () => {
-        setIsChecked(prev => !prev)
-    };
+        returnCheck(!isCheck)
+    }
+
     return (
         <>
             <label className='flex cursor-pointer select-none items-center'>
                 <div className='relative'>
                     <input
                         type='checkbox'
-                        checked={isChecked}
+                        checked={isCheck}
                         onChange={handleToggleState}
                         className='sr-only'
                     />
-                    <div className={`block h-8 w-14 rounded-full ${isChecked ? 'bg-indigo-600' : 'bg-[#E5E7EB]'}`}></div>
-                    <div className={`dot absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white transition ${isChecked ? 'translate-x-full' : ''}`}>
-                        <span className={`active ${isChecked ? '' : 'hidden'}`}>
+                    <div className={`block h-8 w-14 rounded-full ${isCheck ? 'bg-indigo-600' : 'bg-[#E5E7EB]'}`}></div>
+                    <div className={`dot absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white transition ${isCheck ? 'translate-x-full' : ''}`}>
+                        <span className={`active ${isCheck ? '' : 'hidden'}`}>
                             <svg
                                 width='11'
                                 height='8'
@@ -42,7 +34,7 @@ export default function Toggle({ isCheck, returnCheck }) {
                                 ></path>
                             </svg>
                         </span>
-                        <span className={`inactive ${isChecked ? 'hidden' : ''}`}>
+                        <span className={`inactive ${isCheck ? 'hidden' : ''}`}>
                             <svg
                                 className='h-4 w-4 stroke-current'
                                 fill='none'
