@@ -1,5 +1,5 @@
 import React from 'react'
-import { DataGrid } from '@mui/x-data-grid'
+import { DataGrid, gridClasses } from '@mui/x-data-grid'
 
 export default function DataGrids({ columnsTest, rowsTest, descCol, colVisibility }) {
     return (
@@ -16,6 +16,12 @@ export default function DataGrids({ columnsTest, rowsTest, descCol, colVisibilit
                     sortModel: [{ field: descCol, sort: 'desc' }],
                 },
             }}
+            getRowHeight={() => 'auto'}
+            sx={{
+                [`& .${gridClasses.cell}`]: {
+                  py: 2,
+                },
+              }}
             columnVisibilityModel={colVisibility}
             pageSizeOptions={[5, 10, 25]}
             disableRowSelectionOnClick
