@@ -1,6 +1,11 @@
 const AccountModel = require('../models/Account.model')
 const UserModel = require('../models/Users.model')
+const AuditLog = require('../models/Auditlog.model')
 const fetch = require('node-fetch')
+
+const Log = async ({ userId, action, collectionName, documentId, changes, description }) => {
+    await AuditLog.create({ userId, action, collectionName, documentId, changes, description })
+}
 
 const UserController = {
     CreateUser: async (req, res) => {
