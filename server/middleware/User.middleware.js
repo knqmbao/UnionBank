@@ -1,7 +1,12 @@
 const UserModel = require('../models/Users.model')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const AuditLog = require('../models/Auditlog.model')
 require('dotenv').config()
+
+const Log = async ({ userId, action, collectionName, documentId, changes, description }) => {
+    await AuditLog.create({ userId, action, collectionName, documentId, changes, description })
+}
 
 const UserMidlleware = {
     CheckUserTokenValid: async (req, res, next) => {
@@ -47,6 +52,7 @@ const UserMidlleware = {
         try {
             const { email } = req.body
             const testEmail = await UserModel.findOne({ email: email })
+
             if (testEmail.length > 0) return res.json({ success: false, message: 'User not found.', testEmail })
             next()
         } catch (error) {
@@ -63,6 +69,7 @@ const UserMidlleware = {
 
                 if (testPassword) {
                     const token = jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, { expiresIn: '1d' })
+                    Log({ userId: user?._id, action: 'read', collectionName: 'User', documentId: user?._id, description: `${email} attempted to login` })
                     res.json({ success: true, message: 'Login Successful.', token, name: user.name, userId: user._id, role: user.role })
                 } else {
                     res.json({ success: false, message: 'Email or password is Incorrect!' })
