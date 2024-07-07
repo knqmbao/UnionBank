@@ -68,7 +68,7 @@ export default function Ledger() {
 
     const renderDebitCell = (params) => {
         return (
-            <div className="w-full h-full flex justify-center items-center">
+            <div className="w-full h-full flex justify-center items-start">
                 {
                     (params.row.transactionType === 'withdrawal' || params.row.transactionType === 'transfer_debit') ? params.row.debit : '---'
                 }
@@ -79,7 +79,7 @@ export default function Ledger() {
 
     const renderCreditCell = (params) => {
         return (
-            <div className="w-full h-full flex justify-center items-center">
+            <div className="w-full h-full flex justify-center items-start">
                 <h1 className='font-bold'>
                     {
                         (params.row.transactionType === 'deposit' || params.row.transactionType === 'transfer_credit') ? params.row.credit : '---'
@@ -134,8 +134,7 @@ export default function Ledger() {
             headerName: 'Service fee',
             width: 150,
             headerAlign: 'center',
-            align: 'center',
-            // renderCell: renderDebitCell
+            align: 'center'
         },
         {
             field: 'balance',
@@ -149,7 +148,7 @@ export default function Ledger() {
             headerName: 'Description',
             width: 300,
             headerAlign: 'center',
-            align: 'center'
+            align: 'justify'
         }
     ]
 
