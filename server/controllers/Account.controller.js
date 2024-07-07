@@ -1,13 +1,33 @@
 const AccountModel = require('../models/Account.model')
+const AuditLog = require('../models/Auditlog.model')
 const fetch = require('node-fetch')
+
+const Log = async ({ userId, action, collectionName, documentId, changes, description }) => {
+    await AuditLog.create({ userId, action, collectionName, documentId, changes, description })
+}
 
 const AccountController = {
     CreateAccount: async (req, res) => {
         try {
             const { accno } = req
-            const { userId, accountType } = req.body
+            const { userId, accountType, rbid } = req.body
 
             const data = await AccountModel.create({ userId, accountno: accno, accountType })
+
+            if (rbid !== undefined) {
+                Log({
+                    userId: rbid,
+                    action: 'create',
+                    collectionName: 'Account',
+                    documentId: data?._id,
+                    changes: {
+                        userId: userId,
+                        accountno: accno,
+                        accountType: accountType
+                    },
+                    description: `Attempted to open an account for: ${data?.userId}`
+                })
+            }
             res.json({ success: true, message: 'Account created successfully!', data })
         } catch (error) {
             res.json({ error: `CreateAccount in account controller error ${error}` });
@@ -81,7 +101,6 @@ const AccountController = {
             const values = req.body
             console.log('Update Account Controller: ', values, accountId)
 
-
             res.json({ success: true, message: 'Account updated successfully!', values, accountId })
         } catch (error) {
             res.json({ error: `UpdateAccount in account controller error ${error}` });
@@ -90,7 +109,7 @@ const AccountController = {
     UpdateActiveAccount: async (req, res) => {
         try {
             const { accountId } = req.params
-            const { isactive } = req.body
+            const { isactive, rbid } = req.body
             console.log('Update Active Account Controller: ', isactive, accountId)
 
             const data = await AccountModel.findByIdAndUpdate(
@@ -98,6 +117,19 @@ const AccountController = {
                 { isactive: isactive },
                 { new: true }
             )
+
+            if (rbid !== undefined) {
+                Log({
+                    userId: rbid,
+                    action: 'update',
+                    collectionName: 'Account',
+                    documentId: data?._id,
+                    changes: {
+                        isactive: isactive
+                    },
+                    description: `Attempted to update isactive of an account for: ${data?.userId}`
+                })
+            }
             res.json({ success: true, message: 'Account active updated successfully!', data })
         } catch (error) {
             res.json({ error: `UpdateActiveAccount in account controller error ${error}` });
