@@ -10,10 +10,27 @@ const Log = async ({ userId, action, collectionName, documentId, changes, descri
 const UserController = {
     CreateUser: async (req, res) => {
         try {
-            const { name, email, mobileno, password, role } = req.body
+            const { name, email, mobileno, password, role, rbid } = req.body
             // console.log('Create User Controller: ', values)
 
             const data = await UserModel.create({ name, email, mobileno, password, role })
+
+            if (rbid !== undefined) {
+                Log({
+                    userId: rbid,
+                    action: 'create',
+                    collectionName: 'User',
+                    documentId: data?._id,
+                    changes: {
+                        name: name,
+                        email: email,
+                        mobileno: mobileno,
+                        role: role
+                    },
+                    description: `Attempted to create a user: ${data?.email}`
+                })
+            }
+
             res.json({ success: true, message: 'User created successfully!', data: data?._id })
         } catch (error) {
             res.json({ error: `CreateUser in user controller error ${error}` });
@@ -249,8 +266,8 @@ const UserController = {
     UpdateUser: async (req, res) => {
         try {
             const { userId } = req.params
-            const { name, email, mobileno, role, hruserid } = req.body
-            console.log('Update User Controller: ', { name, email, mobileno, role })
+            const { name, email, mobileno, role, rbid } = req.body
+            // console.log('Update User Controller: ', { name, email, mobileno, role, rbid })
 
             const data = await UserModel.findByIdAndUpdate(
                 userId,
@@ -263,34 +280,23 @@ const UserController = {
                 { new: true }
             )
 
-            if (hruserid === null || hruserid === '' || hruserid === undefined) {
-                Log({
-                    userId: userId,
-                    action: 'update',
-                    collectionName: 'User',
-                    documentId: data?._id, changes: {
-                        name: name,
-                        email: email,
-                        mobileno: mobileno,
-                        role: role
-                    },
-                    description: `Attempted to update its profile`
-                })
-            } else {
-                Log({
-                    userId: hruserid,
-                    action: 'update',
-                    collectionName: 'User',
-                    documentId: data?._id, changes: {
-                        name: name,
-                        email: email,
-                        mobileno: mobileno,
-                        role: role
-                    },
-                    description: `Attempted to update the profile of ${data?.email}`
-                })
-            }
+            const description = rbid === undefined
+                ? `Attempted to update its profile`
+                : `Attempted to update the profile of ${data?.email}`
 
+            Log({
+                userId: rbid || userId,
+                action: 'update',
+                collectionName: 'User',
+                documentId: data?._id,
+                changes: {
+                    name: name,
+                    email: email,
+                    mobileno: mobileno,
+                    role: role
+                },
+                description: description
+            });
 
             res.json({ success: true, message: 'User updated successfully!', data })
         } catch (error) {
@@ -300,15 +306,33 @@ const UserController = {
     UpdateActiveUser: async (req, res) => {
         try {
             const { userId } = req.params
-            const { isactive } = req.body
+            const { isactive, rbid } = req.body
 
-            const data = await UserModel.findByIdAndUpdate(
-                userId,
-                {
-                    isactive: isactive
-                },
-                { new: true }
-            )
+            const data = await UserModel.findByIdAndUpdate(userId, { isactive: isactive }, { new: true })
+
+            const defaultDescription = `Attempted to update its profile`
+            const detailedDescription = `Attempted to update the profile of ${data?.email}`
+
+            if (rbid === undefined) {
+                Log({
+                    userId: userId,
+                    action: 'update',
+                    collectionName: 'User',
+                    documentId: data?._id,
+                    changes: { isactive: isactive },
+                    description: defaultDescription
+                })
+            } else {
+                Log({
+                    userId: rbid,
+                    action: 'update',
+                    collectionName: 'User',
+                    documentId: data?._id,
+                    changes: { isactive: isactive },
+                    description: detailedDescription
+                })
+            }
+
             res.json({ success: true, message: 'User active updated successfully!', data })
         } catch (error) {
             res.json({ error: `UpdateActiveUser in user controller error ${error}` });
