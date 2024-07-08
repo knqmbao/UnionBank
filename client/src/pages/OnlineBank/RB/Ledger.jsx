@@ -146,7 +146,7 @@ export default function Ledger() {
             headerName: 'Description',
             width: 300,
             headerAlign: 'center',
-            align: 'justify'
+            align: 'left'
         }
     ]
 
