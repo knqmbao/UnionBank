@@ -99,6 +99,29 @@ const DeveloperController = {
             res.json({ error: `TransferTransaction in transaction controller error ${error}` });
         }
     },
+    GetAllAuditLog: async (req, res) => {
+        try {
+            const data = await AuditLog.find()
+
+            const formattedData = data.map(item => {
+                const { _id, userId, action, collectionName, documentId, changes, description, createdAt } = item;
+
+                const formattedCreatedAt = new Date(createdAt).toLocaleString('en-US', {
+                    month: '2-digit',
+                    day: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                return { _id, userId, action, collectionName, documentId, changes, description, date: formattedCreatedAt };
+            });
+
+            res.json({ success: true, message: 'Auditlog fetched successfully!', data: formattedData })
+        } catch (error) {
+            res.json({ error: `DeleteToken in developer controller error ${error}` });
+        }
+    },
     DeleteToken: async (req, res) => {
         try {
             const { tokenId } = req.params
