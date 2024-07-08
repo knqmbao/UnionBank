@@ -35,6 +35,11 @@ router.post('/deletetoken/:developerId',
     DeveloperController.DeleteToken
 )
 
+router.get('/it/auditlog',
+    UserMiddleware.CheckDeveloperTokenValid,
+    DeveloperController.GetAllAuditLog
+)
+
 router.get('/it/backup',
     UserMiddleware.CheckDeveloperTokenValid,
     DeveloperController.BackUp
