@@ -3,61 +3,17 @@ import Sidebar from '../../../components/Sidebar'
 import Header__Dashboard from '../../../components/Header__dashboard';
 import DataGrids from '../../../components/DataGrids';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
 
-const columns = [
-    {
-        field: 'id',
-        headerName: 'No.',
-        width: 90,
-        headerAlign: 'center',
-        align: 'center'
-    },
-    {
-        field: 'userid',
-        headerName: 'ID',
-        width: 200,
-        headerAlign: 'center',
-        align: 'center'
-    },
-    {
-        field: 'description',
-        headerName: 'Description',
-        width: 500,
-        headerAlign: 'center',
-        align: 'center'
-    },
-    {
-        field: 'role',
-        headerName: 'Role',
-        width: 200,
-        headerAlign: 'center',
-        align: 'center'
-    },
-    {
-        field: 'date',
-        headerName: 'Date',
-        width: 200,
-        headerAlign: 'center',
-        align: 'center'
-    }
-];
-
-const rows = [
-    { id: 1, userid: '000000012', description: 'Added a new customer', role: 'Human Resource', date: 'June 30, 2024' },
-    { id: 2, userid: '000000012', description: 'Added a new customer', role: 'Human Resource', date: 'June 30, 2024' },
-    { id: 3, userid: '000000012', description: 'Added a new customer', role: 'Human Resource', date: 'June 30, 2024' },
-    { id: 4, userid: '000000012', description: 'Added a new customer', role: 'Human Resource', date: 'June 30, 2024' },
-    { id: 5, userid: '000000012', description: 'Added a new customer', role: 'Human Resource', date: 'June 30, 2024' },
-    { id: 6, userid: '000000012', description: 'Added a new customer', role: 'Human Resource', date: 'June 30, 2024' },
-    { id: 7, userid: '000000012', description: 'Added a new customer', role: 'Human Resource', date: 'June 30, 2024' },
-];
+const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function AuditLog() {
-    const [value, setValue] = useState('1');
+    const [values, setValues] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
         fetchCredentials()
+        fetchAuditLogs()
     }, [])
 
     const fetchCredentials = () => {
@@ -69,9 +25,91 @@ export default function AuditLog() {
         }
     }
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+    const fetchAuditLogs = async () => {
+        try {
+            const res = await axios.get(`${VITE_HOST}/api/it/auditlog`, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+
+            const auditlogs = res?.data?.data
+            const formattedData = auditlogs.map((acc, index) => ({
+                id: index + 1,
+                did: acc?._id,
+                userId: acc?.userId,
+                action: acc?.action,
+                collectionName: acc?.collectionName,
+                documentId: acc?.documentId,
+                changes: JSON.stringify(acc?.changes),
+                description: acc?.description,
+                date: acc?.date,
+            }))
+            setValues(formattedData)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const columns = [
+        {
+            field: 'id',
+            headerName: 'No.',
+            width: 90,
+            headerAlign: 'center',
+            align: 'center'
+        },
+        {
+            field: 'date',
+            headerName: 'Date',
+            width: 200,
+            headerAlign: 'center',
+            align: 'center'
+        },
+        {
+            field: 'userId',
+            headerName: 'User ID',
+            width: 200,
+            headerAlign: 'center',
+            align: 'center'
+        },
+        {
+            field: 'action',
+            headerName: 'Action',
+            width: 200,
+            headerAlign: 'center',
+            align: 'center'
+        },
+        {
+            field: 'collectionName',
+            headerName: 'Collection Name',
+            width: 200,
+            headerAlign: 'center',
+            align: 'center'
+        },
+        {
+            field: 'documentId',
+            headerName: 'Document ID',
+            width: 200,
+            headerAlign: 'center',
+            align: 'center'
+        },
+        {
+            field: 'changes',
+            headerName: 'Changes',
+            width: 200,
+            headerAlign: 'center',
+            align: 'center'
+        },
+        {
+            field: 'description',
+            headerName: 'Description',
+            width: 300,
+            headerAlign: 'center',
+            align: 'center'
+        }
+    ];
+
     return (
         <>
             <div className="flex">
@@ -91,7 +129,7 @@ export default function AuditLog() {
                                 />
                             </div>
                         </div>
-                        <DataGrids columnsTest={columns} rowsTest={rows} />
+                        <DataGrids columnsTest={columns} rowsTest={values} />
                     </div>
                 </div>
             </div >
