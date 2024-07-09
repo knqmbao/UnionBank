@@ -40,7 +40,10 @@ export default function Withdrawal() {
                     userId: userId
                 }
             })
-            if (res?.data?.success) return alert(res?.data?.message)
+            if (res?.data?.success) {
+                alert(res?.data?.message)
+                return navigate('/ledger')
+            }
             alert(res?.data?.message)
         } catch (error) {
             console.error(error)
