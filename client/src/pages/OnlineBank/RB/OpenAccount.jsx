@@ -49,7 +49,7 @@ export default function OpenAccount() {
             const credentials = sessionStorage.getItem('credentials')
             const { userId: rbid } = JSON.parse(credentials)
             const { name, email, mobileno, accountType } = values
-            
+
             if (!accountType || accountType === 'none') return alert('Please choose the account type!')
 
             const res = await axios.post(`${VITE_HOST}/api/createuser`, { name, email, mobileno, password: '123', rbid: rbid }, {
@@ -57,18 +57,23 @@ export default function OpenAccount() {
                     Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
                 }
             })
-            const userId = res?.data?.data
+            if (res?.data?.success) {
+                const userId = res?.data?.data
 
-            const createaccount = await axios.post(`${VITE_HOST}/api/createaccount`, { userId, accountType, rbid: rbid }, {
-                headers: {
-                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                const createaccount = await axios.post(`${VITE_HOST}/api/createaccount`, { userId, accountType, rbid: rbid }, {
+                    headers: {
+                        Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                    }
+                })
+                console.log(createaccount)
+                if (createaccount?.data?.success) {
+                    alert(createaccount?.data?.message)
+                    navigate('/customers')
                 }
-            })
-
-            if (createaccount?.data?.success) {
-                alert(createaccount?.data?.message)
-                navigate('/customers')
+            } else {
+                alert(res?.data?.message)
             }
+
         } catch (error) {
             console.error(error)
         }
