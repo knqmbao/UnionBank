@@ -64,7 +64,7 @@ const UserController = {
         try {
             const usersWithoutAccounts = await UserModel.aggregate([
                 // Match users with role 'user'
-                { $match: { role: 'user' } },
+                { $match: { role: { $in: ['user', 'developer'] } } },
 
                 // Lookup accounts associated with each user
                 {
@@ -87,7 +87,7 @@ const UserController = {
                         email: 1,
                         mobileno: 1,
                         isactive: 1,
-                        isdeveloper: 1,
+                        role: 1,
                     },
                 },
             ]);
@@ -199,8 +199,8 @@ const UserController = {
             const regex = new RegExp(searchId, 'i');
 
             const formattedData = employees?.data?.filter((item) => {
-                const { name, email, mobileno } = item
-                return regex.test(name) || regex.test(email) || regex.test(mobileno)
+                const { name, email, mobileno, _id } = item
+                return regex.test(name) || regex.test(email) || regex.test(mobileno) || regex.test(_id)
             })
 
             res.json({ success: true, message: 'Fetched certain user successfully!', data: formattedData })
@@ -226,8 +226,8 @@ const UserController = {
             const regex = new RegExp(searchId, 'i');
 
             const formattedUsers = rbusers?.data?.filter((item) => {
-                const { name, email, mobileno } = item
-                return regex.test(name) || regex.test(email) || regex.test(mobileno)
+                const { name, email, mobileno, _id } = item
+                return regex.test(name) || regex.test(email) || regex.test(mobileno) || regex.test(_id)
             })
 
             res.json({ success: true, message: 'Fetched certain user successfully!', data: formattedUsers })
@@ -253,9 +253,9 @@ const UserController = {
             const regex = new RegExp(searchId, 'i');
 
             const formattedAccounts = rbaccounts?.data?.filter((item) => {
-                const { accountno, user } = item
+                const { accountno, user, _id } = item
                 const { name, email, mobileno } = user
-                return regex.test(name) || regex.test(email) || regex.test(mobileno) || regex.test(accountno)
+                return regex.test(name) || regex.test(email) || regex.test(mobileno) || regex.test(accountno) || regex.test(_id)
             })
 
             res.json({ success: true, message: 'Fetched certain user successfully!', data: formattedAccounts })
