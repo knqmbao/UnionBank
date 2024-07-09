@@ -25,7 +25,7 @@ const AccountController = {
                         accountno: accno,
                         accountType: accountType
                     },
-                    description: `Attempted to open an account for: ${data?.userId}`
+                    description: `Attempted to open an account for: ${data?._id}`
                 })
             }
             res.json({ success: true, message: 'Account created successfully!', data })
