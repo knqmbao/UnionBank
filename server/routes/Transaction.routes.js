@@ -32,7 +32,7 @@ router.get('/transactions/:userId',
     TransactionController.GetAllUserTransaction
 )
 
-router.get('/transactions/:accountId',
+router.get('/searchtransactions/:searchId',
     TransactionMiddleware.CheckDeveloperTokenValid,
     TransactionController.SearchTransaction
 )
