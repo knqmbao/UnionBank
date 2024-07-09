@@ -57,7 +57,10 @@ export default function Deposit() {
                     userId: userId
                 }
             })
-            if (res?.data?.success) return alert(res?.data?.message)
+            if (res?.data?.success) {
+                alert(res?.data?.message)
+                return navigate('/ledger')
+            }
             alert(res?.data?.message)
         } catch (error) {
             console.error(error)
@@ -143,7 +146,7 @@ export default function Deposit() {
                                 </div>
                             </div>
                             <div className="w-full flex items-center justify-end gap-x-6">
-                            <button
+                                <button
                                     onClick={handleBack}
                                     className="text-sm font-semibold leading-6 text-gray-900">
                                     Back
