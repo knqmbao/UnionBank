@@ -19,8 +19,17 @@ const DeveloperController = {
             const { userId } = req.params
             const token = await req.hashedToken
             const newToken = await DeveloperModel.create({ user: userId, token })
+            Log({
+                userId,
+                action: 'create',
+                collectionName: 'Developer',
+                documentId: newToken?._id,
+                changes: {
+                    user: userId, token: token
+                },
+                description: `${userId} created a token.`
+            })
 
-            console.log('Create Tokens Controller: ', newToken)
             res.json({ success: true, message: 'Tokens created successfully!', newToken })
         } catch (error) {
             res.json({ error: `CreateDeveloperToken in developer controller error ${error}` });
