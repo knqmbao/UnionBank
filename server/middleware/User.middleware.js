@@ -23,7 +23,7 @@ const UserMidlleware = {
                 next()
             })
         } catch (error) {
-            res.status(400).json({ error: `CheckUserTokenValid in user middleware error ${error}` });
+            res.json({ error: `CheckUserTokenValid in user middleware error ${error}` });
         }
     },
     CheckDeveloperTokenValid: async (req, res, next) => {
@@ -36,7 +36,7 @@ const UserMidlleware = {
             if (token === process.env.ADMIN_TOKEN) return next()
             res.json({ success: false, message: 'A token is required, nor token is incorrect!' })
         } catch (error) {
-            res.status(400).json({ error: `CheckDeveloperTokenValid in user middleware error ${error}` });
+            res.json({ error: `CheckDeveloperTokenValid in user middleware error ${error}` });
         }
     },
     LoginUserCheckEmptyFields: async (req, res, next) => {
@@ -45,7 +45,7 @@ const UserMidlleware = {
             if (!email || !password) return res.json({ success: false, message: 'Required fields should not be empty.' })
             next()
         } catch (error) {
-            res.status(400).json({ error: `LoginUserCheckEmptyFields in user middleware error ${error}` });
+            res.json({ error: `LoginUserCheckEmptyFields in user middleware error ${error}` });
         }
     },
     LoginUserCheckEmail: async (req, res, next) => {
@@ -56,7 +56,7 @@ const UserMidlleware = {
             if (testEmail.length > 0) return res.json({ success: false, message: 'User not found.', testEmail })
             next()
         } catch (error) {
-            res.status(400).json({ error: `LoginUserCheckUsername in user middleware error ${error}` });
+            res.json({ error: `LoginUserCheckUsername in user middleware error ${error}` });
         }
     },
     LoginUserCheckPassword: async (req, res) => {
@@ -78,14 +78,35 @@ const UserMidlleware = {
                 res.json({ success: false, message: 'Email or password is Incorrect!' })
             }
         } catch (error) {
-            res.status(400).json({ error: `LoginUserCheckPassword in user middleware error ${error}` });
+            res.json({ error: `LoginUserCheckPassword in user middleware error ${error}` });
         }
     },
     CreateUserCheckEmptyFields: async (req, res, next) => {
         try {
             next()
         } catch (error) {
-            res.status(400).json({ error: `CreateUserCheckEmptyFields in user middleware error ${error}` });
+            res.json({ error: `CreateUserCheckEmptyFields in user middleware error ${error}` });
+        }
+    },
+    CreateUserCheckAdminIfDoesNotExist: async (req, res, next) => {
+        try {
+            const { email, password, mobileno, name } = req.body
+
+            const testAdmin = await UserModel.find({ role: 'admin' })
+
+            if (testAdmin.length > 0) {
+                const testEmail = await UserModel.find({ email: email })
+                const testMobileNo = await UserModel.find({ mobileno: mobileno })
+                if (testEmail.length > 0) return res.json({ success: false, message: 'Email already exists!' })
+                if (testMobileNo.length > 0) return res.json({ success: false, message: 'Mobile number already exists!' })
+                next()
+            } else {
+                await UserModel.create({ email, mobileno, isactive: true, name, password, role: 'admin' })
+                res.json({ success: false, message: 'No admin existing, user turned to admin!' })
+            }
+
+        } catch (error) {
+            res.json({ error: `CreateUserCheckUserIfExists in user middleware error ${error}` });
         }
     },
     CreateUserCheckUserIfExists: async (req, res, next) => {
@@ -97,7 +118,7 @@ const UserMidlleware = {
             if (testMobileNo.length > 0) return res.json({ success: false, message: 'Mobile number already exists!' })
             next()
         } catch (error) {
-            res.status(400).json({ error: `CreateUserCheckUserIfExists in user middleware error ${error}` });
+            res.json({ error: `CreateUserCheckUserIfExists in user middleware error ${error}` });
         }
     },
     CreateUserHashedPassword: async (req, res, next) => {
@@ -107,14 +128,14 @@ const UserMidlleware = {
             values.password = hash
             next()
         } catch (error) {
-            res.status(400).json({ error: `CreateUserHashedPassword in user middleware error ${error}` });
+            res.json({ error: `CreateUserHashedPassword in user middleware error ${error}` });
         }
     },
     UpdateUserCheckEmptyFields: async (req, res, next) => {
         try {
             next()
         } catch (error) {
-            res.status(400).json({ error: `UpdateUserCheckEmptyFields in user middleware error ${error}` });
+            res.json({ error: `UpdateUserCheckEmptyFields in user middleware error ${error}` });
         }
     },
 }
