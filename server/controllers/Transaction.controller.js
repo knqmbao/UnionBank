@@ -172,7 +172,7 @@ const TransactionController = {
     SearchTransaction: async (req, res) => {
         try {
             const { searchId } = req.params
-            console.log('Search Account Controller: ', searchId)
+
             const { createdAt, _id, amount, description, transactionType, balance, fee } = await TransactionModel.findById(searchId)
             const formattedCreatedAt = new Date(createdAt).toLocaleString('en-US', {
                 month: '2-digit',
