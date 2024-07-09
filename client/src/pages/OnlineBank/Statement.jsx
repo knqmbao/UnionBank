@@ -163,5 +163,5 @@ export default function Transactions() {
 
 const breadCrumbs = [
     // { title: 'Home', href: '/', isLink: true },
-    { title: 'View Statment', isLink: false },
+    { title: 'View Statement', isLink: false },
 ]
