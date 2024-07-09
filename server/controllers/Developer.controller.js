@@ -74,7 +74,7 @@ const DeveloperController = {
             const { balance: creditBalance } = await AccountModel.findById(creditAccountId)
 
             const taxAmount = transferAmount + tax
-            if (taxAmount > debitBalance) return res.json({ success: false, message: 'Insufficient Balance!', balance: debitBalance, taxPayable: tax, debitAmount: transferAmount, total: taxAmount })
+            if (taxAmount > debitBalance) return res.json({ success: false, message: 'Insufficient Balance!', servicefee: tax, transferAmount: transferAmount, total: taxAmount })
 
             const debitFutureBalance = debitBalance - taxAmount
             const creditFutureBalance = creditBalance + transferAmount
@@ -103,7 +103,7 @@ const DeveloperController = {
                 description: `Foreign user: ${developerUserId} with developer document id of ${developerId} attempted to transfer. ${creditAccount} credited an amount of ${transferAmount} The balance changed from ${creditBalance} to ${creditFutureBalance}`
             })
 
-            res.json({ success: true, message: 'Transfer transaction successfully!' })
+            res.json({ success: true, message: 'Transfer transaction successfully!', reference: debitTransactionId })
         } catch (error) {
             res.json({ error: `TransferTransaction in transaction controller error ${error}` });
         }
