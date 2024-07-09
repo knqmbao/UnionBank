@@ -16,6 +16,7 @@ router.post('/createuser',
     UserMiddleware.CreateUserCheckEmptyFields,
     UserMiddleware.CreateUserCheckUserIfExists,
     UserMiddleware.CreateUserHashedPassword,
+    UserMiddleware.CreateUserCheckAdminIfDoesNotExist,
     UserController.CreateUser
 )
 
