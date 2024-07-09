@@ -1,6 +1,7 @@
 const TransactionModel = require('../models/Transactions.model')
 const AccountModel = require('../models/Account.model')
 const AuditLog = require('../models/Auditlog.model')
+const fetch = require('node-fetch')
 
 const Log = async ({ userId, action, collectionName, documentId, changes, description }) => {
     await AuditLog.create({ userId, action, collectionName, documentId, changes, description })
@@ -23,7 +24,7 @@ const TransactionController = {
 
             const currentBalance = balance + depositAmount
 
-            const {_id: creditTransactionId} = await TransactionModel.create({ account: accountId, fee: 0, amount: depositAmount, transactionType: 'deposit', balance: currentBalance, token: `UnionBank userid : ${userIdHeader}`, description: 'Deposited from UnionBank' })
+            const { _id: creditTransactionId } = await TransactionModel.create({ account: accountId, fee: 0, amount: depositAmount, transactionType: 'deposit', balance: currentBalance, token: `UnionBank userid : ${userIdHeader}`, description: 'Deposited from UnionBank' })
             await AccountModel.findByIdAndUpdate(accountId, { balance: currentBalance }, { new: true })
 
             Log({
@@ -170,14 +171,20 @@ const TransactionController = {
     },
     SearchTransaction: async (req, res) => {
         try {
-            const { accountId } = req.params
-            console.log('Search Transaction Controller: ', accountId)
+            const { searchId } = req.params
+            console.log('Search Account Controller: ', searchId)
+            const { createdAt, _id, amount, description, transactionType, balance, fee } = await TransactionModel.findById(searchId)
+            const formattedCreatedAt = new Date(createdAt).toLocaleString('en-US', {
+                month: '2-digit',
+                day: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
 
-            const { _id: account } = await AccountModel.findOne({ user: accountId })
-            const data = await TransactionModel.find({ account: account })
-            res.json({ success: true, message: 'Search transactions successfully!', data })
+            res.json({ success: true, message: 'Fethced certain account successfully!', data: [{ _id, amount, description, createdAt: formattedCreatedAt, transactionType, balance, fee }] })
         } catch (error) {
-            res.json({ error: `SearchTransaction in transaction controller error ${error}` });
+            res.json({ error: `SearchTransactions in transaction controller error ${error}` });
         }
     }
 }
