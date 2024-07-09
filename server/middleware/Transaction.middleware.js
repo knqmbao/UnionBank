@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const AccountModel = require('../models/Account.model')
 require('dotenv').config()
 
 const TransactionMidlleware = {
@@ -35,6 +36,16 @@ const TransactionMidlleware = {
     CreateTransactionCheckEmptyFields: async (req, res, next) => {
         try {
             next()
+        } catch (error) {
+            res.status(400).json({ error: `CreateTransactionCheckEmptyFields in transaction middleware error ${error}` });
+        }
+    },
+    CheckAccountIfExist: async (req, res, next) => {
+        try {
+            const { accountno } = req.params
+            const data = await AccountModel.findOne({ accountno: accountno })
+            if (data) return next()
+            res.json({ success: false, message: 'Account does not exist!' })
         } catch (error) {
             res.status(400).json({ error: `CreateTransactionCheckEmptyFields in transaction middleware error ${error}` });
         }
