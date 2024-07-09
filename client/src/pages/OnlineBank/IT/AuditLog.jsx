@@ -129,7 +129,7 @@ export default function AuditLog() {
                                 />
                             </div>
                         </div>
-                        <DataGrids columnsTest={columns} rowsTest={values} />
+                        <DataGrids columnsTest={columns} rowsTest={values} descCol={`date`} colVisibility={{ id: false }} />
                     </div>
                 </div>
             </div >
