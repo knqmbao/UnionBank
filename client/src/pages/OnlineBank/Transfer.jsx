@@ -46,12 +46,15 @@ export default function Transfer() {
             e.preventDefault()
             const credentials = sessionStorage.getItem('credentials')
             const { userId, token } = JSON.parse(credentials)
+
             const res = await axios.post(`${VITE_HOST}/api/transfertransaction`, values, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     userId: userId
                 }
             })
+            console.log(res?.data)
+
             if (res?.data?.success) return alert(res?.data?.message)
             alert(res?.data?.message)
         } catch (error) {
