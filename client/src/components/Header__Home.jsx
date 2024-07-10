@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom'
 export default function Header__Home() {
     return (
         <>
-            <div className="fixed w-full h-[8%] flex justify-between items-center px-[7rem] sm:px-[10rem] md:px-[15rem] lg:px-[20rem] z-[1]">
-                <div className="w-[50%] h-full flex justify-start items-center gap-[1rem]">
+            <div className="fixed w-full h-[8%] flex justify-between items-center px-[7rem] sm:px-[10rem] md:px-[15rem] lg:px-[10rem] xl:px-[15rem] z-[1]">
+                <div className="h-full flex justify-start items-center gap-[1rem]">
                     <div className="w-[12rem] h-full">
                         <img src={Logo} alt="Logo" className='w-full h-full object-contain' />
                     </div>
@@ -18,7 +18,7 @@ export default function Header__Home() {
                     </Link>
                 </div>
 
-                <div className="w-[50%] h-full flex justify-end items-center gap-[.7rem] sm:gap-[1rem] md:gap-[1.5rem] lg:gap-[.8rem]">
+                <div className=" h-full flex justify-end items-center gap-[.7rem] sm:gap-[1rem] md:gap-[1.5rem] lg:gap-[.8rem]">
                     <Link to={`/signup`} className='text-white px-[1rem] py-[.6rem] bg-[#1daeef] rounded-xl font-[600] text-[.8rem] hover:bg-[#58caff]'>
                         Sign Up
                     </Link>
