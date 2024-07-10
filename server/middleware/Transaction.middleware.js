@@ -42,9 +42,10 @@ const TransactionMidlleware = {
     },
     CheckAccountIfExist: async (req, res, next) => {
         try {
-            const { accountno } = req.params
-            const data = await AccountModel.findOne({ accountno: accountno })
-            if (data) return next()
+            const { debitAccount, creditAccount, amount } = req.body
+            const debit = await AccountModel.findOne({ accountno: debitAccount })
+            const credit = await AccountModel.findOne({ accountno: creditAccount })
+            if (debit && credit) return next()
             res.json({ success: false, message: 'Account does not exist!' })
         } catch (error) {
             res.status(400).json({ error: `CreateTransactionCheckEmptyFields in transaction middleware error ${error}` });
