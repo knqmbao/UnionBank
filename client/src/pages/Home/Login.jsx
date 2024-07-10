@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import LogoUB from '../../assets/LogoUB.png'
+import LogoUB from '../../assets/LogoUB1.png'
 import LoginBG from '../../assets/LoginBG.png'
 import axios from 'axios'
 const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
