@@ -6,11 +6,11 @@ import path from "path"
 export default defineConfig({
     plugins: [react()],
     server: {
-        // host: '192.168.10.14',
-        // port: '80'
+        host: '192.168.10.14',
+        port: '80'
         // host: '192.168.1.7',
         // port: '80'
-        host: 'localhost',
+        // host: 'localhost',
     },
     resolve: {
         alias: {
