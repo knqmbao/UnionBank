@@ -78,11 +78,11 @@ export default function Login() {
                             </div>
                             <div className="w-full flex flex-col">
                                 <h1 className='text-white'>Email</h1>
-                                <input onChange={handleOnChange} type="email" required name='email' className='px-[1rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your email...' />
+                                <input onChange={handleOnChange} type="email" required name='email' className='px-[1rem] py-[.5rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your email...' />
                             </div>
                             <div className="w-full flex flex-col">
                                 <h1 className='text-white'>Password</h1>
-                                <input onChange={handleOnChange} type="password" required name='password' className='px-[1rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your password...' />
+                                <input onChange={handleOnChange} type="password" required name='password' className='px-[1rem] py-[.5rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your password...' />
                             </div>
                             <button type='submit' className={`w-full py-[.6rem] rounded-lg  ${values?.email && values?.password ? 'text-[#ffffff]' : 'text-[#7b7b7b]'} hover:bg-[#007eff] hover:text-white duration-300 ease ${values?.email && values?.password ? 'bg-[#007eff]' : 'bg-[#dcdcdc]'} shadow-[_0_10px_15px_-3px_rgba(0,0,0,0.1)]`}>
                                 Login
