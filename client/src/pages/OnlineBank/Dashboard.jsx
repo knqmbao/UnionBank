@@ -4,7 +4,7 @@ import Header__Dashboard from '../../components/Header__dashboard'
 import SavingsIcon from '@mui/icons-material/Savings';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
-import DataGrids from '../../components/DataGrids';
+import { GroupBarChart } from '../../components/Charts'
 const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function Dashboard() {
@@ -41,7 +41,7 @@ export default function Dashboard() {
             <div className="flex">
                 <Sidebar />
                 <div className="w-[80%] h-screen flex flex-col justify-start items-start p-[1rem] overflow-auto">
-                    <Header__Dashboard breadcrumbs={breadCrumbs}/>
+                    <Header__Dashboard breadcrumbs={breadCrumbs} />
                     <div className="w-full h-[95%] flex flex-col justify-start items-start gap-[1rem]">
                         <div className="w-full h-[5%]">
                             <h1 className='text-black font-[600] text-[1.2rem]'>
@@ -69,6 +69,13 @@ export default function Dashboard() {
                                             <h1 className='text-white'>PHP {carddetails?.balance}</h1>
                                         </div>
                                     </Link>
+                                </div>
+                            )
+                        }
+                        {
+                            (role === 'hr' || role === 'rb' || role === 'it' || role === 'admin') && (
+                                <div className="w-full bg-black">
+                                    <GroupBarChart />
                                 </div>
                             )
                         }
