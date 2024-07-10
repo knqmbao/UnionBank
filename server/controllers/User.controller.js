@@ -11,7 +11,6 @@ const UserController = {
     CreateUser: async (req, res) => {
         try {
             const { name, email, mobileno, password, role, rbid } = req.body
-            // console.log('Create User Controller: ', values)
 
             const data = await UserModel.create({ name, email, mobileno, password, role })
 
@@ -134,8 +133,6 @@ const UserController = {
                 },
             ]);
 
-            console.log(AccountUsers)
-
             res.json({ success: true, message: 'Fetch user successfully!', data: AccountUsers })
         } catch (error) {
             res.json({ error: `GetAllRBAccounts in user controller error ${error}` });
@@ -144,10 +141,8 @@ const UserController = {
     GetCurrentUser: async (req, res) => {
         try {
             const { userId } = req.params
-            console.log('Search User Controller: ', userId)
 
             const { name, email, mobileno, role, isactive } = await UserModel.findById(userId)
-            console.log({ name, email, mobileno, role, isactive })
 
             res.json({ success: true, message: 'Fetched certain user successfully!', data: { name, email, mobileno, role, isactive } })
         } catch (error) {
@@ -157,7 +152,6 @@ const UserController = {
     SearchDeveloperUsers: async (req, res) => {
         try {
             const { searchId } = req.params
-            console.log('Search User Controller: ', searchId)
 
             const response = await fetch(`${process.env.REQUEST}/api/developerusers`, {
                 method: 'GET',
@@ -184,7 +178,6 @@ const UserController = {
     SearchEmployedUsers: async (req, res) => {
         try {
             const { searchId } = req.params
-            console.log('Search User Controller: ', searchId)
 
             const response = await fetch(`${process.env.REQUEST}/api/employedusers`, {
                 method: 'GET',
@@ -211,7 +204,6 @@ const UserController = {
     SearchRBUser: async (req, res) => {
         try {
             const { searchId } = req.params
-            console.log('Search User Controller: ', searchId)
 
             const response = await fetch(`${process.env.REQUEST}/api/rbusers`, {
                 method: 'GET',
@@ -238,7 +230,6 @@ const UserController = {
     SearchRBAccounts: async (req, res) => {
         try {
             const { searchId } = req.params
-            console.log('Search User Controller: ', searchId)
 
             const response = await fetch(`${process.env.REQUEST}/api/rbaccounts`, {
                 method: 'GET',
@@ -267,7 +258,6 @@ const UserController = {
         try {
             const { userId } = req.params
             const { name, email, mobileno, role, rbid } = req.body
-            // console.log('Update User Controller: ', { name, email, mobileno, role, rbid })
 
             const data = await UserModel.findByIdAndUpdate(
                 userId,
