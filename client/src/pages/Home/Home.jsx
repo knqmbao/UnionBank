@@ -1,55 +1,32 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Header__Home from '../../components/Header__Home'
-import test from '../../assets/Test.png'
+import SolanaPic from '../../assets/SolanaPic.webp'
 
 export default function Home() {
     return (
-        <div className='w-full h-screen flex justify-start items-center flex-col'>
+        <div className='w-full h-screen flex justify-start items-center flex-col bg-[#121212]'>
             <Header__Home />
-            {/* <div className="w-full h-full p-[5rem]">
-                <img src={test} alt="asd" className='w-full h-full object-cover' />
-            </div> */}
-            <div className="w-full h-full flex flex-col justify-evenly items-center">
-                <div className="w-full flex justify-center items-center gap-[7rem]">
-                    <div className="flex flex-col items-center gap-[1rem]">
-                        <h1 className='text-[2rem] font-bold'>Department</h1>
-                        <h1>ADMIN</h1>
-                        <h1>HUMAN RESOURCE</h1>
-                        <h1>IT DEPARTMENT</h1>
-                        <h1>RETAIL BANKING</h1>
-                        <h1>DEVELOPER</h1>
-                        <h1>USER</h1>
-                        <h1>USER</h1>
-                        <h1>USER</h1>
+            <div className="overflow-hidden w-full h-full flex flex-col justify-evenly items-center relative">
+                <img src={SolanaPic} alt="Solana Pic" className='absolute top-[-2rem] left-[-10rem] w-[20rem] h-[10rem] scale-[5]' />
+                <img src={SolanaPic} alt="Solana Pic" className='absolute top-[10rem] right-[-9rem] w-[20rem] h-[10rem] scale-[5]' />
+                <div className="w-full flex flex-col justify-center items-center gap-[1rem]">
+                    <h1 className='text-white text-[4rem] font-[600] text-center'>
+                        Powerful for developers. <br /> Fast for everyone.
+                    </h1>
+                    <div className="w-[30%]">
+                        <h1 className='text-[#87878e] text-center'>
+                            Bring blockchain to the people. UnionBank supports experiences <br /> for power users, new consumers, and everyone in between.
+                        </h1>
                     </div>
-                    <div className="flex flex-col items-center gap-[1rem]">
-                        <h1 className='text-[2rem] font-bold'>Email</h1>
-                        <h1>admin@gmail.com</h1>
-                        <h1>hr@gmail.com</h1>
-                        <h1>it@gmail.com</h1>
-                        <h1>rb@gmail.com</h1>
-                        <h1>developer@gmail.com</h1>
-                        <h1>user@gmail.com</h1>
-                        <h1>yourparengmarc</h1>
-                        <h1>avgarces@gmail.com</h1>
+                    <div className="w-full flex justify-center items-center gap-[1rem]">
+                        <Link to={`https://spiritual-wire-287.notion.site/UnionBank-API-Documentation-6a2928ba55e5442b91423fda3ebd8f78?pvs=4`}
+                            className='text-white px-[1.7rem] py-[.7rem] border-white border-[1px] rounded-3xl hover:bg-white hover:text-black'
+                            target='_blank'
+                        >
+                            READ DOCS
+                        </Link>
                     </div>
-                    <div className="flex flex-col items-center gap-[1rem]">
-                        <h1 className='text-[2rem] font-bold'>Password</h1>
-                        <h1>admin</h1>
-                        <h1>hr</h1>
-                        <h1>it</h1>
-                        <h1>rb</h1>
-                        <h1>developer</h1>
-                        <h1>user</h1>
-                        <h1>!SecuredPassword123</h1>
-                        <h1>123</h1>
-                    </div>
-                </div>
-                <div className="w-full flex justify-center items-center">
-                    <a href="https://spiritual-wire-287.notion.site/UnionBank-API-Documentation-6a2928ba55e5442b91423fda3ebd8f78?pvs=4" className='text-[#035afc] underline' target='_blank'>
-                        Visit docs.
-                    </a>
                 </div>
             </div>
         </div>
