@@ -46,7 +46,7 @@ const AccountController = {
             const { uid } = req.params
 
             const { _id, userId, accountno, accountType, balance, isactive } = await AccountModel.findOne({ userId: uid })
-            console.log({ _id, userId, accountno, accountType, balance, isactive })
+
             const formattedBalance = new Intl.NumberFormat('en-US', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
@@ -60,7 +60,7 @@ const AccountController = {
     SearchAccount: async (req, res) => {
         try {
             const { searchId } = req.params
-            console.log('Search Account Controller: ', searchId)
+
             const response = await fetch(`${process.env.REQUEST}/api/rbaccounts`, {
                 method: 'GET',
                 headers: {
@@ -88,8 +88,6 @@ const AccountController = {
             //     return { accountno, name };
             // });
 
-            console.log('the data: ', filteredData)
-
             res.json({ success: true, message: 'Fethced certain account successfully!', data: filteredData })
         } catch (error) {
             res.json({ error: `SearchAccount in account controller error ${error}` });
@@ -99,7 +97,6 @@ const AccountController = {
         try {
             const { accountId } = req.params
             const values = req.body
-            console.log('Update Account Controller: ', values, accountId)
 
             res.json({ success: true, message: 'Account updated successfully!', values, accountId })
         } catch (error) {
@@ -110,7 +107,6 @@ const AccountController = {
         try {
             const { accountId } = req.params
             const { isactive, rbid } = req.body
-            console.log('Update Active Account Controller: ', isactive, accountId)
 
             const data = await AccountModel.findByIdAndUpdate(
                 accountId,
