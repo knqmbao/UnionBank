@@ -67,11 +67,9 @@ export default function Transactions() {
     const renderCreditCell = (params) => {
         return (
             <div className="w-full h-full flex justify-center items-center">
-                <h1 className='font-bold'>
-                    {
-                        (params.row.transactionType === 'withdrawal' || params.row.transactionType === 'transfer_debit') ? params.row.credit : '---'
-                    }
-                </h1>
+                {
+                    (params.row.transactionType === 'withdrawal' || params.row.transactionType === 'transfer_debit') ? params.row.credit : '---'
+                }
             </div>
 
         );
