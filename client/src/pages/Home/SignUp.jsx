@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import LogoUB from '../../assets/LogoUB1.png'
+import LogoUB from '../../assets/LogoUB.png'
 import LoginBG from '../../assets/LoginBG.png'
 import axios from 'axios'
 const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
@@ -80,7 +80,7 @@ export default function SignUp() {
 
     return (
         <>
-            <div className="w-full h-screen flex flex-col justify-start items-center">
+            <div className="bg-[#121212] w-full h-screen flex flex-col justify-start items-center">
                 <div className="w-full h-full flex justify-start items-center">
                     <div className="w-[70%] h-full flex justify-start items-center">
                         <img src={LoginBG} alt="BG" className='w-full h-full object-cover' />
@@ -93,31 +93,31 @@ export default function SignUp() {
                                 <img src={LogoUB} alt="BG" className='w-full h-full object-contain' />
                             </div>
                             <div className="w-full flex flex-col">
-                                <h1>Full Name</h1>
+                                <h1 className='text-white'>Full Name</h1>
                                 <input onChange={handleOnChange} value={values?.name} name='name' type="text" required className='px-[1rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your full name...' />
                             </div>
                             <div className="w-full flex flex-col">
-                                <h1>Email</h1>
+                                <h1 className='text-white'>Email</h1>
                                 <input onChange={handleOnChange} value={values?.email} name='email' type="email" required className='px-[1rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your email...' />
                             </div>
                             <div className="w-full flex flex-col">
-                                <h1>Mobile No.</h1>
+                                <h1 className='text-white'>Mobile No.</h1>
                                 <input onChange={handleOnChange} value={values?.mobileno} name='mobileno' type="text" required inputMode='numeric' className='px-[1rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your mobile number...' />
                             </div>
                             <div className="w-full flex flex-col">
-                                <h1>Password</h1>
+                                <h1 className='text-white'>Password</h1>
                                 <input onChange={handleOnChange} value={values?.password} name='password' type="password" required className='px-[1rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your password...' />
                             </div>
                             <div className="w-full flex flex-col">
-                                <h1>Confirm Password</h1>
+                                <h1 className='text-white'>Confirm Password</h1>
                                 <input onChange={handleOnChangeConfirmPassword} value={confirmPassword} type="password" required className='px-[1rem] rounded-md placeholder:text-[.8rem]' placeholder='Confirm your password' />
                             </div>
-                            <button className='w-full py-[.6rem] rounded-lg text-[#7b7b7b] hover:bg-[#111111] hover:text-white duration-300 ease bg-[#dcdcdc] shadow-[_0_10px_15px_-3px_rgba(0,0,0,0.1)]'>
+                            <button className={`w-full py-[.6rem] rounded-lg ${values?.name && values?.email && values?.mobileno && values?.password && confirmPassword ? 'text-[#ffffff]' : 'text-[#7b7b7b]'} hover:bg-[#007eff] hover:text-white duration-300 ease ${values?.name && values?.email && values?.mobileno && values?.password && confirmPassword ? 'bg-[#007eff]' : 'bg-[#dcdcdc]'} shadow-[_0_10px_15px_-3px_rgba(0,0,0,0.1)]`}>
                                 Sign Up
                             </button>
                             <div className="w-full flex flex-col justify-start items-start">
-                                <p className='text-[.8rem]'>
-                                    Already have an account? <span className='cursor-pointer text-black text-decoration-line: underline' onClick={handleLogin}>Sign In.</span>
+                                <p className='text-[.8rem] text-white'>
+                                    Already have an account? <span className='cursor-pointer text-white text-decoration-line: underline' onClick={handleLogin}>Sign In.</span>
                                 </p>
                             </div>
                         </form>
