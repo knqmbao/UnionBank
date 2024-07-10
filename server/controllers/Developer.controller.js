@@ -65,8 +65,6 @@ const DeveloperController = {
             const transferAmount = parseFloat(amount)
             const tax = 150
 
-            console.log('Transfer Transaction Controller: ', { debitAccount, creditAccount, amount })
-
             const { _id: debitAccountId } = await AccountModel.findOne({ accountno: debitAccount })
             const { _id: creditAccountId } = await AccountModel.findOne({ accountno: creditAccount })
 
