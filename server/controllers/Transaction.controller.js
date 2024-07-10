@@ -11,12 +11,9 @@ const TransactionController = {
     DepositTransaction: async (req, res) => {
         try {
             const userIdHeader = req.headers['userid']
-            console.log(userIdHeader)
 
             const { account, amount } = req.body
             const depositAmount = parseFloat(amount)
-
-            console.log('Deposit Transaction Controller: ', { account, amount })
 
             const { _id: accountId } = await AccountModel.findOne({ accountno: account })
 
@@ -48,8 +45,6 @@ const TransactionController = {
             const { account, amount } = req.body
             const withdrawAmount = parseFloat(amount)
             const tax = 150
-
-            console.log('Withdrawal Transaction Controller: ', { account, amount })
 
             const { _id: accountId } = await AccountModel.findOne({ accountno: account })
             const { balance } = await AccountModel.findById(accountId)
@@ -84,8 +79,6 @@ const TransactionController = {
             const { debitAccount, creditAccount, amount } = req.body
             const transferAmount = parseFloat(amount)
             const tax = 150
-
-            console.log('Transfer Transaction Controller: ', { debitAccount, creditAccount, amount })
 
             const { _id: debitAccountId } = await AccountModel.findOne({ accountno: debitAccount })
             const { _id: creditAccountId } = await AccountModel.findOne({ accountno: creditAccount })
