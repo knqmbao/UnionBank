@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from 'react'
+"use client"
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import LogoUB from '../../assets/LogoUB.png'
 import LoginBG from '../../assets/LoginBG.png'
+import { Button } from "@/components/ui/button"
+import { useToast } from "@/components/ui/use-toast"
+import { Toaster } from "@/components/ui/toaster";
 import axios from 'axios'
 const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
@@ -14,6 +18,7 @@ export default function SignUp() {
     })
     const [confirmPassword, setConfirmPassword] = useState('')
     const navigate = useNavigate()
+    const { toast } = useToast()
 
     useEffect(() => {
         fetchCredentials()
@@ -40,8 +45,15 @@ export default function SignUp() {
                     }
                 })
 
-                if (res.data.success) return alert(res.data.message)
-                alert(res.data.message)
+                if (res.data.success) {
+                    toast({ title: "Success!", description: res.data.message })
+                    return
+                }
+
+                toast({
+                    title: "Uh oh! Something went wrong.",
+                    description: res.data.message
+                });
 
             } else {
                 alert('Password do not match')
@@ -80,6 +92,7 @@ export default function SignUp() {
 
     return (
         <>
+            <Toaster />
             <div className="bg-[#121212] w-full h-screen flex flex-col justify-start items-center">
                 <div className="w-full h-full flex justify-start items-center">
                     <div className="w-[70%] h-full flex justify-start items-center">
@@ -94,23 +107,23 @@ export default function SignUp() {
                             </div>
                             <div className="w-full flex flex-col">
                                 <h1 className='text-white'>Full Name</h1>
-                                <input onChange={handleOnChange} value={values?.name} name='name' type="text" required className='px-[1rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your full name...' />
+                                <input onChange={handleOnChange} value={values?.name} name='name' type="text" required className='px-[1rem] py-[.5rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your full name...' />
                             </div>
                             <div className="w-full flex flex-col">
                                 <h1 className='text-white'>Email</h1>
-                                <input onChange={handleOnChange} value={values?.email} name='email' type="email" required className='px-[1rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your email...' />
+                                <input onChange={handleOnChange} value={values?.email} name='email' type="email" required className='px-[1rem] py-[.5rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your email...' />
                             </div>
                             <div className="w-full flex flex-col">
                                 <h1 className='text-white'>Mobile No.</h1>
-                                <input onChange={handleOnChange} value={values?.mobileno} name='mobileno' type="text" required inputMode='numeric' className='px-[1rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your mobile number...' />
+                                <input onChange={handleOnChange} value={values?.mobileno} name='mobileno' type="text" required inputMode='numeric' className='px-[1rem] py-[.5rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your mobile number...' />
                             </div>
                             <div className="w-full flex flex-col">
                                 <h1 className='text-white'>Password</h1>
-                                <input onChange={handleOnChange} value={values?.password} name='password' type="password" required className='px-[1rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your password...' />
+                                <input onChange={handleOnChange} value={values?.password} name='password' type="password" required className='px-[1rem] py-[.5rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your password...' />
                             </div>
                             <div className="w-full flex flex-col">
                                 <h1 className='text-white'>Confirm Password</h1>
-                                <input onChange={handleOnChangeConfirmPassword} value={confirmPassword} type="password" required className='px-[1rem] rounded-md placeholder:text-[.8rem]' placeholder='Confirm your password' />
+                                <input onChange={handleOnChangeConfirmPassword} value={confirmPassword} type="password" required className='px-[1rem] py-[.5rem] rounded-md placeholder:text-[.8rem]' placeholder='Confirm your password' />
                             </div>
                             <button className={`w-full py-[.6rem] rounded-lg ${values?.name && values?.email && values?.mobileno && values?.password && confirmPassword ? 'text-[#ffffff]' : 'text-[#7b7b7b]'} hover:bg-[#007eff] hover:text-white duration-300 ease ${values?.name && values?.email && values?.mobileno && values?.password && confirmPassword ? 'bg-[#007eff]' : 'bg-[#dcdcdc]'} shadow-[_0_10px_15px_-3px_rgba(0,0,0,0.1)]`}>
                                 Sign Up
@@ -125,5 +138,23 @@ export default function SignUp() {
                 </div>
             </div>
         </>
+    )
+}
+
+function ToastWithTitle() {
+    const { toast } = useToast()
+
+    return (
+        <Button
+            variant="outline"
+            onClick={() => {
+                toast({
+                    title: "Uh oh! Something went wrong.",
+                    description: "There was a problem with your request.",
+                })
+            }}
+        >
+            Show Toast
+        </Button>
     )
 }
