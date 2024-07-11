@@ -2,11 +2,24 @@ const UserModel = require('../models/Users.model')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const AuditLog = require('../models/Auditlog.model')
+const nodemailer = require('nodemailer');
 require('dotenv').config()
 
 const Log = async ({ userId, action, collectionName, documentId, changes, description }) => {
     await AuditLog.create({ userId, action, collectionName, documentId, changes, description })
 }
+
+const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // Use `true` for port 465, `false` for all other ports
+    auth: {
+        user: 'yourparengedison@gmail.com',
+        pass: process.env.EmailPassword
+    },
+});
+
+
 
 const UserMidlleware = {
     CheckUserTokenValid: async (req, res, next) => {
@@ -53,10 +66,10 @@ const UserMidlleware = {
             const { email } = req.body
             const testEmail = await UserModel.findOne({ email: email })
 
-            if (testEmail.length > 0) return res.json({ success: false, message: 'User not found.', testEmail })
+            if (!testEmail) return res.json({ success: false, message: 'User not found.', testEmail })
             next()
         } catch (error) {
-            res.json({ error: `LoginUserCheckUsername in user middleware error ${error}` });
+            res.json({ error: `LoginUserCheckEmail in user middleware error ${error}` });
         }
     },
     LoginUserCheckPassword: async (req, res) => {
@@ -70,7 +83,8 @@ const UserMidlleware = {
                 if (testPassword) {
                     const token = jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, { expiresIn: '1d' })
                     Log({ userId: user?._id, action: 'read', collectionName: 'User', documentId: user?._id, description: `${email} attempted to login` })
-                    res.json({ success: true, message: 'Login Successful.', token, name: user.name, userId: user._id, role: user.role })
+                    // res.json({ success: true, message: 'Login Successful.', token, name: user.name, userId: user._id, role: user.role })
+                    next()
                 } else {
                     res.json({ success: false, message: 'Email or password is Incorrect!' })
                 }
@@ -80,6 +94,48 @@ const UserMidlleware = {
         } catch (error) {
             res.json({ error: `LoginUserCheckPassword in user middleware error ${error}` });
         }
+    },
+    EmailVerification: async (req, res, next) => {
+        try {
+            const { email, password, userOtp } = req.body
+            const user = await UserModel.findOne({ email: email })
+
+            if (user) {
+                const testPassword = await bcrypt.compare(password, user.password)
+
+                if (testPassword) {
+                    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+                    await transporter.sendMail({
+                        from: `"UnionBank 👻" <yourparengedison@gmail.com>`,
+                        to: email,
+                        subject: "Your UnionBank Verification Code",
+                        html: `
+                        <h3>Please do not share your one-time-password.<h3/> <br />
+                        <h1>${otp}<h1/>
+                        `,
+                    });
+                    // if (data) return console.log({ success: true, message: 'Email sent successfully!' })
+                    // console.log({ success: false, message: 'Email failed to send.' })
+                    
+                    if (otp === userOtp) {
+                        const token = jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, { expiresIn: '1d' })
+                        Log({ userId: user?._id, action: 'read', collectionName: 'User', documentId: user?._id, description: `${email} successfully logged in!` })
+                        res.json({ success: true, message: 'Login Successful.', token, name: user.name, userId: user._id, role: user.role })
+                    } else {
+                        res.json({ success: false, message: 'Incorrect OTP, please login again.' })
+                    }
+                } else {
+                    res.json({ success: false, message: 'Email or password is Incorrect!' })
+                }
+            } else {
+                res.json({ success: false, message: 'Email or password is Incorrect!' })
+            }
+
+
+        } catch (error) {
+            console.error({ success: false, message: `Error in email function: ${error}` })
+        }
+
     },
     CreateUserCheckEmptyFields: async (req, res, next) => {
         try {
