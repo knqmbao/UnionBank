@@ -1,7 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
+import { useNavigate } from "react-router-dom";
+import axios from 'axios'
+const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 import {
     Form,
     FormControl,
@@ -17,6 +19,7 @@ import {
     InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { toast } from "@/components/ui/use-toast";
+import { useEffect } from "react";
 
 const FormSchema = z.object({
     pin: z.string().min(6, {
@@ -24,23 +27,60 @@ const FormSchema = z.object({
     }),
 });
 
-export function InputOTPForm() {
+export function InputOTPForm({ isLoad, isVerify }) {
     const form = useForm({
         resolver: zodResolver(FormSchema),
         defaultValues: {
             pin: "",
         },
     });
+    const navigate = useNavigate()
 
-    function onSubmit(data) {
-        toast({
-            title: "You submitted the following values:",
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-                </pre>
-            ),
-        });
+    useEffect(() => {
+        fetchCredentials()
+    }, [])
+
+    const fetchCredentials = () => {
+        try {
+            const credentials = sessionStorage.getItem('credentials')
+            if (credentials) return navigate('/')
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    async function onSubmit(data) {
+        try {
+            isLoad(true)
+            const res = await axios.post(`${VITE_HOST}/api/verify`, {
+                otp: data?.pin
+            }, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+            if (res?.data?.success) {
+                const token = res.data.token
+                const userId = res.data.userId
+                const role = res.data.role
+                sessionStorage.setItem('credentials', JSON.stringify({ token, userId, role }))
+
+                toast({ title: "Yay! Success.", description: 'You have been verified.', });
+                navigate('/')
+                return
+            }
+            toast({ title: "Uh, oh! Something went wrong.", description: res?.data?.message, });
+        } catch (error) {
+            console.error(error)
+        } finally {
+            fetchCredentials()
+            isLoad(false)
+        }
+
+    }
+
+    const handleCancel = () => {
+        isVerify(false)
     }
 
     return (
@@ -71,12 +111,17 @@ export function InputOTPForm() {
                         </FormItem>
                     )}
                 />
+                <div className="w-full flex justify-start items-center gap-[1rem]">
+                    <button onClick={handleCancel} className='text-white px-[1rem] py-[.6rem] border-[1px] border-white rounded-xl font-[500] text-[.8rem]  hover:bg-[#ffffff] hover:text-black'>
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        className='text-white px-[1rem] py-[.6rem] bg-[#1daeef] rounded-xl font-[600] text-[.8rem] hover:bg-[#58caff]'>
+                        Submit
+                    </button>
+                </div>
 
-                <button
-                    type="submit"
-                    className='text-white px-[1rem] py-[.6rem] bg-[#1daeef] rounded-xl font-[600] text-[.8rem] hover:bg-[#58caff]'>
-                    Submit
-                </button>
             </form>
         </Form>
     );
