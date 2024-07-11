@@ -74,7 +74,7 @@ export default function Dashboard() {
                         }
                         {
                             (role === 'hr' || role === 'rb' || role === 'it' || role === 'admin') && (
-                                <div className="w-full bg-black">
+                                <div className="w-full">
                                     <GroupBarChart />
                                 </div>
                             )
