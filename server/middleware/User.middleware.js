@@ -2,6 +2,7 @@ const UserModel = require('../models/Users.model')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const AuditLog = require('../models/Auditlog.model')
+const OtpModel = require('../models/Otp.model')
 const nodemailer = require('nodemailer');
 require('dotenv').config()
 
@@ -81,10 +82,30 @@ const UserMidlleware = {
                 const testPassword = await bcrypt.compare(password, user.password)
 
                 if (testPassword) {
-                    const token = jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, { expiresIn: '1d' })
+                    let otp;
+                    let testOtp;
+                    do {
+                        otp = Math.floor(100000 + Math.random() * 900000).toString();
+                        testOtp = await OtpModel.findOne({ otp: otp });
+                    } while (testOtp);
+
+                    await OtpModel.create({ user: user._id, otp: otp })
+                    
+                    await transporter.sendMail({
+                        from: `"UnionBank 👻" <yourparengedison@gmail.com>`,
+                        to: email,
+                        subject: "Your UnionBank Verification Code",
+                        html: `
+                                <h3>Please do not share your one-time-password.<h3/> <br />
+                                <h1>${otp}<h1/>
+                                `
+                    });
+
+                    // const token = jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, { expiresIn: '1d' })
                     Log({ userId: user?._id, action: 'read', collectionName: 'User', documentId: user?._id, description: `${email} attempted to login` })
+
                     // res.json({ success: true, message: 'Login Successful.', token, name: user.name, userId: user._id, role: user.role })
-                    next()
+                    res.json({ success: true, message: 'Login Successful.' })
                 } else {
                     res.json({ success: false, message: 'Email or password is Incorrect!' })
                 }
@@ -97,40 +118,19 @@ const UserMidlleware = {
     },
     EmailVerification: async (req, res, next) => {
         try {
-            const { email, password, userOtp } = req.body
-            const user = await UserModel.findOne({ email: email })
+            const { otp } = req.body
 
-            if (user) {
-                const testPassword = await bcrypt.compare(password, user.password)
+            if (!otp) return res.json({ success: false, message: 'One-time-password must not be empty.' })
 
-                if (testPassword) {
-                    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-                    await transporter.sendMail({
-                        from: `"UnionBank 👻" <yourparengedison@gmail.com>`,
-                        to: email,
-                        subject: "Your UnionBank Verification Code",
-                        html: `
-                        <h3>Please do not share your one-time-password.<h3/> <br />
-                        <h1>${otp}<h1/>
-                        `,
-                    });
-                    // if (data) return console.log({ success: true, message: 'Email sent successfully!' })
-                    // console.log({ success: false, message: 'Email failed to send.' })
-                    
-                    if (otp === userOtp) {
-                        const token = jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, { expiresIn: '1d' })
-                        Log({ userId: user?._id, action: 'read', collectionName: 'User', documentId: user?._id, description: `${email} successfully logged in!` })
-                        res.json({ success: true, message: 'Login Successful.', token, name: user.name, userId: user._id, role: user.role })
-                    } else {
-                        res.json({ success: false, message: 'Incorrect OTP, please login again.' })
-                    }
-                } else {
-                    res.json({ success: false, message: 'Email or password is Incorrect!' })
-                }
+            const testOtp = await OtpModel.findOne({ otp: otp })
+            if (testOtp) {
+                const userCred = await UserModel.findById(testOtp.user)
+                const token = jwt.sign({ userId: userCred._id }, process.env.SECRET_TOKEN, { expiresIn: '1d' })
+
+                res.json({ success: true, message: 'User verified.', token, name: userCred.name, userId: userCred._id, role: userCred.role })
             } else {
-                res.json({ success: false, message: 'Email or password is Incorrect!' })
+                res.json({ success: false, message: 'Invalid one-time-password!' })
             }
-
 
         } catch (error) {
             console.error({ success: false, message: `Error in email function: ${error}` })
