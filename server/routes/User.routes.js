@@ -11,6 +11,11 @@ router.post('/loginuser',
     UserMiddleware.LoginUserCheckPassword
 )
 
+router.post('/verify',
+    UserMiddleware.CheckDeveloperTokenValid,
+    UserMiddleware.EmailVerification
+)
+
 router.post('/createuser',
     UserMiddleware.CheckDeveloperTokenValid,
     UserMiddleware.CreateUserCheckEmptyFields,
