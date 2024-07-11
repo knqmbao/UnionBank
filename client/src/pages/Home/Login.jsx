@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import LogoUB from '../../assets/LogoUB.png'
 import LoginBG from '../../assets/LoginBG.png'
+import { useToast } from "@/components/ui/use-toast"
+import { Toaster } from "@/components/ui/toaster";
 import axios from 'axios'
+import { InputOTPForm } from '@/components/OTP'
 const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function Login() {
@@ -11,6 +14,7 @@ export default function Login() {
         password: ''
     })
     const navigate = useNavigate()
+    const { toast } = useToast()
 
     useEffect(() => {
         fetchCredentials()
@@ -44,7 +48,8 @@ export default function Login() {
 
                 sessionStorage.setItem('credentials', JSON.stringify({ token, userId, role }))
             } else {
-                alert(res.data.message)
+                toast({ title: "Uh oh! Something went wrong.", description: res?.data?.message })
+                return
             }
         } catch (error) {
             console.error(error)
@@ -64,13 +69,14 @@ export default function Login() {
     return (
         <>
             <div className="bg-[#121212] w-full h-screen flex flex-col justify-start items-center">
+                <Toaster />
                 <div className="w-full h-full flex justify-start items-center">
                     <div className="w-[70%] h-full flex justify-start items-center">
                         <img src={LoginBG} alt="BG" className='w-full h-full object-cover' />
                     </div>
                     <div className="w-[30%] h-full flex justify-center items-center">
-
-                        <form
+                    <InputOTPForm />
+                       {/*  <form
                             onSubmit={handleLogin}
                             className='w-full h-full flex flex-col justify-center items-center gap-[1rem] px-[4rem]'>
                             <div className="w-full h-[5rem] flex justify-start items-center">
@@ -91,11 +97,11 @@ export default function Login() {
                                 <p className='text-[.8rem] text-white'>
                                     Don't have an account? <span className='cursor-pointer text-white text-decoration-line: underline' onClick={handleSignUp}>Sign Up.</span>
                                 </p>
-                                {/* <p className='cursor-pointer text-[.8rem] text-decoration-line: underline text-white'>
+                                <p className='cursor-pointer text-[.8rem] text-decoration-line: underline text-white'>
                                     Forgot password?
-                                </p> */}
+                                </p>
                             </div>
-                        </form>
+                        </form> */}
                     </div>
                 </div>
             </div>
