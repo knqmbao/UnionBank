@@ -38,7 +38,7 @@ const InputOTPSlot = React.forwardRef(({ index, className, ...props }, ref) => {
         <div
           className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div
-            className="h-4 w-px animate-caret-blink bg-slate-950 duration-1000 dark:bg-slate-50" />
+            className="h-4 w-px animate-caret-blink bg-slate-200 duration-1000 dark:bg-slate-50" />
         </div>
       )}
     </div>)
