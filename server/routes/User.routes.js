@@ -8,7 +8,8 @@ router.post('/loginuser',
     UserMiddleware.CheckDeveloperTokenValid,
     UserMiddleware.LoginUserCheckEmptyFields,
     UserMiddleware.LoginUserCheckEmail,
-    UserMiddleware.LoginUserCheckPassword
+    UserMiddleware.LoginUserCheckPassword,
+    UserMiddleware.LoginUserCheckIsActive
 )
 
 router.post('/verify',
