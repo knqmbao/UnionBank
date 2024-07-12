@@ -10,15 +10,41 @@ const Log = async ({ userId, action, collectionName, documentId, changes, descri
     await AuditLog.create({ userId, action, collectionName, documentId, changes, description })
 }
 
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true, // Use `true` for port 465, `false` for all other ports
-    auth: {
-        user: 'yourparengedison@gmail.com',
-        pass: process.env.EmailPassword
-    },
-});
+const Email = async ({ email, userId }) => {
+    try {
+        const transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true, // Use `true` for port 465, `false` for all other ports
+            auth: {
+                user: 'yourparengedison@gmail.com',
+                pass: process.env.EmailPassword
+            },
+        });
+
+        let otp;
+        let testOtp;
+        do {
+            otp = Math.floor(100000 + Math.random() * 900000).toString();
+            testOtp = await OtpModel.findOne({ otp: otp });
+        } while (testOtp);
+
+        await OtpModel.create({ user: userId._id, otp: otp })
+
+        await transporter.sendMail({
+            from: `"UnionBank 👻" <yourparengedison@gmail.com>`,
+            to: email,
+            subject: "Your UnionBank Verification Code",
+            html: `
+                    <h3>Please do not share your one-time-password.<h3/> <br />
+                    <h1>${otp}<h1/>
+                    `
+        });
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 
 
 
@@ -73,7 +99,7 @@ const UserMidlleware = {
             res.json({ error: `LoginUserCheckEmail in user middleware error ${error}` });
         }
     },
-    LoginUserCheckPassword: async (req, res) => {
+    LoginUserCheckPassword: async (req, res, next) => {
         try {
             const { email, password } = req.body
             const user = await UserModel.findOne({ email: email })
@@ -82,30 +108,7 @@ const UserMidlleware = {
                 const testPassword = await bcrypt.compare(password, user.password)
 
                 if (testPassword) {
-                    let otp;
-                    let testOtp;
-                    do {
-                        otp = Math.floor(100000 + Math.random() * 900000).toString();
-                        testOtp = await OtpModel.findOne({ otp: otp });
-                    } while (testOtp);
-
-                    await OtpModel.create({ user: user._id, otp: otp })
-                    
-                    await transporter.sendMail({
-                        from: `"UnionBank 👻" <yourparengedison@gmail.com>`,
-                        to: email,
-                        subject: "Your UnionBank Verification Code",
-                        html: `
-                                <h3>Please do not share your one-time-password.<h3/> <br />
-                                <h1>${otp}<h1/>
-                                `
-                    });
-
-                    // const token = jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, { expiresIn: '1d' })
-                    Log({ userId: user?._id, action: 'read', collectionName: 'User', documentId: user?._id, description: `${email} attempted to login` })
-
-                    // res.json({ success: true, message: 'Login Successful.', token, name: user.name, userId: user._id, role: user.role })
-                    res.json({ success: true, message: 'Login Successful.' })
+                    next()
                 } else {
                     res.json({ success: false, message: 'Email or password is Incorrect!' })
                 }
@@ -116,6 +119,25 @@ const UserMidlleware = {
             res.json({ error: `LoginUserCheckPassword in user middleware error ${error}` });
         }
     },
+    LoginUserCheckIsActive: async (req, res) => {
+        try {
+            const { email } = req.body
+            const user = await UserModel.findOne({ email: email })
+            console.log(user?.isactive)
+            if (user?.isactive) {
+                const token = jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, { expiresIn: '1d' })
+                Log({ userId: user?._id, action: 'read', collectionName: 'User', documentId: user?._id, description: `${email} attempted to login` })
+
+                res.json({ success: true, message: 'Login Successful.', user: { isactive: true }, token, name: user.name, userId: user._id, role: user.role })
+            } else {
+                await Email({ email, userId: user })
+                res.json({ success: true, message: 'Login Successful.', user: { isactive: false } })
+            }
+
+        } catch (error) {
+            res.json({ error: `LoginUserCheckIsActive in user middleware error ${error}` })
+        }
+    },
     EmailVerification: async (req, res, next) => {
         try {
             const { otp } = req.body
@@ -124,6 +146,12 @@ const UserMidlleware = {
 
             const testOtp = await OtpModel.findOne({ otp: otp })
             if (testOtp) {
+                await UserModel.findByIdAndUpdate(
+                    testOtp.user,
+                    { isactive: true },
+                    { new: true }
+                )
+
                 const userCred = await UserModel.findById(testOtp.user)
                 const token = jwt.sign({ userId: userCred._id }, process.env.SECRET_TOKEN, { expiresIn: '1d' })
 
