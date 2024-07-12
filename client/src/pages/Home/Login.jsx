@@ -46,23 +46,28 @@ export default function Login() {
                     Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
                 }
             })
-            if (res.data.success) {
-                setVerify(true)
-                toast({ title: "2-Factor-Authentication", description: 'A one-time-password has been sent to your email!' })
-                // const token = res.data.token
-                // const userId = res.data.userId
-                // const role = res.data.role
 
-                // sessionStorage.setItem('credentials', JSON.stringify({ token, userId, role }))
-            } else {
+            if (!res.data.success) {
                 toast({ title: "Uh oh! Something went wrong.", description: res?.data?.message })
                 return
             }
+            if (!res?.data?.user?.isactive) {
+                setVerify(true)
+                toast({ title: "2-Factor-Authentication", description: 'A one-time-password has been sent to your email!' })
+                return
+            }
+
+            const token = res.data.token
+            const userId = res.data.userId
+            const role = res.data.role
+
+            sessionStorage.setItem('credentials', JSON.stringify({ token, userId, role }))
+            fetchCredentials()
         } catch (error) {
             console.error(error)
         } finally {
-            // fetchCredentials()
             setLoading(false)
+          
         }
     }
 
