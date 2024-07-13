@@ -36,6 +36,11 @@ export default function Dashboard() {
         }
     }
 
+    const maskAccountNumber = (accountNumber) => {
+        if (accountNumber.length !== 9) return accountNumber;
+        return '******' + accountNumber.slice(-3);
+    };
+
     return (
         <>
             <div className="flex">
@@ -61,7 +66,7 @@ export default function Dashboard() {
                                             <SavingsIcon style={{ color: 'white', fontSize: '2rem' }} />
                                             <div className="flex flex-col justify-center items-start">
                                                 <h1 className='text-white'>REGULAR {carddetails?.accountType === 'savings' && 'SAVINGS'}</h1>
-                                                <h1 className='text-white'>{carddetails?.accountno}</h1>
+                                                <h1 className='text-white'>{maskAccountNumber(carddetails?.accountno)}</h1>
                                             </div>
                                         </div>
                                         <div className="w-full flex justify-between items-center">
