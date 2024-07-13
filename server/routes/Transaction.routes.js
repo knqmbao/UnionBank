@@ -19,6 +19,7 @@ router.post('/withdrawtransaction',
 router.post('/transfertransaction',
     TransactionMiddleware.CheckUserTokenValid,
     TransactionMiddleware.CreateTransactionCheckEmptyFields,
+    TransactionMiddleware.CheckAccountIfExist,
     TransactionController.TransferTransaction
 )
 
