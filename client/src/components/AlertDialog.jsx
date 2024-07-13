@@ -12,7 +12,7 @@ import {
 
 export function AlertDialogs({ open, onClose, onConfirm }) {
     return (
-        <AlertDialog open={open} onOpenChange={onClose}>       
+        <AlertDialog open={open} onOpenChange={onClose}>
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
@@ -21,8 +21,8 @@ export function AlertDialogs({ open, onClose, onConfirm }) {
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={onConfirm}>Continue</AlertDialogAction>
+                    <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={onConfirm}>Continue</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
