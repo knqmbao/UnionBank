@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import MenuIcon from '@mui/icons-material/Menu';
+import { useEffect, useState } from 'react'
 import GridViewIcon from '@mui/icons-material/GridView';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
@@ -13,8 +12,11 @@ import GppGoodOutlinedIcon from '@mui/icons-material/GppGoodOutlined';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import AccessibilityOutlinedIcon from '@mui/icons-material/AccessibilityOutlined';
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
+import axios from 'axios'
+const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function Sidebar() {
+    const [carddetails, setCardDetails] = useState('')
     const [userRole, setUserRole] = useState('')
     const navigate = useNavigate()
 
@@ -22,12 +24,30 @@ export default function Sidebar() {
         fetchCredentials()
     }, [])
 
-    const fetchCredentials = () => {
-        const credentials = sessionStorage.getItem('credentials')
-        if (!credentials) return navigate('/unionbank')
-        const { role } = JSON.parse(credentials)
-        setUserRole(role)
+    const fetchCredentials = async () => {
+        try {
+            const credentials = sessionStorage.getItem('credentials')
+            if (!credentials) return navigate('/unionbank')
+            const { userId, role } = JSON.parse(credentials)
+            setUserRole(role)
+
+            const res = await axios.get(`${VITE_HOST}/api/useraccount/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+            if (res?.data?.success) {
+                setCardDetails(res?.data?.data)
+            }
+        } catch (error) {
+            console.error(error)
+        }
     }
+
+    const maskAccountNumber = (accountNumber) => {
+        if (accountNumber.length !== 9) return accountNumber;
+        return '******' + accountNumber.slice(-3);
+    };
 
     const handleLogout = () => {
         sessionStorage.clear()
@@ -36,17 +56,24 @@ export default function Sidebar() {
     return (
         <>
             <div className="sm:w-[none] md:w-[none] lg:w-[20%] h-screen px-[.1rem] sm:px-[.3rem] md:px-[.5rem] lg:px-[1rem] py-[1rem] bg-[#ffffff] border-r border-gray-900/10 overflow-auto">
-                <div className="w-full h-[8%] flex justify-center sm:justify-center md:justify-center lg:justify-between items-center scale-[.7] sm:scale-[.7] md:scale-[.9] lg:scale-[1] py-[1rem]">
-                    <h1 className='hidden sm:hidden md:hidden lg:block text-[.7rem] sm:text-[.8rem] md:text-[.9rem] lg:text-[1rem]'>
-                        {userRole === 'admin' && 'Administrator'}
-                        {userRole === 'hr' && 'Human Resource'}
-                        {userRole === 'it' && 'IT Department'}
-                        {userRole === 'rb' && 'Retail Banking'}
-                        {userRole === 'developer' && 'UnionBank'}
-                        {userRole === 'user' && 'UnionBank'}
-                    </h1>
-                    <MenuIcon style={{ cursor: 'pointer', fontSize: '2rem' }} />
-                </div>
+                {
+                    carddetails && (
+                        <div className="rounded-xl shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1)] bg-[#111111] w-full min-h-[8rem] flex justify-center items-start flex-col px-[1rem] gap-[.5rem]">
+                            <div className="w-full flex justify-start items-center gap-[.5rem]">
+                                <div className="lex flex-col justify-center items-start">
+                                    <h1 className='text-white'>REGULAR SAVINGS</h1>
+                                    <h1 className='text-white'>{maskAccountNumber(carddetails?.accountno)}</h1>
+                                </div>
+                            </div>
+
+                            <div className="w-full flex justify-between items-center">
+                                <h1 className='text-white text-[.9rem]'>Balance</h1>
+                                <h1 className='text-white text-[.9rem]'>PHP {carddetails?.balance}</h1>
+                            </div>
+                        </div>
+                    )
+                }
+
                 <div className="w-full flex flex-col justify-between items-start pb-[6rem]">
                     <div className="w-full flex flex-col">
                         <div className="hnavs w-full py-[1rem] flex flex-col gap-[.2rem] justify-start items-start">
