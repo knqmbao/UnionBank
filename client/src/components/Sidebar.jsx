@@ -14,15 +14,24 @@ import AccessibilityOutlinedIcon from '@mui/icons-material/AccessibilityOutlined
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
 import axios from 'axios'
 const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
+import io from 'socket.io-client';
 
 export default function Sidebar() {
     const [carddetails, setCardDetails] = useState('')
     const [userRole, setUserRole] = useState('')
     const navigate = useNavigate()
+    const socket = io(VITE_HOST);
 
     useEffect(() => {
         fetchCredentials()
+        fetchLang()
     }, [])
+
+    const fetchLang = () => {
+        socket.on('receive_message', (data) => {
+            alert(data.message)
+        })
+    }
 
     const fetchCredentials = async () => {
         try {
@@ -36,6 +45,7 @@ export default function Sidebar() {
                     Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
                 }
             })
+
             if (res?.data?.success) {
                 setCardDetails(res?.data?.data)
             }
@@ -53,6 +63,11 @@ export default function Sidebar() {
         sessionStorage.clear()
         window.location.reload()
     }
+
+    const handleSend = () => {
+        socket.emit('send_message', { message: 'Hello World' })
+    }
+
     return (
         <>
             <div className="sm:w-[none] md:w-[none] lg:w-[20%] h-screen px-[.1rem] sm:px-[.3rem] md:px-[.5rem] lg:px-[1rem] py-[1rem] bg-[#ffffff] border-r border-gray-900/10 overflow-auto">
@@ -62,6 +77,7 @@ export default function Sidebar() {
                             <div className="w-full flex justify-start items-center gap-[.5rem]">
                                 <div className="lex flex-col justify-center items-start">
                                     <h1 className='text-white'>REGULAR SAVINGS</h1>
+                                    <button onClick={handleSend} className='text-white'>Testing</button>
                                     <h1 className='text-white'>{maskAccountNumber(carddetails?.accountno)}</h1>
                                 </div>
                             </div>
