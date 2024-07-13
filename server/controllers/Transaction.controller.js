@@ -1,7 +1,6 @@
 const TransactionModel = require('../models/Transactions.model')
 const AccountModel = require('../models/Account.model')
 const AuditLog = require('../models/Auditlog.model')
-const fetch = require('node-fetch')
 
 const Log = async ({ userId, action, collectionName, documentId, changes, description }) => {
     await AuditLog.create({ userId, action, collectionName, documentId, changes, description })
@@ -67,6 +66,13 @@ const TransactionController = {
                 description: `${account} attempted a withdrawal with an amount of ${amount} with a service fee of ${tax}, totaling ${taxAmount}. The balance changed from ${balance} to ${currentBalance}.`
             })
 
+            // io.emit('transaction', {
+            //     type: 'withdrawal',
+            //     account: account,
+            //     amount: amount,
+            //     balance: currentBalance
+            // });
+
             res.json({ success: true, message: 'Withdrawal transaction successfully!' })
         } catch (error) {
             res.json({ error: `WithdrawTransaction in transaction controller error ${error}` });
@@ -115,6 +121,15 @@ const TransactionController = {
                 changes: { balance: creditFutureBalance },
                 description: `${creditAccount} credited an amount of ${transferAmount} The balance changed from ${creditBalance} to ${creditFutureBalance}`
             })
+
+            // io.emit('transaction', {
+            //     type: 'transfer',
+            //     debitAccount: debitAccount,
+            //     creditAccount: creditAccount,
+            //     amount: amount,
+            //     debitBalance: debitFutureBalance,
+            //     creditBalance: creditFutureBalance
+            // });
 
             res.json({ success: true, message: 'Transfer transaction successfully!' })
         } catch (error) {
