@@ -32,7 +32,7 @@ const TransactionController = {
                 description: `${account} attempted a deposit with an amount of ${amount} with a service fee of 0. The balance changed from ${balance} to ${currentBalance}.`
             })
 
-            res.json({ success: true, message: 'Deposit transaction successfully!' })
+            res.json({ success: true, message: 'Deposit transaction successfully!', balance: currentBalance })
         } catch (error) {
             res.json({ error: `DepositTransaction in transaction controller error ${error}` });
         }
@@ -122,16 +122,7 @@ const TransactionController = {
                 description: `${creditAccount} credited an amount of ${transferAmount} The balance changed from ${creditBalance} to ${creditFutureBalance}`
             })
 
-            // io.emit('transaction', {
-            //     type: 'transfer',
-            //     debitAccount: debitAccount,
-            //     creditAccount: creditAccount,
-            //     amount: amount,
-            //     debitBalance: debitFutureBalance,
-            //     creditBalance: creditFutureBalance
-            // });
-
-            res.json({ success: true, message: 'Transfer transaction successfully!' })
+            res.json({ success: true, message: 'Transfer transaction successfully!', balance: debitFutureBalance })
         } catch (error) {
             res.json({ error: `TransferTransaction in transaction controller error ${error}` });
         }
