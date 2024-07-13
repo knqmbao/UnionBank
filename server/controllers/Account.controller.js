@@ -52,7 +52,9 @@ const AccountController = {
                 maximumFractionDigits: 2
             }).format(balance);
 
-            res.json({ success: true, message: 'Fetch accounts successfully!', data: { _id, userId, accountno, accountType, balance: formattedBalance, isactive } })
+            res.json({ success: true, message: 'Fetch accounts successfully!', data: { _id, userId, accountno, accountType, balance: formattedBalance, isactive } });
+
+            // res.json({ success: true, message: 'Fetch accounts successfully!', data: { _id, userId, accountno, accountType, balance: formattedBalance, isactive } })
         } catch (error) {
             res.json({ error: `GetUserAccount in account controller error ${error}` });
         }
