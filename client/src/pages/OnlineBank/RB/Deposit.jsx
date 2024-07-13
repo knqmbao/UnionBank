@@ -11,7 +11,6 @@ export default function Deposit() {
         account: '',
         amount: '',
     })
-
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -35,6 +34,7 @@ export default function Deposit() {
                     Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
                 }
             })
+
             const accountno = res?.data?.data?.accountno
             setValues((prev) => ({
                 ...prev,
@@ -57,6 +57,7 @@ export default function Deposit() {
                     userId: userId
                 }
             })
+
             if (res?.data?.success) {
                 alert(res?.data?.message)
                 return navigate('/ledger')
