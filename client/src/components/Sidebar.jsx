@@ -14,24 +14,16 @@ import AccessibilityOutlinedIcon from '@mui/icons-material/AccessibilityOutlined
 import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
 import axios from 'axios'
 const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
-import io from 'socket.io-client';
 
 export default function Sidebar() {
     const [carddetails, setCardDetails] = useState('')
     const [userRole, setUserRole] = useState('')
     const navigate = useNavigate()
-    const socket = io(VITE_HOST);
 
     useEffect(() => {
         fetchCredentials()
-        fetchLang()
-    }, [])
+    }, [carddetails])
 
-    const fetchLang = () => {
-        socket.on('receive_message', (data) => {
-            alert(data.message)
-        })
-    }
 
     const fetchCredentials = async () => {
         try {
@@ -64,10 +56,6 @@ export default function Sidebar() {
         window.location.reload()
     }
 
-    const handleSend = () => {
-        socket.emit('send_message', { message: 'Hello World' })
-    }
-
     return (
         <>
             <div className="sm:w-[none] md:w-[none] lg:w-[20%] h-screen px-[.1rem] sm:px-[.3rem] md:px-[.5rem] lg:px-[1rem] py-[1rem] bg-[#ffffff] border-r border-gray-900/10 overflow-auto">
@@ -77,7 +65,6 @@ export default function Sidebar() {
                             <div className="w-full flex justify-start items-center gap-[.5rem]">
                                 <div className="lex flex-col justify-center items-start">
                                     <h1 className='text-white'>REGULAR SAVINGS</h1>
-                                    <button onClick={handleSend} className='text-white'>Testing</button>
                                     <h1 className='text-white'>{maskAccountNumber(carddetails?.accountno)}</h1>
                                 </div>
                             </div>
@@ -93,7 +80,7 @@ export default function Sidebar() {
                 <div className="w-full flex flex-col justify-between items-start pb-[6rem]">
                     <div className="w-full flex flex-col">
                         <div className="hnavs w-full py-[1rem] flex flex-col gap-[.2rem] justify-start items-start">
-                            <NavLink to='/' className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md scale-[.7] sm:scale-[.8] md:scale-[.9] lg:scale-[1]">
+                            <NavLink to={`/`} className="w-full flex justify-start items-center gap-[1rem] px-[1rem] py-[.7rem] rounded-md scale-[.7] sm:scale-[.8] md:scale-[.9] lg:scale-[1]">
                                 <GridViewIcon />
                                 <h1 className='hidden sm:hidden md:hidden lg:block text-[#3D4751] text-[.7rem] sm:text-[.8rem] md:text-[.7rem] lg:text-[.9rem]'>
                                     Dashboard
