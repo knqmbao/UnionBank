@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Sidebar from '../../components/Sidebar'
 import Header from '../../components/Header__dashboard'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { AlertDialogs } from '@/components/AlertDialog'
+import { useToast } from "@/components/ui/use-toast"
+import { Toaster } from "@/components/ui/toaster";
 const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function Transfer() {
@@ -11,7 +14,9 @@ export default function Transfer() {
         creditAccount: '',
         amount: ''
     })
+    const [isDialog, setDialog] = useState(false)
     const navigate = useNavigate()
+    const { toast } = useToast()
 
     useEffect(() => {
         fetchCredentials()
@@ -53,14 +58,14 @@ export default function Transfer() {
                     userId: userId
                 }
             })
-            console.log(res?.data)
-
-            if (res?.data?.success) return alert(res?.data?.message)
-            alert(res?.data?.message)
+            
+            if (res?.data?.success) return toast({ title: "Success! 🎉", description: res?.data?.message })
+            toast({ title: "Uh, oh! Something went wrong.", description: res?.data?.message, })
         } catch (error) {
             console.error(error)
         } finally {
             handleCleanUp()
+            setDialog(false)
         }
     }
 
@@ -70,6 +75,16 @@ export default function Transfer() {
             ...prev,
             [name]: value
         }))
+    }
+
+    const handleChangeDialog = (e) => {
+        if (values?.creditAccount === '' || values?.amount === '') return
+        e.preventDefault()
+        setDialog(true)
+    }
+
+    const handleDialogCancel = () => {
+        setDialog(false)
     }
 
     const handleCleanUp = () => {
@@ -84,11 +99,11 @@ export default function Transfer() {
         <>
             <div className="flex">
                 <Sidebar />
+                <Toaster />
+                <AlertDialogs open={isDialog} onClose={handleDialogCancel} onConfirm={handleTransfer} />
                 <div className="w-[80%] h-screen flex flex-col justify-start items-center p-[1rem] overflow-auto ">
                     <Header breadcrumbs={breadCrumbs} />
-                    <form
-                        onSubmit={handleTransfer}
-                        className='w-full h-[95%] flex flex-col justify-start items-center px-[5rem]'>
+                    <form className='w-full h-[95%] flex flex-col justify-start items-center px-[5rem]'>
                         <div className="space-y-12 pt-[5rem] pb-[20rem]">
                             <div className="border-b border-gray-900/10 pb-12">
                                 <h2 className="text-base font-semibold leading-7 text-gray-900">Account Information</h2>
@@ -126,6 +141,7 @@ export default function Transfer() {
                                             <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 sm:max-w-md">
                                                 <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">to/</span>
                                                 <input
+                                                    value={values?.creditAccount}
                                                     onChange={handleOnChange}
                                                     required
                                                     type="text"
@@ -145,6 +161,7 @@ export default function Transfer() {
                                             <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 sm:max-w-md">
                                                 <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">PHP/</span>
                                                 <input
+                                                    value={values?.amount}
                                                     onChange={handleOnChange}
                                                     required
                                                     type="text"
@@ -174,9 +191,10 @@ export default function Transfer() {
                                     </div>
                                 </div>
                             </div>
+
                             <div className="w-full flex items-center justify-end gap-x-6">
                                 <button
-                                    type="submit"
+                                    onClick={handleChangeDialog}
                                     className="rounded-md bg-[#111111] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#333333] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                 >
                                     Transfer
