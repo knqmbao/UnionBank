@@ -6,6 +6,7 @@ import axios from 'axios'
 import { AlertDialogs } from '@/components/AlertDialog'
 import { useToast } from "@/components/ui/use-toast"
 import { Toaster } from "@/components/ui/toaster";
+import Loading from '@/components/Loading'
 const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function Transfer() {
@@ -15,6 +16,7 @@ export default function Transfer() {
         amount: ''
     })
     const [isDialog, setDialog] = useState(false)
+    const [isLoading, setLoading] = useState(false)
     const navigate = useNavigate()
     const { toast } = useToast()
 
@@ -49,6 +51,7 @@ export default function Transfer() {
     const handleTransfer = async (e) => {
         try {
             e.preventDefault()
+            setLoading(true)
             const credentials = sessionStorage.getItem('credentials')
             const { userId, token } = JSON.parse(credentials)
 
@@ -58,7 +61,7 @@ export default function Transfer() {
                     userId: userId
                 }
             })
-            
+
             if (res?.data?.success) return toast({ title: "Success! 🎉", description: res?.data?.message })
             toast({ title: "Uh, oh! Something went wrong.", description: res?.data?.message, })
         } catch (error) {
@@ -66,6 +69,7 @@ export default function Transfer() {
         } finally {
             handleCleanUp()
             setDialog(false)
+            setLoading(false)
         }
     }
 
@@ -101,6 +105,7 @@ export default function Transfer() {
                 <Sidebar />
                 <Toaster />
                 <AlertDialogs open={isDialog} onClose={handleDialogCancel} onConfirm={handleTransfer} />
+                {isLoading && <Loading />}
                 <div className="w-[80%] h-screen flex flex-col justify-start items-center p-[1rem] overflow-auto ">
                     <Header breadcrumbs={breadCrumbs} />
                     <form className='w-full h-[95%] flex flex-col justify-start items-center px-[5rem]'>
