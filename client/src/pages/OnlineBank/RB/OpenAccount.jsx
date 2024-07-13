@@ -65,7 +65,7 @@ export default function OpenAccount() {
                         Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
                     }
                 })
-                console.log(createaccount)
+              
                 if (createaccount?.data?.success) {
                     alert(createaccount?.data?.message)
                     navigate('/customers')
