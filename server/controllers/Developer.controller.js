@@ -121,7 +121,7 @@ const DeveloperController = {
         try {
             const { user } = req.user
 
-            const { _id: accountId } = await AccountModel.findOne({ accountno: user })
+            const { _id: accountId, accountno: accountno } = await AccountModel.findOne({ accountno: user })
             const data = await TransactionModel.find({ account: accountId })
 
             const formattedData = data.map(transaction => {
@@ -139,7 +139,7 @@ const DeveloperController = {
                 return { _id, amount, description, createdAt: formattedCreatedAt, transactionType, balance, fee };
             });
 
-            res.json({ success: true, message: 'Fetch transactions successfully!', data: formattedData })
+            res.json({ success: true, message: 'Fetch transactions successfully!', data: formattedData, accountno })
         } catch (error) {
             res.json({ error: `GetAllTransaction in transaction controller error ${error}` });
         }
