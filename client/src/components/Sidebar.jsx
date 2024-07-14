@@ -22,7 +22,7 @@ export default function Sidebar() {
 
     useEffect(() => {
         fetchCredentials()
-    }, [carddetails])
+    }, [])
 
 
     const fetchCredentials = async () => {
@@ -52,6 +52,7 @@ export default function Sidebar() {
     };
 
     const handleLogout = () => {
+        // window.open('http://localhost:3001', '_blank', 'width=500,height=600')
         sessionStorage.clear()
         window.location.reload()
     }
