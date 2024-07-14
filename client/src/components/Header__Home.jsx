@@ -26,10 +26,10 @@ export default function Header__Home() {
                     <div className="w-[12rem] h-full">
                         <img src={Logo} alt="Logo" className='w-full h-full object-contain' />
                     </div>
-                    <button onClick={handleClick} className='text-[#7ba1bf] font-[500] text-[.9rem] hover:text-white duration-300 ease'>
+                    <Link to={`https://sdevmarc.notion.site/UNIONBANK-85dd31ebb2c34869a3dc59cfc845ec6f?pvs=4`} target='_blank' className='text-[#7ba1bf] font-[500] text-[.9rem] hover:text-white duration-300 ease'>
                         Terms of Use
-                    </button>
-                    <Link to={`/unionbank`} className='text-[#7ba1bf] font-[500] text-[.9rem] hover:text-white duration-300 ease'>
+                    </Link>
+                    <Link to={`https://www.notion.so/sdevmarc/UnionBank-Privacy-Policy-565f098c06044eb4a84baeda6ad5364e`} target='_blank' className='text-[#7ba1bf] font-[500] text-[.9rem] hover:text-white duration-300 ease'>
                         Privacy Policy
                     </Link>
                 </div>
