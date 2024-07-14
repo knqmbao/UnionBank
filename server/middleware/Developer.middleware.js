@@ -46,7 +46,7 @@ const DeveloperMiddleware = {
 
             if (token === null) return res.json({ authorization: `You are not authorized: null` })
             if (token === undefined) return res.json({ authorization: `You are not authorized: undefined` })
-            console.log(token)
+         
             jwt.verify(token, process.env.ADMIN_TOKEN, (err, user) => {
                 if (err) return res.json({ success: false, message: 'A token is required, nor token is incorrect!' })
                 req.user = user;
