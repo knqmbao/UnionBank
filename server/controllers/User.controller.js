@@ -53,7 +53,7 @@ const UserController = {
     },
     GetAllEmployedUsers: async (req, res) => {
         try {
-            const data = await UserModel.find({ role: { $nin: ['user', 'developer', 'admin'] } });
+            const data = await UserModel.find({ role: { $nin: ['user', 'developer'] } });
             res.json({ success: true, message: 'Fetch employed users successfully!', data })
         } catch (error) {
             res.json({ error: `GetAllEmployedUsers in user controller error ${error}` });
