@@ -1,6 +1,7 @@
 const DeveloperModel = require('../models/Developer.model')
 const AuditLog = require('../models/Auditlog.model')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 const DeveloperMiddleware = {
@@ -22,7 +23,7 @@ const DeveloperMiddleware = {
             if (token === process.env.ADMIN_TOKEN) return next()
             res.json({ success: false, message: 'A token is required, nor token is incorrect!' })
         } catch (error) {
-            res.status(400).json({ error: `CheckDeveloperTokenValid in developer middleware error ${error}` });
+            res.status(400).json({ error: `CheckAdminTokenValid in developer middleware error ${error}` });
         }
     },
     CheckDeveloperTokenValid: async (req, res, next) => {
@@ -37,6 +38,23 @@ const DeveloperMiddleware = {
             res.json({ success: false, message: 'A token is required, nor token is incorrect!' })
         } catch (error) {
             res.status(400).json({ error: `CheckDeveloperTokenValid in developer middleware error ${error}` });
+        }
+    },
+    CheckUserTokenValid: async (req, res, next) => {
+        try {
+            const token = req.headers['accountno']
+
+            if (token === null) return res.json({ authorization: `You are not authorized: null` })
+            if (token === undefined) return res.json({ authorization: `You are not authorized: undefined` })
+            console.log(token)
+            jwt.verify(token, process.env.ADMIN_TOKEN, (err, user) => {
+                if (err) return res.json({ success: false, message: 'A token is required, nor token is incorrect!' })
+                req.user = user;
+                next();
+            });
+
+        } catch (error) {
+            res.status(400).json({ error: `CheckUserTokenValid in developer middleware error ${error}` });
         }
     },
     CreateDeveloperTokenHashed: async (req, res, next) => {
