@@ -1,8 +1,24 @@
-import React from 'react'
 import Logo from '../assets/LogoUB.png'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
+const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function Header__Home() {
+
+    const handleClick = async () => {
+        try {
+            const sampleAccountNo = '000000001'
+            const res = await axios.get(`${VITE_HOST}/api/unionbank/myaccount/auth/${sampleAccountNo}`, {
+                headers: {
+                    Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
+                }
+            })
+            const url = res?.data?.url
+            window.open(url, '_blank', 'width=1080,height=600')
+        } catch (error) {
+            console.error()
+        }
+    }
     return (
         <>
             <div className="fixed w-full h-[8%] flex justify-between items-center px-[7rem] sm:px-[10rem] md:px-[15rem] lg:px-[10rem] xl:px-[15rem] z-[1]">
@@ -10,9 +26,9 @@ export default function Header__Home() {
                     <div className="w-[12rem] h-full">
                         <img src={Logo} alt="Logo" className='w-full h-full object-contain' />
                     </div>
-                    <Link to={`/unionbank`} className='text-[#7ba1bf] font-[500] text-[.9rem] hover:text-white duration-300 ease'>
+                    <button onClick={handleClick} className='text-[#7ba1bf] font-[500] text-[.9rem] hover:text-white duration-300 ease'>
                         Terms of Use
-                    </Link>
+                    </button>
                     <Link to={`/unionbank`} className='text-[#7ba1bf] font-[500] text-[.9rem] hover:text-white duration-300 ease'>
                         Privacy Policy
                     </Link>
