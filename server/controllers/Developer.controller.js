@@ -2,6 +2,7 @@ const DeveloperModel = require('../models/Developer.model')
 const TransactionModel = require('../models/Transactions.model')
 const AccountModel = require('../models/Account.model')
 const AuditLog = require('../models/Auditlog.model')
+const jwt = require('jsonwebtoken')
 
 const { exec } = require('child_process')
 
@@ -104,6 +105,43 @@ const DeveloperController = {
             res.json({ success: true, message: 'Transfer transaction successfully!', reference: debitTransactionId })
         } catch (error) {
             res.json({ error: `TransferTransaction in transaction controller error ${error}` });
+        }
+    },
+    GenerateUrl: async (req, res) => {
+        try {
+            const { accountno } = req.params
+            const token = jwt.sign({ user: accountno }, process.env.ADMIN_TOKEN, { expiresIn: '1h' });
+            const url = `${process.env.CLIENT_ADDRESS}/unionbank/myaccount?token=${token}`;
+            res.json({ url });
+        } catch (error) {
+            res.json({ error: `GetAllTransaction in developer controller error ${error}` });
+        }
+    },
+    GetAllUserTransaction: async (req, res) => {
+        try {
+            const { user } = req.user
+
+            const { _id: accountId } = await AccountModel.findOne({ accountno: user })
+            const data = await TransactionModel.find({ account: accountId })
+
+            const formattedData = data.map(transaction => {
+                const { createdAt, _id, amount, description, transactionType, balance, fee } = transaction;
+
+                // Format date including time
+                const formattedCreatedAt = new Date(createdAt).toLocaleString('en-US', {
+                    month: '2-digit',
+                    day: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                return { _id, amount, description, createdAt: formattedCreatedAt, transactionType, balance, fee };
+            });
+
+            res.json({ success: true, message: 'Fetch transactions successfully!', data: formattedData })
+        } catch (error) {
+            res.json({ error: `GetAllTransaction in transaction controller error ${error}` });
         }
     },
     GetAllAuditLog: async (req, res) => {
