@@ -22,6 +22,7 @@ import Deposit from './pages/OnlineBank/RB/Deposit'
 import Withdrawal from './pages/OnlineBank/RB/Withdrawal'
 import Ledger from './pages/OnlineBank/RB/Ledger'
 import Accounts from './pages/OnlineBank/RB/Accounts'
+import UserStatement from './pages/Home/UserStatement'
 
 const Routes = createBrowserRouter([
   { path: '/', element: <Dashboard /> },
@@ -34,6 +35,7 @@ const Routes = createBrowserRouter([
   { path: '/statement', element: <Statement /> },
   { path: '/transfer', element: <Transfer /> },
   { path: '/carddetails', element: <CardDetails /> },
+  { path: '/unionbank/myaccount', element: <UserStatement /> },
 
   // HR DEPARTMENT
   { path: '/employees', element: <Employees /> },
