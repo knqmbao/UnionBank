@@ -109,7 +109,7 @@ export default function Login() {
                                         </div>
                                         <div className="w-full flex flex-col">
                                             <h1 className='text-white'>Email</h1>
-                                            <input onChange={handleOnChange} type="email" required name='email' className='px-[1rem] py-[.5rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your email...' />
+                                            <input autoFocus onChange={handleOnChange} type="email" required name='email' className='px-[1rem] py-[.5rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your email...' />
                                         </div>
                                         <div className="w-full flex flex-col">
                                             <h1 className='text-white'>Password</h1>
