@@ -107,7 +107,7 @@ export default function SignUp() {
                             </div>
                             <div className="w-full flex flex-col">
                                 <h1 className='text-white'>Full Name</h1>
-                                <input onChange={handleOnChange} value={values?.name} name='name' type="text" required className='px-[1rem] py-[.5rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your full name...' />
+                                <input autoFocus onChange={handleOnChange} value={values?.name} name='name' type="text" required className='px-[1rem] py-[.5rem] rounded-md placeholder:text-[.8rem]' placeholder='Enter your full name...' />
                             </div>
                             <div className="w-full flex flex-col">
                                 <h1 className='text-white'>Email</h1>
