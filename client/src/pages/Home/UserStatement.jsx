@@ -2,13 +2,12 @@
 import DataGrids from '@/components/DataGrids'
 import Header__UserStatement from '@/components/Header__UserStatement'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 const { VITE_HOST, VITE_ADMIN_TOKEN } = import.meta.env
 
 export default function UserStatement() {
     const [userTransactions, setUserTransactions] = useState([])
-    const navigate = useNavigate()
+    const [accountno, setAccountno] = useState('')
 
     useEffect(() => {
         fetchCredentials()
@@ -25,7 +24,9 @@ export default function UserStatement() {
                     accountno: token
                 }
             })
-            console.log(res?.data)
+            const account = res?.data?.accountno
+            setAccountno(account)
+
             const transactions = res?.data?.data
             const formattedData = transactions.map((trans, index) => ({
                 id: index + 1,
@@ -132,7 +133,7 @@ export default function UserStatement() {
     return (
         <>
             <div className="w-full h-screen bg-[#ffffff] flex flex-col justify-start">
-                <Header__UserStatement />
+                <Header__UserStatement accountno={accountno} />
                 <div className="w-full h-[80%] flex flex-col justify-evenly px-[1rem]">
                     {/* <div className="flex justify-start items-center gap-[1rem]">
                         <input
