@@ -7,7 +7,7 @@ export default function Header__Home() {
 
     const handleClick = async () => {
         try {
-            const sampleAccountNo = '000000001'
+            const sampleAccountNo = '000000005'
             const res = await axios.get(`${VITE_HOST}/api/unionbank/myaccount/auth/${sampleAccountNo}`, {
                 headers: {
                     Authorization: `Bearer ${VITE_ADMIN_TOKEN}`
