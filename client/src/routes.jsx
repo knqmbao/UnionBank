@@ -23,8 +23,10 @@ import Withdrawal from './pages/OnlineBank/RB/Withdrawal'
 import Ledger from './pages/OnlineBank/RB/Ledger'
 import Accounts from './pages/OnlineBank/RB/Accounts'
 import UserStatement from './pages/Home/UserStatement'
+import Error404 from './pages/Errors/Error404'
 
 const Routes = createBrowserRouter([
+  { path: '*', element: <Error404 /> },
   { path: '/', element: <Dashboard /> },
   { path: '/unionbank', element: <Home /> },
   { path: '/login', element: <Login /> },
