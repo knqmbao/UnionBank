@@ -19,16 +19,17 @@ export default function Header__Home() {
             console.error()
         }
     }
+
     return (
         <>
             <div className="fixed w-full h-[8%] flex justify-between items-center px-[7rem] sm:px-[10rem] md:px-[15rem] lg:px-[10rem] xl:px-[15rem] z-[1]">
                 <div className="h-full flex justify-start items-center gap-[1rem]">
-                    <div className="w-[12rem] h-full">
+                    <Link to={`/`} className="w-[12rem] h-full">
                         <img src={Logo} alt="Logo" className='w-full h-full object-contain' />
-                    </div>
-                    <Link to={`https://sdevmarc.notion.site/UNIONBANK-85dd31ebb2c34869a3dc59cfc845ec6f?pvs=4`} target='_blank' className='text-[#7ba1bf] font-[500] text-[.9rem] hover:text-white duration-300 ease'>
-                        Terms of Use
                     </Link>
+                    <button onClick={handleClick} className='text-[#7ba1bf] font-[500] text-[.9rem] hover:text-white duration-300 ease'>
+                        Terms of Use
+                    </button>
                     <Link to={`https://www.notion.so/sdevmarc/UnionBank-Privacy-Policy-565f098c06044eb4a84baeda6ad5364e`} target='_blank' className='text-[#7ba1bf] font-[500] text-[.9rem] hover:text-white duration-300 ease'>
                         Privacy Policy
                     </Link>
